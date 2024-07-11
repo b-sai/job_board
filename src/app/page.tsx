@@ -2,7 +2,7 @@ import ResumeParser from "resume-parser/page";
 import JobSearchCard from "job-board/page";
 export default function Home() {
   return (
-    <html className="demo">
+    <html>
       <body>
         <ResumeParser />
         <JobSearchCard />

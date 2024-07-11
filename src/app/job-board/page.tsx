@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-
+import ReactMarkdown from "react-markdown";
 interface Job {
   id: number;
   title: string;
@@ -16,8 +16,25 @@ const JobSearchCard: React.FC = () => {
       id: 1,
       title: "Frontend Developer",
       company: "TechCorp",
-      description:
-        "Exciting opportunity fosdfsdfr a skilled frontend\n\n\n\n \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndeveloper developer  developer developer  developer developer  developer \n\n\n\n\n\n\n\n developer  developer \n\n\n\n\n\n\n\ndeveloper  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer   developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer  developer developer developer  developer developer ... Exc\n\niting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...Exciting opportunity for a skilled frontend developer...",
+      description: `
+# About the job
+
+**Hi, We're Centerfield**.
+
+Supercharged customer acquisition. Centerfield delivers outcome-based digital marketing solutions and personalized omnichannel experiences for the world's leading brands. Powered by our proprietary Dugout platform, Centerfield acquires customers at scale for leading residential service, insurance, e-commerce, and B2B brands. Centerfield's digital experiences and digital brands, such as Business.com and BroadbandNow.com, reach more than 150 million in-market shoppers annually. Centerfield is headquartered in Silicon Beach and is proud to be recognized by Built in LA as a Best Place to Work in Los Angeles.
+
+## The Opportunity...
+
+Centerfield Media, a leading Los Angeles-based online advertising agency, is looking for a talented Machine Learning Engineer to join us in building innovative advertising technology. We are looking for a highly motivated, web-focused, engineer experienced with the full data life cycle. You will help design the data science programs, machine learning models, and architecture to support Generative AI. You must have practical experience working with large data sets preferably in website lead generation & search engine marketing, SaaS, or cloud computing domains.
+
+## How You'll Contribute...
+
+- Ability to lead projects individually and deliver them on time.
+- Experience with Realtime streaming implementation and architecture is a bonus.
+- Support data-informed decision-making, throughout the Product Org and broader company.
+- Be a thought leader and evangelist to drive adoption and knowledge at all levels of the organization.
+- Constantly look for strategic ways to expand the charter of the Data Science team beyond causal inference, starting with Ranking Data Science, and Market-Place Dynamics.
+      `,
     },
     {
       id: 2,
@@ -102,9 +119,26 @@ const JobSearchCard: React.FC = () => {
   const handleJobSelect = (job: Job) => {
     setSelectedJob(job);
   };
+  const customRenderers = {
+    h1: ({ children }: { children: React.ReactNode }) => (
+      <h3 className="mb-2 text-xl font-semibold">{children}</h3>
+    ),
+    h2: ({ children }: { children: React.ReactNode }) => (
+      <h4 className="mb-2 text-lg font-semibold">{children}</h4>
+    ),
+    p: ({ children }: { children: React.ReactNode }) => (
+      <p className="mb-4">{children}</p>
+    ),
+    ul: ({ children }: { children: React.ReactNode }) => (
+      <ul className="mb-4 list-disc pl-5">{children}</ul>
+    ),
+    li: ({ children }: { children: React.ReactNode }) => (
+      <li className="mb-1">{children}</li>
+    ),
+  };
 
   return (
-    <div className="flex min-h-screen flex-col gap-6 bg-gray-50 p-6 md:mx-20 md:flex-row md:justify-center">
+    <div className="mt-6 flex min-h-screen flex-col gap-6 bg-gray-50 p-6 md:mx-20 md:flex-row md:justify-center">
       <div className="flex h-[calc(100vh-3rem)] w-full flex-col md:w-1/3">
         <h2 className="mb-4 flex-shrink-0 text-2xl font-bold text-gray-800">
           Open Positions
@@ -132,18 +166,14 @@ const JobSearchCard: React.FC = () => {
             <h2 className="mb-2 text-3xl font-bold text-gray-800">
               {selectedJob.title}
             </h2>
-            <button className="mt-6 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            <p className="mb-4 text-xl text-gray-600">{selectedJob.company}</p>
+            <button className="mb-4 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
               Apply Now
             </button>
-
-            <p className="mb-4 text-xl text-gray-600">{selectedJob.company}</p>
             <div className="rounded-lg bg-gray-50 p-4">
-              <h3 className="mb-2 text-xl font-semibold text-gray-800">
-                Job Description
-              </h3>
-              <p className="whitespace-pre-line text-gray-700">
+              <ReactMarkdown components={customRenderers}>
                 {selectedJob.description || "No description available"}
-              </p>
+              </ReactMarkdown>
             </div>
           </div>
         ) : (

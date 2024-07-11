@@ -43,7 +43,6 @@ export default function ResumeParser() {
           playgroundView={true}
         />
       </div>
-      <Heading level={2} className="!mt-[1.2em]"></Heading>
     </main>
   );
 }
