@@ -7,7 +7,6 @@ interface Job {
   company?: string;
   description?: string;
 }
-
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
@@ -119,21 +118,21 @@ Centerfield Media, a leading Los Angeles-based online advertising agency, is loo
   const handleJobSelect = (job: Job) => {
     setSelectedJob(job);
   };
-  const customRenderers = {
-    h1: ({ children }: { children: React.ReactNode }) => (
-      <h3 className="mb-2 text-xl font-semibold">{children}</h3>
+  const customComponents = {
+    h1: ({ ...props }: React.HTMLProps<HTMLHeadingElement>) => (
+      <h3 className="mb-2 text-xl font-semibold" {...props} />
     ),
-    h2: ({ children }: { children: React.ReactNode }) => (
-      <h4 className="mb-2 text-lg font-semibold">{children}</h4>
+    h2: ({ ...props }: React.HTMLProps<HTMLHeadingElement>) => (
+      <h4 className="mb-2 text-lg font-semibold" {...props} />
     ),
-    p: ({ children }: { children: React.ReactNode }) => (
-      <p className="mb-4">{children}</p>
+    p: ({ ...props }: React.HTMLProps<HTMLParagraphElement>) => (
+      <p className="mb-4" {...props} />
     ),
-    ul: ({ children }: { children: React.ReactNode }) => (
-      <ul className="mb-4 list-disc pl-5">{children}</ul>
+    ul: ({ ...props }: React.HTMLProps<HTMLUListElement>) => (
+      <ul className="mb-4 list-disc pl-5" {...props} />
     ),
-    li: ({ children }: { children: React.ReactNode }) => (
-      <li className="mb-1">{children}</li>
+    li: ({ ...props }: React.HTMLProps<HTMLLIElement>) => (
+      <li className="mb-1" {...props} />
     ),
   };
 
@@ -171,7 +170,7 @@ Centerfield Media, a leading Los Angeles-based online advertising agency, is loo
               Apply Now
             </button>
             <div className="rounded-lg bg-gray-50 p-4">
-              <ReactMarkdown components={customRenderers}>
+              <ReactMarkdown components={customComponents}>
                 {selectedJob.description || "No description available"}
               </ReactMarkdown>
             </div>
