@@ -1,120 +1,41 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 interface Job {
   id: number;
   title: string;
   company?: string;
   description?: string;
+  job_url?: string;
 }
+
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const jobs: Job[] = [
-    {
-      id: 1,
-      title: "Frontend Developer",
-      company: "TechCorp",
-      description: `
-# About the job
+  useEffect(() => {
+    fetchJobs();
+  }, []);
 
-**Hi, We're Centerfield**.
+  const fetchJobs = async () => {
+    try {
+      const response = await fetch(process.env.NEXT_PUBLIC_DEV_API + "jobs/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch jobs");
+      }
+      const data = await response.json();
+      setJobs(data);
+      setLoading(false);
+      setSelectedJob(data[0]);
+    } catch (err) {
+      setError("Error fetching jobs. Please try again later.");
+      setLoading(false);
+    }
+  };
 
-Supercharged customer acquisition. Centerfield delivers outcome-based digital marketing solutions and personalized omnichannel experiences for the world's leading brands. Powered by our proprietary Dugout platform, Centerfield acquires customers at scale for leading residential service, insurance, e-commerce, and B2B brands. Centerfield's digital experiences and digital brands, such as Business.com and BroadbandNow.com, reach more than 150 million in-market shoppers annually. Centerfield is headquartered in Silicon Beach and is proud to be recognized by Built in LA as a Best Place to Work in Los Angeles.
-
-## The Opportunity...
-
-Centerfield Media, a leading Los Angeles-based online advertising agency, is looking for a talented Machine Learning Engineer to join us in building innovative advertising technology. We are looking for a highly motivated, web-focused, engineer experienced with the full data life cycle. You will help design the data science programs, machine learning models, and architecture to support Generative AI. You must have practical experience working with large data sets preferably in website lead generation & search engine marketing, SaaS, or cloud computing domains.
-
-## How You'll Contribute...
-
-- Ability to lead projects individually and deliver them on time.
-- Experience with Realtime streaming implementation and architecture is a bonus.
-- Support data-informed decision-making, throughout the Product Org and broader company.
-- Be a thought leader and evangelist to drive adoption and knowledge at all levels of the organization.
-- Constantly look for strategic ways to expand the charter of the Data Science team beyond causal inference, starting with Ranking Data Science, and Market-Place Dynamics.
-      `,
-    },
-    {
-      id: 2,
-      title: "UX Designer",
-      company: "DesignHub",
-      description: "Join our team to create stunning user experiences...",
-    },
-    {
-      id: 3,
-      title: "DevOps Engineer",
-      company: "CloudSys",
-      description: "Help us build and maintain robust infrastructure...",
-    },
-    {
-      id: 4,
-      title: "Data Scientist",
-      company: "DataTech",
-      description: "Apply your analytical skills to solve complex problems...",
-    },
-    {
-      id: 5,
-      title: "Frontend Developer",
-      company: "TechCorp",
-      description: "Exciting opportunity for a skilled frontend developer...",
-    },
-    {
-      id: 6,
-      title: "UX Designer",
-      company: "DesignHub",
-      description: "Join our team to create stunning user experiences...",
-    },
-    {
-      id: 7,
-      title: "DevOps Engineer",
-      company: "CloudSys",
-      description: "Help us build and maintain robust infrastructure...",
-    },
-    {
-      id: 8,
-      title: "Data Scientist",
-      company: "DataTech",
-      description: "Apply your analytical skills to solve complex problems...",
-    },
-    {
-      id: 9,
-      title: "Frontend Developer",
-      company: "TechCorp",
-      description: "Exciting opportunity for a skilled frontend developer...",
-    },
-    {
-      id: 11,
-      title: "UX Designer",
-      company: "DesignHub",
-      description: "Join our team to create stunning user experiences...",
-    },
-    {
-      id: 12,
-      title: "DevOps Engineer",
-      company: "CloudSys",
-      description: "Help us build and maintain robust infrastructure...",
-    },
-    {
-      id: 13,
-      title: "Data Scientist",
-      company: "DataTech",
-      description: "Apply your analytical skills to solve complex problems...",
-    },
-    {
-      id: 14,
-      title: "Frontend Developer",
-      company: "TechCorp",
-      description: "Exciting opportunity for a skilled frontend developer...",
-    },
-    {
-      id: 15,
-      title: "UX Designer",
-      company: "DesignHub",
-      description: "Join our team to create stunning user experiences...",
-    },
-  ];
-
+  console.log(jobs);
   const handleJobSelect = (job: Job) => {
     setSelectedJob(job);
   };
@@ -166,7 +87,10 @@ Centerfield Media, a leading Los Angeles-based online advertising agency, is loo
               {selectedJob.title}
             </h2>
             <p className="mb-4 text-xl text-gray-600">{selectedJob.company}</p>
-            <button className="mb-4 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            <button
+              onClick={() => window.open(selectedJob.job_url, "_blank")}
+              className="mb-4 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md "
+            >
               Apply Now
             </button>
             <div className="rounded-lg bg-gray-50 p-4">
