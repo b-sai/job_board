@@ -4,7 +4,7 @@ async function fetchData(url: string, queryParams: any): Promise<any> {
   try {
     const queryString = new URLSearchParams(queryParams).toString();
     const response = await axios.post(
-      process.env.NEXT_PUBLIC_DEV_API + url + "?" + queryString
+      process.env.NEXT_PUBLIC_API + url + "?" + queryString
     );
     return response.data;
   } catch (error) {
