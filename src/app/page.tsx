@@ -8,7 +8,6 @@ export default function Home() {
     <html>
       <body>
         <ResumeParser />
-        <Filters />
         <JobSearchCard />
         <Analytics />
         <SpeedInsights />

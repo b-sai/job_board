@@ -13,28 +13,26 @@ const jobLevels = [
   "Lead",
 ];
 
-const JobLevelFilter: React.FC = () => {
-  const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
-
+const JobLevelFilter: React.FC<{
+  selectedLevels: string[];
+  setSelectedLevels: React.Dispatch<React.SetStateAction<string[]>>;
+}> = ({ selectedLevels, setSelectedLevels }) => {
   const toggleLevel = (level: string) => {
     setSelectedLevels((prev) =>
       prev.includes(level) ? prev.filter((l) => l !== level) : [...prev, level]
     );
   };
-  useEffect(() => {
-    console.log(selectedLevels);
-  }, [selectedLevels]);
 
   return (
-    <div className="mb-6 w-full">
-      <Heading className="mb-3">Job Level</Heading>
-      <div className="flex flex-wrap gap-3">
+    <div className="w-full">
+      <h1 className="mb-2 text-2xl font-bold">Job Level</h1>
+      <div className="flex flex-wrap gap-2">
         {jobLevels.map((level) => (
           <Button
             key={level}
             onClick={() => toggleLevel(level)}
             className={cx(
-              "rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
+              "rounded-full px-3 py-1 text-sm font-medium transition-all duration-200",
               selectedLevels.includes(level)
                 ? "scale-105 transform bg-blue-500 text-white shadow-md"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
