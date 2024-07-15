@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import logoSrc from "public/logo_jobboard.webp";
+import logoSrc from "public/icon.png";
 import { cx } from "lib/cx";
 
 export const TopNavBar = () => {
@@ -23,7 +23,6 @@ export const TopNavBar = () => {
           <Image src={logoSrc} alt="Logo" className="h-8 w-full" priority />
         </Link>
       </div>
-      Job Board
     </header>
   );
 };
