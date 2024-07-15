@@ -53,45 +53,49 @@ const StateFilter: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full">
       <h1 className="mb-2 text-2xl font-bold">Job Level</h1>
-      <div className="mb-2">
-        {selectedLocations.map((location) => (
-          <span
-            key={location}
-            className="mb-2 mr-2 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800"
-          >
-            {location}
-            <button
-              onClick={() => handleRemoveLocation(location)}
-              className="ml-1 text-blue-600 hover:text-blue-800"
-            >
-              <X size={14} />
-            </button>
-          </span>
-        ))}
-      </div>
-      <div className="relative">
-        <input
-          type="text"
-          className="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter a city or state"
-          value={input}
-          onChange={handleInputChange}
-        />
-        {suggestions.length > 0 && (
-          <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg">
-            {suggestions.map((suggestion) => (
-              <li
-                key={suggestion}
-                className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-                onClick={() => handleSelectLocation(suggestion)}
+      <div className="flex">
+        <div className="relative w-1/3 pr-4">
+          <input
+            type="text"
+            className="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter a city or state"
+            value={input}
+            onChange={handleInputChange}
+          />
+          {suggestions.length > 0 && (
+            <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg">
+              {suggestions.map((suggestion) => (
+                <li
+                  key={suggestion}
+                  className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                  onClick={() => handleSelectLocation(suggestion)}
+                >
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="w-1/2 pl-4">
+          <div className="flex flex-wrap">
+            {selectedLocations.map((location) => (
+              <span
+                key={location}
+                className="mb-2 mr-2 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800"
               >
-                {suggestion}
-              </li>
+                {location}
+                <button
+                  onClick={() => handleRemoveLocation(location)}
+                  className="ml-1 text-blue-600 hover:text-blue-800"
+                >
+                  <X size={14} />
+                </button>
+              </span>
             ))}
-          </ul>
-        )}
+          </div>
+        </div>
       </div>
     </div>
   );
