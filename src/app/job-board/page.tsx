@@ -26,7 +26,7 @@ const JobSearchCard: React.FC = () => {
 
   const fetchJobs = async () => {
     try {
-      const data = await fetchData("jobs/", { filters: selectedLevels });
+      const data = await fetchData("jobs/", { job_level: selectedLevels });
       setJobs(data);
       setLoading(false);
       setSelectedJob(data[0]);
