@@ -80,7 +80,7 @@ const StateFilter: React.FC<StateFilterProps> = ({
 
   return (
     <div className="w-full">
-      <h1 className="mb-2 text-2xl font-bold">Job Level</h1>
+      <h1 className="mb-2 text-2xl font-bold">Location</h1>
       <div className="flex">
         <div className="relative w-1/3 pr-4" ref={wrapperRef}>
           <input
