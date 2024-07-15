@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import ReactMarkdown from "react-markdown";
 import JobLevelFilter from "./Filters";
 import { fetchData } from "./FetchData";
@@ -20,21 +20,27 @@ const JobSearchCard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     fetchJobs();
-  }, [selectedLevels, selectedLocations]);
+  }, [selectedLevels, selectedLocations, currentPage]);
 
   const fetchJobs = async () => {
     try {
+      const skip = (currentPage - 1) * itemsPerPage;
       const data = await fetchData("jobs/", {
         job_level: selectedLevels,
         locations: selectedLocations,
+        skip,
+        limit: itemsPerPage,
       });
-      setJobs(data);
+      setJobs(data.jobs);
+      setTotalCount(data.total_count);
       setLoading(false);
-      setSelectedJob(data[0]);
-      console.log("here");
+      setSelectedJob(data.jobs[0]);
     } catch (err) {
       setError("Error fetching jobs. Please try again later.");
       setLoading(false);
@@ -43,6 +49,25 @@ const JobSearchCard: React.FC = () => {
 
   const handleJobSelect = (job: Job) => {
     setSelectedJob(job);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    setLoading(true);
+  };
+
+  const handleLevelFilterChange: Dispatch<SetStateAction<string[]>> = (
+    levels
+  ) => {
+    setSelectedLevels(levels);
+    setCurrentPage(1); // Reset to first page
+  };
+
+  const handleLocationFilterChange: Dispatch<SetStateAction<string[]>> = (
+    locations
+  ) => {
+    setSelectedLocations(locations);
+    setCurrentPage(1); // Reset to first page
   };
 
   const customComponents = {
@@ -63,22 +88,24 @@ const JobSearchCard: React.FC = () => {
     ),
   };
 
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
+
   return (
     <div className="mt-6 flex min-h-screen flex-col gap-6 bg-gray-50 p-6 md:mx-20">
       <div className="mt-1 flex flex-col sm:flex-row">
         <div className="sm:w-1/3">
           <JobLevelFilter
             selectedLevels={selectedLevels}
-            setSelectedLevels={setSelectedLevels}
+            setSelectedLevels={handleLevelFilterChange}
           />
         </div>
         <div className="sm:w-2/3">
           <StateFilter
             selectedLocations={selectedLocations}
-            setSelectedLocations={setSelectedLocations}
+            setSelectedLocations={handleLocationFilterChange}
           />
         </div>
-      </div>{" "}
+      </div>
       <div className="flex flex-col md:flex-row md:justify-center">
         <div className="flex h-[calc(100vh-3rem)] w-full flex-col md:w-1/3">
           <h2 className="mb-4 flex-shrink-0 text-2xl font-bold text-gray-800">
@@ -99,6 +126,24 @@ const JobSearchCard: React.FC = () => {
                 <p className="text-sm text-gray-600">{job.company}</p>
               </div>
             ))}
+          </div>
+          <div className="mt-4 flex justify-center space-x-2">
+            {currentPage > 1 && (
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                className="rounded-lg bg-gray-300 px-4 py-2 font-semibold text-gray-800 hover:bg-gray-400"
+              >
+                Previous
+              </button>
+            )}
+            {currentPage < totalPages && (
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                className="rounded-lg bg-gray-300 px-4 py-2 font-semibold text-gray-800 hover:bg-gray-400"
+              >
+                Next
+              </button>
+            )}
           </div>
         </div>
         <div className="h-[calc(100vh-3rem)] w-full overflow-y-auto md:w-2/3">
