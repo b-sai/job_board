@@ -1,40 +1,59 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, useRef } from "react";
 import { X } from "lucide-react";
-
-// Mock data for locations (you would replace this with real data or an API call)
-const locations: string[] = [
-  "New York, NY",
-  "Los Angeles, CA",
-  "Chicago, IL",
-  "Houston, TX",
-  "Phoenix, AZ",
-  "Philadelphia, PA",
-  "San Antonio, TX",
-  "San Diego, CA",
-  "Dallas, TX",
-  "San Jose, CA",
-  "California",
-  "Texas",
-  "Florida",
-  "New York",
-  "Pennsylvania",
-];
+import { fetchData, fetchLocations } from "./FetchData";
 
 const StateFilter: React.FC = () => {
   const [input, setInput] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [locationData, setLocationData] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchLocationData = async () => {
+      try {
+        const data = await fetchLocations("locations/");
+        const locationList = data.map(
+          (item: { location: string }) => item.location
+        );
+        setLocationData(locationList);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchLocationData();
+  }, []);
 
   useEffect(() => {
     if (input.length > 0) {
-      const filtered = locations.filter((location) =>
+      const filtered = locationData.filter((location) =>
         location.toLowerCase().includes(input.toLowerCase())
       );
       setSuggestions(filtered);
+      setIsOpen(true);
     } else {
-      setSuggestions([]);
+      setSuggestions(locationData);
     }
-  }, [input]);
+  }, [input, locationData]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+        setInput("");
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [wrapperRef]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -44,8 +63,9 @@ const StateFilter: React.FC = () => {
     if (!selectedLocations.includes(location)) {
       setSelectedLocations([...selectedLocations, location]);
     }
-    setInput("");
-    setSuggestions([]);
+    // setInput("");
+    // Keep the suggestions list open
+    setIsOpen(true);
   };
 
   const handleRemoveLocation = (location: string) => {
@@ -56,15 +76,16 @@ const StateFilter: React.FC = () => {
     <div className="w-full">
       <h1 className="mb-2 text-2xl font-bold">Job Level</h1>
       <div className="flex">
-        <div className="relative w-1/3 pr-4">
+        <div className="relative w-1/3 pr-4" ref={wrapperRef}>
           <input
             type="text"
             className="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter a city or state"
             value={input}
             onChange={handleInputChange}
+            onFocus={() => setIsOpen(true)}
           />
-          {suggestions.length > 0 && (
+          {isOpen && (
             <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg">
               {suggestions.map((suggestion) => (
                 <li

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import JobLevelFilter from "./Filters";
-import fetchData from "./FetchData";
+import { fetchData } from "./FetchData";
 import StateFilter from "./StateFilter";
 
 interface Job {

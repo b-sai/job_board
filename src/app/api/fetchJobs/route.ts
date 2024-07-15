@@ -4,12 +4,9 @@ export async function POST(request: Request) {
   try {
     const { url, queryParams } = await request.json();
 
-    if (!process.env.API) {
-      throw new Error("API_URL is not defined in environment variables");
-    }
 
     const queryString = new URLSearchParams(queryParams).toString();
-    const fullUrl = `${process.env.API}${url}?${queryString}`;
+    const fullUrl = `${process.env.DEV_API}${url}?${queryString}`;
 
     console.log("Attempting to fetch from:", fullUrl);
 
