@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import JobLevelFilter from "./Filters";
 import fetchData from "./FetchData";
+import StateFilter from "./StateFilter";
 
 interface Job {
   id: number;
@@ -60,12 +61,17 @@ const JobSearchCard: React.FC = () => {
 
   return (
     <div className="mt-6 flex min-h-screen flex-col gap-6 bg-gray-50 p-6 md:mx-20">
-      <div className="mt-1 pt-0">
-        <JobLevelFilter
-          selectedLevels={selectedLevels}
-          setSelectedLevels={setSelectedLevels}
-        />
-      </div>
+      <div className="mt-1 flex flex-col gap-4 pt-0 sm:flex-row">
+        <div className="flex-1">
+          <JobLevelFilter
+            selectedLevels={selectedLevels}
+            setSelectedLevels={setSelectedLevels}
+          />
+        </div>
+        <div className="flex-1">
+          <StateFilter />
+        </div>
+      </div>{" "}
       <div className="flex flex-col md:flex-row md:justify-center">
         <div className="flex h-[calc(100vh-3rem)] w-full flex-col md:w-1/3">
           <h2 className="mb-4 flex-shrink-0 text-2xl font-bold text-gray-800">
