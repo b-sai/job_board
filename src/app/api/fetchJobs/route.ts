@@ -6,7 +6,7 @@ export async function POST(request: Request) {
 
 
     const queryString = new URLSearchParams(queryParams).toString();
-    const fullUrl = `${process.env.DEV_API}${url}?${queryString}`;
+    const fullUrl = `${process.env.API}${url}?${queryString}`;
 
     console.log("Attempting to fetch from:", fullUrl);
 

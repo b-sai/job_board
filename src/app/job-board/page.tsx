@@ -19,14 +19,18 @@ const JobSearchCard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
 
   useEffect(() => {
     fetchJobs();
-  }, [selectedLevels]);
+  }, [selectedLevels, selectedLocations]);
 
   const fetchJobs = async () => {
     try {
-      const data = await fetchData("jobs/", { job_level: selectedLevels });
+      const data = await fetchData("jobs/", {
+        job_level: selectedLevels,
+        locations: selectedLocations,
+      });
       setJobs(data);
       setLoading(false);
       setSelectedJob(data[0]);
@@ -69,7 +73,10 @@ const JobSearchCard: React.FC = () => {
           />
         </div>
         <div className="sm:w-2/3">
-          <StateFilter />
+          <StateFilter
+            selectedLocations={selectedLocations}
+            setSelectedLocations={setSelectedLocations}
+          />
         </div>
       </div>{" "}
       <div className="flex flex-col md:flex-row md:justify-center">

@@ -1,11 +1,17 @@
 import React, { useState, useEffect, ChangeEvent, useRef } from "react";
 import { X } from "lucide-react";
 import { fetchData, fetchLocations } from "./FetchData";
-
-const StateFilter: React.FC = () => {
+interface StateFilterProps {
+  selectedLocations: string[];
+  setSelectedLocations: React.Dispatch<React.SetStateAction<string[]>>;
+}
+const StateFilter: React.FC<StateFilterProps> = ({
+  selectedLocations,
+  setSelectedLocations,
+}: StateFilterProps) => {
   const [input, setInput] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  // const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [locationData, setLocationData] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
