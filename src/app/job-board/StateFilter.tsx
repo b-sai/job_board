@@ -1,17 +1,21 @@
+"use client";
+import dynamic from "next/dynamic";
+
 import React, { useState, useEffect, ChangeEvent, useRef } from "react";
 import { X } from "lucide-react";
 import { fetchData, fetchLocations } from "./FetchData";
+
 interface StateFilterProps {
   selectedLocations: string[];
   setSelectedLocations: React.Dispatch<React.SetStateAction<string[]>>;
 }
+
 const StateFilter: React.FC<StateFilterProps> = ({
   selectedLocations,
   setSelectedLocations,
 }: StateFilterProps) => {
   const [input, setInput] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  // const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [locationData, setLocationData] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -40,7 +44,8 @@ const StateFilter: React.FC<StateFilterProps> = ({
       setSuggestions(filtered);
       setIsOpen(true);
     } else {
-      setSuggestions(locationData);
+      setSuggestions([]);
+      setIsOpen(false);
     }
   }, [input, locationData]);
 
@@ -51,7 +56,6 @@ const StateFilter: React.FC<StateFilterProps> = ({
         !wrapperRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
-        setInput("");
       }
     }
 
@@ -128,4 +132,8 @@ const StateFilter: React.FC<StateFilterProps> = ({
   );
 };
 
-export default StateFilter;
+const DynamicStateFilter = dynamic(() => Promise.resolve(StateFilter), {
+  ssr: false,
+});
+
+export default DynamicStateFilter;

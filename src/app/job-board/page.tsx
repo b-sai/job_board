@@ -127,7 +127,7 @@ const JobSearchCard: React.FC = () => {
               </div>
             ))}
           </div>
-          <div className="mt-4 flex justify-center space-x-2">
+          {/* <div className="mt-4 flex justify-center space-x-2">
             {currentPage > 1 && (
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
@@ -144,7 +144,7 @@ const JobSearchCard: React.FC = () => {
                 Next
               </button>
             )}
-          </div>
+          </div> */}
         </div>
         <div className="h-[calc(100vh-3rem)] w-full overflow-y-auto md:w-2/3">
           {selectedJob ? (
