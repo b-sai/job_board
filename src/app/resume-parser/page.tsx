@@ -13,7 +13,7 @@ import { FlexboxSpacer } from "components/FlexboxSpacer";
 import { ResumeParserAlgorithmArticle } from "resume-parser/ResumeParserAlgorithmArticle";
 import { useResume } from "ResumeContext";
 
-const defaultFileUrl = "resume-example/openresume-resume.pdf";
+const defaultFileUrl = "";
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [textItems, setTextItems] = useState<TextItems>([]);
@@ -31,7 +31,9 @@ export default function ResumeParser() {
       const resumeData = extractResumeFromSections(sections);
       setResume(resumeData);
     }
-    test();
+    if (fileUrl !== defaultFileUrl) {
+      test();
+    }
   }, [fileUrl, setResume]);
 
   return (

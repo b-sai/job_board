@@ -29,15 +29,20 @@ const JobSearchCard: React.FC = () => {
   useEffect(() => {
     fetchJobs();
   }, [selectedLevels, selectedLocations, currentPage]);
+  useEffect(() => {
+    if (resume && resume !== "null" && !Array.isArray(resume)) {
+      fetchJobs();
+    }
+  }, [resume]);
 
   const fetchJobs = async () => {
     try {
       const skip = (currentPage - 1) * itemsPerPage;
+      const resData = resume ? resume.workExperiences[0].descriptions : null;
       const data = await fetchData("jobs/", {
         job_level: selectedLevels,
         locations: selectedLocations,
-        skip,
-        limit: itemsPerPage,
+        resume: resData,
       });
       setJobs(data.jobs);
       setTotalCount(data.total_count);
@@ -48,13 +53,6 @@ const JobSearchCard: React.FC = () => {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    if (resume) {
-      // Use resume data to filter or enhance job search
-      console.log("Resume data:", resume);
-      // You can use resume data to update filters or search criteria
-    }
-  }, [resume]);
 
   const handleJobSelect = (job: Job) => {
     setSelectedJob(job);
