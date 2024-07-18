@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import ReactMarkdown from "react-markdown";
 import JobLevelFilter from "./Filters";
 import { fetchData } from "./FetchData";
 import StateFilter from "./StateFilter";
+import Pagination from "./Pagination";
+import JobDetails from "./JobDetails";
 
 interface Job {
   id: number;
@@ -68,24 +69,6 @@ const JobSearchCard: React.FC = () => {
   ) => {
     setSelectedLocations(locations);
     setCurrentPage(1); // Reset to first page
-  };
-
-  const customComponents = {
-    h1: ({ ...props }: React.HTMLProps<HTMLHeadingElement>) => (
-      <h3 className="mb-2 text-xl font-semibold" {...props} />
-    ),
-    h2: ({ ...props }: React.HTMLProps<HTMLHeadingElement>) => (
-      <h4 className="mb-2 text-lg font-semibold" {...props} />
-    ),
-    p: ({ ...props }: React.HTMLProps<HTMLParagraphElement>) => (
-      <p className="mb-4" {...props} />
-    ),
-    ul: ({ ...props }: React.HTMLProps<HTMLUListElement>) => (
-      <ul className="mb-4 list-disc pl-5" {...props} />
-    ),
-    li: ({ ...props }: React.HTMLProps<HTMLLIElement>) => (
-      <li className="mb-1" {...props} />
-    ),
   };
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
@@ -174,7 +157,9 @@ const JobSearchCard: React.FC = () => {
               </p>
             </div>
           )}
+
         </div>
+        <JobDetails selectedJob={selectedJob} />
       </div>
     </div>
   );
