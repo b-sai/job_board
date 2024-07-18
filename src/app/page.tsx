@@ -11,13 +11,11 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <html>
-      <body>
-        <ResumeParser />
-        <JobSearchCard />
-        <Analytics />
-        <SpeedInsights />
-      </body>
-    </html>
+    <>
+      <ResumeParser />
+      <JobSearchCard />
+      <Analytics />
+      <SpeedInsights />
+    </>
   );
 }
