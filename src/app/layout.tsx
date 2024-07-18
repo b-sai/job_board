@@ -1,5 +1,6 @@
 import "globals.css";
 import { TopNavBar } from "components/TopNavBar";
+import { ResumeProvider } from "ResumeContext";
 
 export default function RootLayout({
   children,
@@ -10,7 +11,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <TopNavBar />
-        {children}
+        <ResumeProvider>{children}</ResumeProvider>
       </body>
     </html>
   );

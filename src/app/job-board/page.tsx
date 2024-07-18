@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import JobLevelFilter from "./Filters";
 import { fetchData } from "./FetchData";
 import StateFilter from "./StateFilter";
+import { useResume } from "ResumeContext";
 
 interface Job {
   id: number;
@@ -23,6 +24,7 @@ const JobSearchCard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const { resume } = useResume();
 
   useEffect(() => {
     fetchJobs();
@@ -46,6 +48,13 @@ const JobSearchCard: React.FC = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    if (resume) {
+      // Use resume data to filter or enhance job search
+      console.log("Resume data:", resume);
+      // You can use resume data to update filters or search criteria
+    }
+  }, [resume]);
 
   const handleJobSelect = (job: Job) => {
     setSelectedJob(job);

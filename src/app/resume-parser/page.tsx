@@ -11,24 +11,28 @@ import { Heading, Link, Paragraph } from "components/documentation";
 import { ResumeTable } from "resume-parser/ResumeTable";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
 import { ResumeParserAlgorithmArticle } from "resume-parser/ResumeParserAlgorithmArticle";
-
-
+import { useResume } from "ResumeContext";
 
 const defaultFileUrl = "resume-example/openresume-resume.pdf";
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [textItems, setTextItems] = useState<TextItems>([]);
-  const lines = groupTextItemsIntoLines(textItems || []);
-  const sections = groupLinesIntoSections(lines);
-  const resume = extractResumeFromSections(sections);
+  // const lines = groupTextItemsIntoLines(textItems || []);
+  // const sections = groupLinesIntoSections(lines);
+  // const resume = extractResumeFromSections(sections);
+  const { setResume } = useResume();
 
   useEffect(() => {
     async function test() {
       const textItems = await readPdf(fileUrl);
       setTextItems(textItems);
+      const lines = groupTextItemsIntoLines(textItems || []);
+      const sections = groupLinesIntoSections(lines);
+      const resumeData = extractResumeFromSections(sections);
+      setResume(resumeData);
     }
     test();
-  }, [fileUrl]);
+  }, [fileUrl, setResume]);
 
   return (
     <main className="h-full w-full overflow-hidden">
