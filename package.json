@@ -27,7 +27,7 @@
     "eslint-config-next": "13.4.4",
     "lucide": "^0.408.0",
     "lucide-react": "^0.408.0",
-    "next": "13.4.4",
+    "next": "^14.2.5",
     "pdfjs": "^2.5.0",
     "pdfjs-dist": "^3.7.107",
     "postcss": "8.4.24",
