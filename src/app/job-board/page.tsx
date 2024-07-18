@@ -100,13 +100,13 @@ const JobSearchCard: React.FC = () => {
   return (
     <div className="mt-6 flex min-h-screen flex-col gap-6 bg-gray-50 p-6 md:mx-20">
       <div className="mt-1 flex flex-col sm:flex-row">
-        <div className="sm:w-1/3">
+        <div className="sm:w-1/5">
           <JobLevelFilter
             selectedLevels={selectedLevels}
             setSelectedLevels={handleLevelFilterChange}
           />
         </div>
-        <div className="sm:w-2/3">
+        <div className="sm:w-4/5">
           <StateFilter
             selectedLocations={selectedLocations}
             setSelectedLocations={handleLocationFilterChange}
