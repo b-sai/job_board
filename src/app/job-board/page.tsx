@@ -35,55 +35,60 @@ const JobSearchCard: React.FC = () => {
     }
   }, [resume]);
 
-const fetchJobs = async () => {
-  try {
-    const skip = (currentPage - 1) * itemsPerPage;
-    const resData = resume?.workExperiences[0]?.descriptions;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const fetchJobs = async () => {
+    try {
+      const skip = (currentPage - 1) * itemsPerPage;
+      const resData = resume?.workExperiences[0]?.descriptions;
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    const params = new URLSearchParams({
-      skip: skip.toString(),
-      limit: itemsPerPage.toString(),
-    });
+      const formData = new FormData();
+      formData.append("skip", skip.toString());
+      formData.append("limit", itemsPerPage.toString());
 
-    if (selectedLevels?.length > 0) {
-      selectedLevels.forEach((level) => params.append("job_level", level));
+      if (selectedLevels?.length > 0) {
+        selectedLevels.forEach((level) => formData.append("job_level", level));
+      }
+
+      if (selectedLocations?.length > 0) {
+        selectedLocations.forEach((location) =>
+          formData.append("locations", location)
+        );
+      }
+
+      if (resData) {
+        formData.append("resume", resData);
+      }
+
+      // Convert FormData to URLSearchParams
+      const params = new URLSearchParams();
+      formData.forEach((value, key) => {
+        params.append(key, value.toString());
+      });
+
+      const response = await fetch(`${baseUrl}jobs/?${params.toString()}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setJobs(data.jobs);
+      setTotalCount(data.total_count);
+      setLoading(false);
+      if (data.jobs.length > 0) {
+        setSelectedJob(data.jobs[0]);
+      }
+    } catch (err) {
+      console.error("Error fetching jobs:", err);
+      setError("Error fetching jobs. Please try again later.");
+      setLoading(false);
     }
-
-    if (selectedLocations?.length > 0) {
-      selectedLocations.forEach((location) =>
-        params.append("locations", location)
-      );
-    }
-
-    if (resData) {
-      params.append("resume", resData);
-    }
-
-    const response = await fetch(`${baseUrl}jobs/?${params.toString()}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    setJobs(data.jobs);
-    setTotalCount(data.total_count);
-    setLoading(false);
-    if (data.jobs.length > 0) {
-      setSelectedJob(data.jobs[0]);
-    }
-  } catch (err) {
-    console.error("Error fetching jobs:", err);
-    setError("Error fetching jobs. Please try again later.");
-    setLoading(false);
-  }
-};
+  };
 
 const handleJobSelect = (job: Job) => {
   setSelectedJob(job);
