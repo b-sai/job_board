@@ -27,10 +27,11 @@ const JobSearchCard: React.FC = () => {
   const { resume } = useResume();
 
   useEffect(() => {
+    console.log("123");
     fetchJobs();
   }, [selectedLevels, selectedLocations, currentPage]);
   useEffect(() => {
-    if (resume && resume !== "null" && !Array.isArray(resume)) {
+    if (resume && resume !== "null" && resume !== null) {
       fetchJobs();
     }
   }, [resume]);
@@ -38,10 +39,12 @@ const JobSearchCard: React.FC = () => {
   const fetchJobs = async () => {
     try {
       const skip = (currentPage - 1) * itemsPerPage;
-      const resData = resume?.workExperiences[0]?.descriptions;
       const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+      // Create FormData object for both query parameters and file
       const formData = new FormData();
+
+      // Add query parameters to FormData
       formData.append("skip", skip.toString());
       formData.append("limit", itemsPerPage.toString());
 
@@ -55,21 +58,19 @@ const JobSearchCard: React.FC = () => {
         );
       }
 
-      if (resData) {
-        formData.append("resume", resData);
+      // Add resume file if available
+      if (resume instanceof File) {
+        formData.append("resume", resume, resume.name);
+        console.log("Appending resume file:", resume.name);
+      } else {
+        console.log("No resume file to append");
       }
 
-      // Convert FormData to URLSearchParams
-      const params = new URLSearchParams();
-      formData.forEach((value, key) => {
-        params.append(key, value.toString());
-      });
+      console.log("Sending request to:", `${baseUrl}jobs/`);
 
-      const response = await fetch(`${baseUrl}jobs/?${params.toString()}`, {
+      const response = await fetch(`${baseUrl}jobs/`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+        body: formData,
       });
 
       if (!response.ok) {
@@ -89,7 +90,6 @@ const JobSearchCard: React.FC = () => {
       setLoading(false);
     }
   };
-
 const handleJobSelect = (job: Job) => {
   setSelectedJob(job);
 };

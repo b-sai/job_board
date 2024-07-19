@@ -1,40 +1,20 @@
 "use client";
-import { useState, useEffect } from "react";
-import { readPdf } from "lib/parse-resume-from-pdf/read-pdf";
-import type { TextItems } from "lib/parse-resume-from-pdf/types";
-import { groupTextItemsIntoLines } from "lib/parse-resume-from-pdf/group-text-items-into-lines";
-import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
-import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-resume-from-sections";
+import { useState } from "react";
 import { ResumeDropzone } from "components/ResumeDropzone";
-import { cx } from "lib/cx";
-import { Heading, Link, Paragraph } from "components/documentation";
-import { ResumeTable } from "resume-parser/ResumeTable";
-import { FlexboxSpacer } from "components/FlexboxSpacer";
-import { ResumeParserAlgorithmArticle } from "resume-parser/ResumeParserAlgorithmArticle";
+import { Heading } from "components/documentation";
 import { useResume } from "ResumeContext";
 
-const defaultFileUrl = "";
 export default function ResumeParser() {
-  const [fileUrl, setFileUrl] = useState(defaultFileUrl);
-  const [textItems, setTextItems] = useState<TextItems>([]);
-  // const lines = groupTextItemsIntoLines(textItems || []);
-  // const sections = groupLinesIntoSections(lines);
-  // const resume = extractResumeFromSections(sections);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
   const { setResume } = useResume();
 
-  useEffect(() => {
-    async function test() {
-      const textItems = await readPdf(fileUrl);
-      setTextItems(textItems);
-      const lines = groupTextItemsIntoLines(textItems || []);
-      const sections = groupLinesIntoSections(lines);
-      const resumeData = extractResumeFromSections(sections);
-      setResume(resumeData);
-    }
-    if (fileUrl !== defaultFileUrl) {
-      test();
-    }
-  }, [fileUrl, setResume]);
+  const handleFileUrlChange = (fileUrl: string | null) => {
+    setFileUrl(fileUrl);
+  };
+
+  const handleFileChange = (file: File | null) => {
+    setResume(file);
+  };
 
   return (
     <main className="h-full w-full overflow-hidden">
@@ -45,7 +25,8 @@ export default function ResumeParser() {
       </div>
       <div className="mt-3">
         <ResumeDropzone
-          onFileUrlChange={(fileUrl) => setFileUrl(fileUrl || defaultFileUrl)}
+          onFileUrlChange={handleFileUrlChange}
+          onFileChange={handleFileChange}
           playgroundView={true}
         />
       </div>

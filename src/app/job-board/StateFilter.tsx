@@ -23,7 +23,26 @@ const StateFilter: React.FC<StateFilterProps> = ({
   useEffect(() => {
     const fetchLocationData = async () => {
       try {
-        const data = await fetchLocations("locations/");
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+        if (!baseUrl) {
+          throw new Error(
+            "API URL is not defined. Please check your environment variables."
+          );
+        }
+
+        const response = await fetch(`${baseUrl}locations/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}), // Add any required body parameters here
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
         const locationList = data.map(
           (item: { location: string }) => item.location
         );
