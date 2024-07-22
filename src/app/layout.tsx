@@ -10,7 +10,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TopNavBar />
         <ResumeProvider>{children}</ResumeProvider>
       </body>
     </html>

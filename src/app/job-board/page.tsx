@@ -131,33 +131,32 @@ const JobSearchCard: React.FC = () => {
   };
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
-
   return (
-    <div className="mt-6 flex min-h-screen flex-col gap-6 bg-gray-50 p-6 md:mx-2">
-      <div className="mt-1 flex flex-col sm:flex-row">
-        <div className="sm:w-1/5">
+    <div className="container mx-auto flex h-[calc(100vh-100px)] flex-col p-4">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row">
+        <div className="w-full sm:w-1/3">
           <JobLevelFilter
             selectedLevels={selectedLevels}
             setSelectedLevels={handleLevelFilterChange}
           />
         </div>
-        <div className="sm:w-4/5">
+        <div className="w-full sm:w-2/3">
           <StateFilter
             selectedLocations={selectedLocations}
             setSelectedLocations={handleLocationFilterChange}
           />
         </div>
       </div>
-      <div className="flex flex-col md:flex-row md:justify-center">
-        <div className="flex h-[calc(100vh-3rem)] w-full flex-col md:w-1/3">
-          <div className="flex-grow space-y-3 overflow-y-auto">
+      <div className="flex flex-1 flex-col gap-6 lg:flex-row">
+        <div className="w-full overflow-hidden rounded-lg bg-white shadow lg:w-1/3">
+          <div className="h-full overflow-y-auto">
             {jobs.map((job) => (
               <div
                 key={job.id}
-                className={`transform cursor-pointer rounded-lg p-4 transition-all duration-300 ease-in-out ${
+                className={`cursor-pointer border-l-4 p-4 transition-all duration-300 ${
                   selectedJob?.id === job.id
-                    ? "scale-102 border-l-4 border-blue-500 bg-white shadow-md"
-                    : "hover:scale-102 bg-white hover:-translate-y-1 hover:shadow-md"
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-transparent hover:bg-gray-50"
                 }`}
                 onClick={() => handleJobSelect(job)}
               >
@@ -166,55 +165,39 @@ const JobSearchCard: React.FC = () => {
               </div>
             ))}
           </div>
-          {/* <div className="mt-4 flex justify-center space-x-2">
-            {currentPage > 1 && (
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                className="rounded-lg bg-gray-300 px-4 py-2 font-semibold text-gray-800 hover:bg-gray-400"
-              >
-                Previous
-              </button>
-            )}
-            {currentPage < totalPages && (
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                className="rounded-lg bg-gray-300 px-4 py-2 font-semibold text-gray-800 hover:bg-gray-400"
-              >
-                Next
-              </button>
-            )}
-          </div> */}
         </div>
-        <div className="h-[calc(100vh-3rem)] w-full overflow-y-auto md:w-2/3">
-          {selectedJob ? (
-            <div className="rounded-lg bg-white p-6 shadow-md transition-all duration-300 ease-in-out hover:shadow-lg">
-              <h2 className="mb-2 text-3xl font-bold text-gray-800">
-                {selectedJob.title}
-              </h2>
-              <p className="mb-4 text-xl text-gray-600">
-                {selectedJob.company}
-              </p>
-              <button
-                onClick={() =>
-                  window.open(selectedJob.job_url_direct, "_blank")
-                }
-                className="mb-4 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md "
-              >
-                Apply Now
-              </button>
-              <div className="rounded-lg bg-gray-50 p-4">
-                <ReactMarkdown components={customComponents}>
-                  {selectedJob.description || "No description available"}
-                </ReactMarkdown>
+        <div className="w-full overflow-hidden rounded-lg bg-white shadow lg:w-2/3">
+          <div className="h-full overflow-y-auto p-6">
+            {selectedJob ? (
+              <div>
+                <h2 className="mb-2 text-2xl font-bold text-gray-800 sm:text-3xl">
+                  {selectedJob.title}
+                </h2>
+                <p className="mb-4 text-lg text-gray-600 sm:text-xl">
+                  {selectedJob.company}
+                </p>
+                <button
+                  onClick={() =>
+                    window.open(selectedJob.job_url_direct, "_blank")
+                  }
+                  className="mb-4 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 hover:bg-blue-600"
+                >
+                  Apply Now
+                </button>
+                <div className="rounded-lg bg-gray-50 p-4">
+                  <ReactMarkdown components={customComponents}>
+                    {selectedJob.description || "No description available"}
+                  </ReactMarkdown>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="flex h-full items-center justify-center rounded-lg bg-white p-6 shadow-md">
-              <p className="text-lg text-gray-500">
-                Select a job to view details
-              </p>
-            </div>
-          )}
+            ) : (
+              <div className="flex h-full items-center justify-center">
+                <p className="text-lg text-gray-500">
+                  Select a job to view details
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
