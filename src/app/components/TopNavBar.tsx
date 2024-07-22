@@ -20,7 +20,7 @@ export const TopNavBar = () => {
       <div className="flex h-10 w-full items-center justify-between">
         <Link href="/">
           <span className="sr-only">Job Board</span>
-          <Image src={logoSrc} alt="Logo" className="h-8 w-full" priority />
+          <Image src={logoSrc} alt="Logo" width={90} height={45} priority />
         </Link>
       </div>
     </header>
