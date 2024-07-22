@@ -17,18 +17,19 @@ export default function ResumeParser() {
   };
 
   return (
-    <main className="h-full w-full overflow-hidden">
+    <main className="flex h-full w-full max-w-full items-start justify-center overflow-hidden overflow-x-hidden">
       <div className="mt-4 text-center">
-        <Heading level={1} className="!mt-[1.2em]">
-          Drop Your Resume to get personalized recommendations
-        </Heading>
-      </div>
-      <div className="mt-3">
-        <ResumeDropzone
-          onFileUrlChange={handleFileUrlChange}
-          onFileChange={handleFileChange}
-          playgroundView={true}
-        />
+        <h1 className="!mt-[1.2em] font-bold">
+          Drop Your Resume to get{" "}
+          <span className="text-blue-900">personalized recommendations</span>
+        </h1>
+        <div className="mt-1">
+          <ResumeDropzone
+            onFileUrlChange={handleFileUrlChange}
+            onFileChange={handleFileChange}
+            playgroundView={true}
+          />
+        </div>
       </div>
     </main>
   );

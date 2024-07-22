@@ -70,7 +70,7 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
   return (
     <div
       className={cx(
-        "mx-auto flex w-1/2 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-6",
+        "mx-auto flex w-3/4 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-6",
         isHoveredOnDropzone && "border-sky-400",
         playgroundView ? "pb-6 pt-4" : "py-12",
         className
@@ -130,10 +130,12 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
               <label
                 className={cx(
                   "within-outline-theme-purple cursor-pointer rounded-full px-6 pb-2.5 pt-2 font-semibold shadow-sm",
-                  playgroundView ? "border" : "bg-primary"
+                  playgroundView ? "border" : "bg-primary",
+                  "inline-block text-center" // Added classes for multi-line support
                 )}
               >
-                Browse file
+                <span className="inline-block">Browse file</span>{" "}
+                {/* Wrapped text in a span */}
                 <input
                   type="file"
                   className="sr-only"
@@ -146,7 +148,7 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
               )}
             </>
           ) : (
-            <p className={cx(" text-gray-500", !playgroundView && "mt-6")}>
+            <p className={cx("text-gray-500", !playgroundView && "mt-6")}>
               Note: {!playgroundView ? "Import" : "Parser"} works best on single
               column resume
             </p>

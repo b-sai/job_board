@@ -134,7 +134,7 @@ const handleJobSelect = (job: Job) => {
   const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   return (
-    <div className="mt-6 flex min-h-screen flex-col gap-6 bg-gray-50 p-6 md:mx-20">
+    <div className="mt-6 flex min-h-screen flex-col gap-6 bg-gray-50 p-6 md:mx-2">
       <div className="mt-1 flex flex-col sm:flex-row">
         <div className="sm:w-1/5">
           <JobLevelFilter
@@ -151,9 +151,6 @@ const handleJobSelect = (job: Job) => {
       </div>
       <div className="flex flex-col md:flex-row md:justify-center">
         <div className="flex h-[calc(100vh-3rem)] w-full flex-col md:w-1/3">
-          <h2 className="mb-4 flex-shrink-0 text-2xl font-bold text-gray-800">
-            Open Positions
-          </h2>
           <div className="flex-grow space-y-3 overflow-y-auto">
             {jobs.map((job) => (
               <div
