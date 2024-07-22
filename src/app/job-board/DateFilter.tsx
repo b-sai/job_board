@@ -1,19 +1,28 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 
-const DateSelectorDropdown = () => {
+interface DateSelectorDropdownProps {
+  datePosted: number;
+  setDatePosted: (value: number) => void;
+}
+
+const DateSelectorDropdown: React.FC<DateSelectorDropdownProps> = ({
+  datePosted,
+  setDatePosted,
+}: DateSelectorDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState("Date Posted");
+  const [selected, setSelected] = useState("1 Day ago");
   const dropdownRef = useRef(null);
 
   const options = [
-    { label: "1 Day ago", value: "1" },
-    { label: "3 Days ago", value: "3" },
-    { label: "7 Days ago", value: "7" },
+    { label: "1 Day ago", value: 1 },
+    { label: "3 Days ago", value: 3 },
+    { label: "7 Days ago", value: 7 },
   ];
 
   const handleSelect = (option: any) => {
     setSelected(option.label);
+    setDatePosted(option.value);
     setIsOpen(false);
   };
 

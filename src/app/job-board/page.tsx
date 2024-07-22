@@ -29,11 +29,12 @@ const JobSearchCard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [datePosted, setDatePosted] = useState(1);
   const { resume } = useResume();
 
   useEffect(() => {
     fetchJobs();
-  }, [selectedLevels, selectedLocations, currentPage]);
+  }, [selectedLevels, selectedLocations, currentPage, datePosted]);
   useEffect(() => {
     if (resume && resume !== "null" && resume !== null) {
       fetchJobs();
@@ -51,7 +52,7 @@ const JobSearchCard: React.FC = () => {
       // Add query parameters to FormData
       formData.append("skip", skip.toString());
       formData.append("limit", itemsPerPage.toString());
-
+      formData.append("dateset", datePosted.toString());
       if (selectedLevels?.length > 0) {
         selectedLevels.forEach((level) => formData.append("job_level", level));
       }
@@ -85,8 +86,11 @@ const JobSearchCard: React.FC = () => {
       setJobs(data.jobs);
       setTotalCount(data.total_count);
       setLoading(false);
+      console.log(data.jobs.length, "data");
       if (data.jobs.length > 0) {
         setSelectedJob(data.jobs[0]);
+      } else {
+        setSelectedJob(null);
       }
     } catch (err) {
       console.error("Error fetching jobs:", err);
@@ -134,7 +138,7 @@ const JobSearchCard: React.FC = () => {
       <li className="mb-1" {...props} />
     ),
   };
-
+  console.log(selectedJob, "selectedJob");
   const totalPages = Math.ceil(totalCount / itemsPerPage);
   return (
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
@@ -146,7 +150,7 @@ const JobSearchCard: React.FC = () => {
           />
         </div>
         <div className="sm:w-1/6">
-          <DateFilter />
+          <DateFilter datePosted={datePosted} setDatePosted={setDatePosted} />
         </div>
         <div className="w-full sm:w-3/5">
           <StateFilter
@@ -210,7 +214,7 @@ const JobSearchCard: React.FC = () => {
           ) : (
             <div className="flex h-full items-center justify-center">
               <p className="text-lg text-gray-500">
-                Select a job to view details
+                No Jobs Match Selected Filters
               </p>
             </div>
           )}
