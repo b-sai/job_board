@@ -11,7 +11,7 @@ interface Job {
   title: string;
   company?: string;
   description?: string;
-  job_url?: string;
+  job_url_direct?: string;
 }
 
 const JobSearchCard: React.FC = () => {
@@ -27,7 +27,6 @@ const JobSearchCard: React.FC = () => {
   const { resume } = useResume();
 
   useEffect(() => {
-    console.log("123");
     fetchJobs();
   }, [selectedLevels, selectedLocations, currentPage]);
   useEffect(() => {
@@ -90,9 +89,9 @@ const JobSearchCard: React.FC = () => {
       setLoading(false);
     }
   };
-const handleJobSelect = (job: Job) => {
-  setSelectedJob(job);
-};
+  const handleJobSelect = (job: Job) => {
+    setSelectedJob(job);
+  };
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -196,7 +195,9 @@ const handleJobSelect = (job: Job) => {
                 {selectedJob.company}
               </p>
               <button
-                onClick={() => window.open(selectedJob.job_url, "_blank")}
+                onClick={() =>
+                  window.open(selectedJob.job_url_direct, "_blank")
+                }
                 className="mb-4 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:bg-blue-600 hover:shadow-md "
               >
                 Apply Now
