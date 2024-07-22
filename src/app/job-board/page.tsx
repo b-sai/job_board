@@ -6,6 +6,9 @@ import { fetchData } from "./FetchData";
 import StateFilter from "./StateFilter";
 import { useResume } from "ResumeContext";
 
+import { LoadingCard } from "./loading";
+import { DetailedLoadingCard } from "./loading";
+
 interface Job {
   id: number;
   title: string;
@@ -39,7 +42,7 @@ const JobSearchCard: React.FC = () => {
     try {
       const skip = (currentPage - 1) * itemsPerPage;
       const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
+      setLoading(true);
       // Create FormData object for both query parameters and file
       const formData = new FormData();
 
@@ -149,23 +152,29 @@ const JobSearchCard: React.FC = () => {
       </div>
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-white shadow lg:flex-row lg:gap-6">
         <div className="w-full overflow-y-auto border-b lg:w-1/3 lg:border-b-0 lg:border-r">
-          {jobs.map((job) => (
-            <div
-              key={job.id}
-              className={`cursor-pointer border-l-4 p-4 transition-all duration-300 ${
-                selectedJob?.id === job.id
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-transparent hover:bg-gray-50"
-              }`}
-              onClick={() => handleJobSelect(job)}
-            >
-              <h3 className="font-semibold text-gray-800">{job.title}</h3>
-              <p className="text-sm text-gray-600">{job.company}</p>
-            </div>
-          ))}
+          {loading
+            ? Array(10)
+                .fill(null)
+                .map((_, index) => <LoadingCard key={index} />)
+            : jobs.map((job) => (
+                <div
+                  key={job.id}
+                  className={`cursor-pointer border-l-4 p-4 transition-all duration-300 ${
+                    selectedJob?.id === job.id
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-transparent hover:bg-gray-50"
+                  }`}
+                  onClick={() => handleJobSelect(job)}
+                >
+                  <h3 className="font-semibold text-gray-800">{job.title}</h3>
+                  <p className="text-sm text-gray-600">{job.company}</p>
+                </div>
+              ))}
         </div>
         <div className="w-full overflow-y-auto py-4 pl-0 pr-4 lg:w-2/3">
-          {selectedJob ? (
+          {loading ? (
+            <DetailedLoadingCard />
+          ) : selectedJob ? (
             <div>
               <h2 className="mb-2 text-2xl font-bold text-gray-800 sm:text-3xl">
                 {selectedJob.title}
