@@ -6,7 +6,7 @@ import { useResume } from "ResumeContext";
 
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState<string | null>(null);
-  const { setResume } = useResume();
+  const { setResume, positions } = useResume();
 
   const handleFileUrlChange = (fileUrl: string | null) => {
     setFileUrl(fileUrl);
@@ -29,6 +29,26 @@ export default function ResumeParser() {
             onFileChange={handleFileChange}
             playgroundView={true}
           />
+        </div>
+        <div className="mt-6 space-y-4">
+          {positions.length > 0 && (
+            <Heading level={2} className="text-lg font-semibold text-gray-800">
+              Resume Parsing Options
+            </Heading>
+          )}
+          <div className="ml-1 space-y-2">
+            {positions.map((option, index) => (
+              <label key={index} className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  className="form-checkbox h-5 w-5 rounded border-gray-300 text-blue-600 transition duration-150 ease-in-out"
+                />
+                <span className="text-sm font-medium text-gray-700">
+                  {option}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
       </div>
     </main>

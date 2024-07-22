@@ -30,7 +30,7 @@ const JobSearchCard: React.FC = () => {
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [datePosted, setDatePosted] = useState(1);
-  const { resume } = useResume();
+  const { resume, setPositions } = useResume();
 
   useEffect(() => {
     fetchJobs();
@@ -53,6 +53,7 @@ const JobSearchCard: React.FC = () => {
       formData.append("skip", skip.toString());
       formData.append("limit", itemsPerPage.toString());
       formData.append("dateset", datePosted.toString());
+
       if (selectedLevels?.length > 0) {
         selectedLevels.forEach((level) => formData.append("job_level", level));
       }
@@ -86,6 +87,7 @@ const JobSearchCard: React.FC = () => {
       setJobs(data.jobs);
       setTotalCount(data.total_count);
       setLoading(false);
+      setPositions(data.positions);
       console.log(data.jobs.length, "data");
       if (data.jobs.length > 0) {
         setSelectedJob(data.jobs[0]);

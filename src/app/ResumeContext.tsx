@@ -2,8 +2,10 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 interface ResumeContextType {
-  resume: any; // Replace 'any' with your actual resume type
+  resume: any;
   setResume: (resume: any) => void;
+  positions: Array<string>;
+  setPositions: (positions: Array<string>) => void;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -12,9 +14,11 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [resume, setResume] = useState<any>(null);
-
+  const [positions, setPositions] = useState<Array<string>>([]);
   return (
-    <ResumeContext.Provider value={{ resume, setResume }}>
+    <ResumeContext.Provider
+      value={{ resume, setResume, positions, setPositions }}
+    >
       {children}
     </ResumeContext.Provider>
   );

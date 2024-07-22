@@ -32,3 +32,10 @@
   --resume-control-bar-height: 3rem;
   --resume-padding: 1.5rem;
 }
+.experience-level-checkbox {
+  @apply focus:outline-none focus:ring-0;
+}
+
+.experience-level-checkbox:focus-visible {
+  @apply outline-none ring-0;
+}
