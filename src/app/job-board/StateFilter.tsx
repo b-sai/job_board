@@ -67,6 +67,12 @@ const StateFilter: React.FC<StateFilterProps> = ({
       setIsOpen(false);
     }
   }, [input, locationData]);
+  useEffect(() => {
+    if (isOpen) {
+      setSuggestions(locationData);
+      setIsOpen(true);
+    }
+  }, [isOpen, locationData]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -102,9 +108,9 @@ const StateFilter: React.FC<StateFilterProps> = ({
   };
 
   return (
-    <div className="ml-4 w-full">
+    <div className="w-full">
       <div className="flex">
-        <div className="relative w-1/3 pr-4" ref={wrapperRef}>
+        <div className="relative w-1/3" ref={wrapperRef}>
           <input
             type="text"
             className="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"

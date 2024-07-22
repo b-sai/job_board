@@ -7,7 +7,7 @@ import { useResume } from "ResumeContext";
 import LoadingCard from "./loadingcard";
 import DetailedLoadingCard from "./loading";
 import ReactMarkdown from "react-markdown";
-
+import DateFilter from "./DateFilter";
 
 interface Job {
   id: number;
@@ -139,13 +139,16 @@ const JobSearchCard: React.FC = () => {
   return (
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row">
-        <div className="w-full sm:w-1/3">
+        <div className="sm:w-1/5">
           <JobLevelFilter
             selectedLevels={selectedLevels}
             setSelectedLevels={handleLevelFilterChange}
           />
         </div>
-        <div className="w-full sm:w-2/3">
+        <div className="sm:w-1/6">
+          <DateFilter />
+        </div>
+        <div className="w-full sm:w-3/5">
           <StateFilter
             selectedLocations={selectedLocations}
             setSelectedLocations={handleLocationFilterChange}

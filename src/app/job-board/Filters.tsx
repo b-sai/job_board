@@ -25,7 +25,7 @@ const JobLevelFilter: React.FC<{
 
   return (
     <div className="w-full">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1">
         {jobLevels.map((level) => (
           <Button
             key={level}
