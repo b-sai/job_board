@@ -15,6 +15,8 @@ interface Job {
   company?: string;
   description?: string;
   job_url_direct?: string;
+  date_posted?: string;
+  location?: string;
 }
 
 const JobSearchCard: React.FC = () => {
@@ -166,8 +168,11 @@ const JobSearchCard: React.FC = () => {
                   }`}
                   onClick={() => handleJobSelect(job)}
                 >
-                  <h3 className="font-semibold text-gray-800">{job.title}</h3>
-                  <p className="text-sm text-gray-600">{job.company}</p>
+                  <h3 className="pb-1 font-semibold text-gray-800">
+                    {job.title}
+                  </h3>
+                  <p className="text-black-600 text-sm">{job.company}</p>
+                  <p className="text-sm text-gray-600">{job.location}</p>
                 </div>
               ))}
         </div>
@@ -181,6 +186,9 @@ const JobSearchCard: React.FC = () => {
               </h2>
               <p className="mb-4 text-lg text-gray-600 sm:text-xl">
                 {selectedJob.company}
+              </p>
+              <p className="mb-4 text-sm text-gray-600">
+                {selectedJob.date_posted} • {selectedJob.location}
               </p>
               <button
                 onClick={() =>
