@@ -111,7 +111,8 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
         ) : (
           <div className="flex items-center justify-center gap-3 pt-3">
             <div className="pl-7 font-semibold text-gray-900">
-              {file.name} - {getFileSizeString(file.size)}
+              {file?.name ?? "Unknown"} -{" "}
+              {file ? getFileSizeString(file.size) : "0 KB"}
             </div>
             <button
               type="button"
