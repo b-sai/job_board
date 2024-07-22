@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import dynamic from "next/dynamic";
 import JobLevelFilter from "./Filters";
 import StateFilter from "./StateFilter";
 import { useResume } from "ResumeContext";
-import { LoadingCard, DetailedLoadingCard } from "./loading";
+import LoadingCard from "./loadingcard";
+import DetailedLoadingCard from "./loading";
+import ReactMarkdown from "react-markdown";
 
-const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 
 interface Job {
   id: number;
