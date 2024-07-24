@@ -69,7 +69,6 @@ const JobSearchCard: React.FC = () => {
         );
       }
       if (selectedPositions.length > 0) {
-        console.log(selectedPositions, "selectedPositions");
         selectedPositions.forEach((position) =>
           formData.append("positions_to_filter", position.toString())
         );
@@ -81,8 +80,6 @@ const JobSearchCard: React.FC = () => {
       } else {
         console.log("No resume file to append");
       }
-
-      console.log("Sending request to:", `${baseUrl}jobs/`);
 
       const response = await fetch(`${baseUrl}jobs/`, {
         method: "POST",
@@ -98,7 +95,7 @@ const JobSearchCard: React.FC = () => {
       setTotalCount(data.total_count);
       setLoading(false);
       setPositions(data.positions);
-      console.log(data.jobs.length, "data");
+
       if (data.jobs.length > 0) {
         setSelectedJob(data.jobs[0]);
       } else {
