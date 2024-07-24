@@ -30,7 +30,7 @@ const JobSearchCard: React.FC = () => {
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [datePosted, setDatePosted] = useState(1);
-  const { resume, setPositions } = useResume();
+  const { resume, setPositions, selectedPositions } = useResume();
 
   useEffect(() => {
     fetchJobs();
@@ -40,6 +40,11 @@ const JobSearchCard: React.FC = () => {
       fetchJobs();
     }
   }, [resume]);
+  useEffect(() => {
+    if (selectedPositions.length > 0) {
+      fetchJobs();
+    }
+  }, [selectedPositions]);
 
   const fetchJobs = async () => {
     try {
@@ -63,8 +68,13 @@ const JobSearchCard: React.FC = () => {
           formData.append("locations", location)
         );
       }
+      if (selectedPositions.length > 0) {
+        console.log(selectedPositions, "selectedPositions");
+        selectedPositions.forEach((position) =>
+          formData.append("positions_to_filter", position.toString())
+        );
+      }
 
-      // Add resume file if available
       if (resume instanceof File) {
         formData.append("resume", resume, resume.name);
         console.log("Appending resume file:", resume.name);
@@ -140,7 +150,6 @@ const JobSearchCard: React.FC = () => {
       <li className="mb-1" {...props} />
     ),
   };
-  console.log(selectedJob, "selectedJob");
   const totalPages = Math.ceil(totalCount / itemsPerPage);
   return (
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">

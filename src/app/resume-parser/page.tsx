@@ -6,7 +6,13 @@ import { useResume } from "ResumeContext";
 
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState<string | null>(null);
-  const { setResume, positions } = useResume();
+  const {
+    setResume,
+    positions,
+    setPositions,
+    selectedPositions,
+    setSelectedPositions,
+  } = useResume();
 
   const handleFileUrlChange = (fileUrl: string | null) => {
     setFileUrl(fileUrl);
@@ -14,6 +20,14 @@ export default function ResumeParser() {
 
   const handleFileChange = (file: File | null) => {
     setResume(file);
+  };
+  const handlePositionToggle = (index: number) => {
+    setSelectedPositions((prev) => {
+      const newSelectedPositions = prev.includes(index)
+        ? prev.filter((i) => i !== index)
+        : [...prev, index];
+      return newSelectedPositions;
+    });
   };
 
   return (
@@ -42,6 +56,8 @@ export default function ResumeParser() {
                 <input
                   type="checkbox"
                   className="form-checkbox h-5 w-5 rounded border-gray-300 text-blue-600 transition duration-150 ease-in-out"
+                  checked={selectedPositions.includes(index)}
+                  onChange={() => handlePositionToggle(index)}
                 />
                 <span className="text-sm font-medium text-gray-700">
                   {option}

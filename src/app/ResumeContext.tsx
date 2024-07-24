@@ -6,6 +6,8 @@ interface ResumeContextType {
   setResume: (resume: any) => void;
   positions: Array<string>;
   setPositions: (positions: Array<string>) => void;
+  selectedPositions: Array<number>;
+  setSelectedPositions: React.Dispatch<React.SetStateAction<Array<number>>>;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -15,9 +17,17 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [resume, setResume] = useState<any>(null);
   const [positions, setPositions] = useState<Array<string>>([]);
+  const [selectedPositions, setSelectedPositions] = useState<Array<number>>([]);
   return (
     <ResumeContext.Provider
-      value={{ resume, setResume, positions, setPositions }}
+      value={{
+        resume,
+        setResume,
+        positions,
+        setPositions,
+        selectedPositions,
+        setSelectedPositions,
+      }}
     >
       {children}
     </ResumeContext.Provider>
