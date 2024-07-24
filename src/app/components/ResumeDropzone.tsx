@@ -149,8 +149,8 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
             </>
           ) : (
             <p className={cx("text-gray-500", !playgroundView && "mt-6")}>
-              Note: {!playgroundView ? "Import" : "Parser"} works best on single
-              column resume
+              Note: {!playgroundView ? "Import" : "Parser"} Parser takes 5-10
+              seconds
             </p>
           )}
         </div>
