@@ -33,6 +33,16 @@ const DetailedLoadingCard = () => {
 
       {/* Pay Range */}
       <div className="h-4 w-2/5 rounded bg-gray-200"></div>
+      {/* Job Type */}
+      <div className="mt-4 h-4 w-1/4 rounded bg-gray-200"></div>
+
+      {/* Pay Range */}
+      <div className="h-4 w-2/5 rounded bg-gray-200"></div>
+      {/* Job Type */}
+      <div className="mt-4 h-4 w-1/4 rounded bg-gray-200"></div>
+
+      {/* Pay Range */}
+      <div className="h-4 w-2/5 rounded bg-gray-200"></div>
     </div>
   );
 };

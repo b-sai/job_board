@@ -21,6 +21,7 @@ export default function ResumeParser() {
   const handleFileChange = (file: File | null) => {
     setResume(file);
   };
+
   const handlePositionToggle = (index: number) => {
     setSelectedPositions((prev) => {
       const newSelectedPositions = prev.includes(index)
@@ -31,26 +32,27 @@ export default function ResumeParser() {
   };
 
   return (
-    <main className="flex h-full w-full max-w-full items-start justify-center overflow-hidden overflow-x-hidden">
-      <div className="mt-4 text-center">
-        <h1 className="!mt-[1.2em] font-bold">
+    <div className="flex h-full flex-col overflow-hidden">
+      <div className="flex-shrink-0 p-4">
+        <h1 className="mb-4 text-center text-xl font-bold">
           Drop Your Resume to get{" "}
           <span className="text-blue-900">personalized recommendations</span>
         </h1>
-        <div className="mt-1">
-          <ResumeDropzone
-            onFileUrlChange={handleFileUrlChange}
-            onFileChange={handleFileChange}
-            playgroundView={true}
-          />
-        </div>
-        <div className="mt-6 space-y-4">
-          {positions.length > 0 && (
-            <Heading level={2} className="text-lg font-semibold text-gray-800">
-              Resume Parsing Options
-            </Heading>
-          )}
-          <div className="ml-1 space-y-2">
+        <ResumeDropzone
+          onFileUrlChange={handleFileUrlChange}
+          onFileChange={handleFileChange}
+          playgroundView={true}
+        />
+      </div>
+      {positions.length > 0 && (
+        <div className="flex-grow overflow-y-auto p-4">
+          <Heading
+            level={2}
+            className="mb-4 text-lg font-semibold text-gray-800"
+          >
+            Roles Tailored to Selected Experiences
+          </Heading>
+          <div className="space-y-2">
             {positions.map((option, index) => (
               <label key={index} className="flex items-center space-x-3">
                 <input
@@ -66,7 +68,7 @@ export default function ResumeParser() {
             ))}
           </div>
         </div>
-      </div>
-    </main>
+      )}
+    </div>
   );
 }

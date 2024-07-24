@@ -11,20 +11,22 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <>
-      <div className="flex h-screen flex-col">
-        <TopNavBar />
-        <main className="flex flex-grow ">
-          <div className="w-1/4 min-w-[20%] max-w-xs border-r p-4">
+    <div className="flex h-screen flex-col">
+      <TopNavBar />
+      <div className="flex flex-grow overflow-hidden">
+        <div className="w-80 flex-shrink-0 overflow-y-auto border-r">
+          <div className="min-h-full p-4">
             <ResumeParser />
           </div>
-          <div className="flex-grow overflow-y-auto p-4">
+        </div>
+        <div className="flex-grow overflow-y-auto">
+          <div className="min-h-full p-4">
             <JobSearchCard />
           </div>
-        </main>
+        </div>
       </div>
       <Analytics />
       <SpeedInsights />
-    </>
+    </div>
   );
 }

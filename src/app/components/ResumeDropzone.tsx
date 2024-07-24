@@ -109,14 +109,14 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
             </p>
           </>
         ) : (
-          <div className="flex items-center justify-center gap-3 pt-3">
-            <div className="pl-7 font-semibold text-gray-900">
+          <div className="flex flex-col items-center justify-center pt-3">
+            <div className="font-semibold text-gray-900">
               {file?.name ?? "Unknown"} -{" "}
               {file ? getFileSizeString(file.size) : "0 KB"}
             </div>
             <button
               type="button"
-              className="outline-theme-blue rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+              className="outline-theme-blue mt-2 rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
               title="Remove file"
               onClick={onRemove}
             >
@@ -149,8 +149,9 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
             </>
           ) : (
             <p className={cx("text-gray-500", !playgroundView && "mt-6")}>
-              Note: {!playgroundView ? "Import" : "Parser"} Parser takes 5-10
-              seconds
+              Note: {!playgroundView ? "Import" : "Parser"} Parser takes
+              <br />
+              5-10 seconds
             </p>
           )}
         </div>
