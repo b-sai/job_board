@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+import React, {
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+  useRef,
+} from "react";
 import JobLevelFilter from "./Filters";
 import StateFilter from "./StateFilter";
 import { useResume } from "ResumeContext";
@@ -31,6 +37,7 @@ const JobSearchCard: React.FC = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [datePosted, setDatePosted] = useState(1);
   const { resume, setPositions, selectedPositions } = useResume();
+  const jobListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchJobs();
@@ -107,9 +114,28 @@ const JobSearchCard: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const jobDetailsRef = useRef<HTMLDivElement>(null);
+
   const handleJobSelect = (job: Job) => {
     setSelectedJob(job);
+    if (jobDetailsRef.current) {
+      jobDetailsRef.current.scrollTo(0, 0);
+    }
   };
+  const scrollToTop = () => {
+    if (jobListRef.current) {
+      jobListRef.current.scrollTo(0, 0);
+    }
+    if (jobDetailsRef.current) {
+      jobDetailsRef.current.scrollTo(0, 0);
+    }
+  };
+  useEffect(() => {
+    if (jobs.length > 0) {
+      scrollToTop();
+    }
+  }, [jobs]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -168,7 +194,10 @@ const JobSearchCard: React.FC = () => {
         </div>
       </div>
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-white shadow lg:flex-row lg:gap-6">
-        <div className="w-full overflow-y-auto border-b lg:w-1/3 lg:border-b-0 lg:border-r">
+        <div
+          ref={jobListRef}
+          className="w-full overflow-y-auto border-b lg:w-1/3 lg:border-b-0 lg:border-r"
+        >
           {loading
             ? Array(10)
                 .fill(null)
@@ -191,7 +220,10 @@ const JobSearchCard: React.FC = () => {
                 </div>
               ))}
         </div>
-        <div className="w-full overflow-y-auto py-4 pl-0 pr-4 lg:w-2/3">
+        <div
+          ref={jobDetailsRef}
+          className="w-full overflow-y-auto py-4 pl-0 pr-4 lg:w-2/3"
+        >
           {loading ? (
             <DetailedLoadingCard />
           ) : selectedJob ? (
