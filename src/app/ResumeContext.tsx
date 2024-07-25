@@ -17,7 +17,9 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [resume, setResume] = useState<any>(null);
   const [positions, setPositions] = useState<Array<string>>([]);
-  const [selectedPositions, setSelectedPositions] = useState<Array<number>>([]);
+  const [selectedPositions, setSelectedPositions] = useState<Array<number>>([
+    0,
+  ]);
   return (
     <ResumeContext.Provider
       value={{

@@ -51,6 +51,8 @@ const JobSearchCard: React.FC = () => {
     if (selectedPositions.length > 0) {
       fetchJobs();
     }
+
+    console.log(selectedPositions);
   }, [selectedPositions]);
 
   const fetchJobs = async () => {

@@ -149,7 +149,7 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
             </>
           ) : (
             <p className={cx("text-gray-500", !playgroundView && "mt-6")}>
-              Note: {!playgroundView ? "Import" : "Parser"} Parser takes
+              Note: {!playgroundView ? "Import" : "Parser"} takes
               <br />
               5-10 seconds
             </p>
