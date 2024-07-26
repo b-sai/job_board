@@ -177,7 +177,7 @@ const JobSearchCard: React.FC = () => {
   };
   const totalPages = Math.ceil(totalCount / itemsPerPage);
   return (
-    <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
+    <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4 dark:bg-gray-800">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row">
         <div className="sm:w-1/5">
           <JobLevelFilter
@@ -195,7 +195,7 @@ const JobSearchCard: React.FC = () => {
           />
         </div>
       </div>
-      <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-white shadow lg:flex-row lg:gap-6">
+      <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800 dark:bg-gray-800 lg:flex-row lg:gap-6">
         <div
           ref={jobListRef}
           className="w-full overflow-y-auto border-b lg:w-1/3 lg:border-b-0 lg:border-r"
@@ -209,16 +209,18 @@ const JobSearchCard: React.FC = () => {
                   key={job.id}
                   className={`cursor-pointer border-l-4 p-4 transition-all duration-300 ${
                     selectedJob?.id === job.id
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-transparent hover:bg-gray-50"
+                      ? "border-blue-500 bg-blue-50 dark:bg-slate-700"
+                      : "border-transparent hover:bg-gray-50 dark:hover:bg-gray-700"
                   }`}
                   onClick={() => handleJobSelect(job)}
                 >
-                  <h3 className="pb-1 font-semibold text-gray-800">
+                  <h3 className="pb-1 font-semibold text-gray-800 dark:text-blue-500">
                     {job.title}
                   </h3>
                   <p className="text-black-600 text-sm">{job.company}</p>
-                  <p className="text-sm text-gray-600">{job.location}</p>
+                  <p className="text-sm text-gray-600 dark:text-white">
+                    {job.location}
+                  </p>
                 </div>
               ))}
         </div>
@@ -230,13 +232,13 @@ const JobSearchCard: React.FC = () => {
             <DetailedLoadingCard />
           ) : selectedJob ? (
             <div>
-              <h2 className="mb-2 text-2xl font-bold text-gray-800 sm:text-3xl">
+              <h2 className="mb-2 text-2xl font-bold text-gray-800 dark:text-white sm:text-3xl">
                 {selectedJob.title}
               </h2>
-              <p className="mb-4 text-lg text-gray-600 sm:text-xl">
+              <p className="mb-4 text-lg text-gray-600 dark:text-gray-300 sm:text-xl">
                 {selectedJob.company}
               </p>
-              <p className="mb-4 text-sm text-gray-600">
+              <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">
                 {selectedJob.date_posted} • {selectedJob.location}
               </p>
               <button

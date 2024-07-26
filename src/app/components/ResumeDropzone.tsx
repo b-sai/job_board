@@ -105,12 +105,14 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
                 !playgroundView && "text-lg font-semibold"
               )}
             >
-              Browse a pdf file or drop it here
+              <span className="dark:text-gray-300">
+                Browse a pdf file or drop it here
+              </span>
             </p>
           </>
         ) : (
           <div className="flex flex-col items-center justify-center pt-3">
-            <div className="font-semibold text-gray-900">
+            <div className="max-w-[20ch] truncate font-semibold text-gray-900 dark:text-gray-300 ">
               {file?.name ?? "Unknown"} -{" "}
               {file ? getFileSizeString(file.size) : "0 KB"}
             </div>

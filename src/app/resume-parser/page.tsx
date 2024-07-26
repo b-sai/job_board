@@ -36,7 +36,9 @@ export default function ResumeParser() {
       <div className="flex-shrink-0 p-4">
         <h1 className="mb-4 text-center text-xl font-bold">
           Drop Your Resume to get{" "}
-          <span className="text-blue-900">personalized recommendations</span>
+          <span className="text-blue-500 dark:text-blue-300">
+            personalized recommendations
+          </span>
         </h1>
         <ResumeDropzone
           onFileUrlChange={handleFileUrlChange}
@@ -48,7 +50,7 @@ export default function ResumeParser() {
         <div className="flex-grow overflow-y-auto p-4">
           <Heading
             level={2}
-            className="mb-4 text-lg font-semibold text-gray-800"
+            className="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-100"
           >
             Roles Tailored to Selected Experiences
           </Heading>
@@ -57,11 +59,11 @@ export default function ResumeParser() {
               <label key={index} className="flex items-center space-x-3">
                 <input
                   type="checkbox"
-                  className="form-checkbox h-5 w-5 rounded border-gray-300 text-blue-600 transition duration-150 ease-in-out"
+                  className="form-checkbox h-5 w-5 rounded border-gray-300 text-blue-600 transition duration-150 ease-in-out dark:bg-gray-800 dark:text-white"
                   checked={selectedPositions.includes(index)}
                   onChange={() => handlePositionToggle(index)}
                 />
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {option}
                 </span>
               </label>
