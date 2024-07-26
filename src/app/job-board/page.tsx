@@ -247,7 +247,7 @@ const JobSearchCard: React.FC = () => {
               >
                 Apply Now
               </button>
-              <div className="rounded-lg bg-gray-50 p-4">
+              <div className="text-12 -50 rounded-lg p-4">
                 <ReactMarkdown components={customComponents}>
                   {selectedJob.description || "No description available"}
                 </ReactMarkdown>
