@@ -14,7 +14,7 @@ export default function Home() {
     <div className="flex h-screen flex-col">
       <TopNavBar />
       <div className="flex flex-grow overflow-hidden">
-        <div className="w-80 flex-shrink-0 overflow-y-auto border-r">
+        <div className="w-80 flex-shrink-0 overflow-y-auto border-r dark:border-gray-700">
           <div className="min-h-full p-4">
             <ResumeParser />
           </div>

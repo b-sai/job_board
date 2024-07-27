@@ -196,10 +196,10 @@ const JobSearchCard: React.FC = () => {
           />
         </div>
       </div>
-      <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800 dark:bg-gray-800 lg:flex-row lg:gap-6">
+      <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-white dark:bg-gray-800 lg:flex-row lg:gap-6">
         <div
           ref={jobListRef}
-          className="custom-scrollbar w-full overflow-y-auto border-b lg:w-1/3 "
+          className="custom-scrollbar w-full overflow-y-auto  lg:w-1/3 "
         >
           {loading
             ? Array(10)
