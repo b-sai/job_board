@@ -14,6 +14,7 @@ import LoadingCard from "./loadingcard";
 import DetailedLoadingCard from "./loading";
 import ReactMarkdown from "react-markdown";
 import DateFilter from "./DateFilter";
+import "./customScrollBar.css"; // Add this import
 
 interface Job {
   id: number;
@@ -198,7 +199,7 @@ const JobSearchCard: React.FC = () => {
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800 dark:bg-gray-800 lg:flex-row lg:gap-6">
         <div
           ref={jobListRef}
-          className="w-full overflow-y-auto border-b lg:w-1/3 lg:border-b-0 lg:border-r"
+          className="custom-scrollbar w-full overflow-y-auto border-b lg:w-1/3 "
         >
           {loading
             ? Array(10)

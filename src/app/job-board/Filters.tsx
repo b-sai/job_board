@@ -31,10 +31,11 @@ const JobLevelFilter: React.FC<{
             key={level}
             onClick={() => toggleLevel(level)}
             className={cx(
-              "rounded-full px-3 py-1 text-sm font-medium transition-all duration-200 dark:bg-gray-500 dark:text-white",
+              "rounded-full px-3 py-1 text-sm font-medium transition-all duration-200",
               selectedLevels.includes(level)
-                ? "scale-105 transform bg-blue-500 text-white shadow-md dark:bg-blue-500 dark:hover:bg-blue-600"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:bg-gray-700"
+                ? "scale-105 transform bg-blue-500 text-white shadow-md dark:bg-blue-500 dark:text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-500 dark:text-white dark:hover:bg-slate-400 dark:hover:text-white",
+              "dark:focus:bg-blue-500 dark:focus:text-white dark:active:bg-blue-500 dark:active:text-white"
             )}
           >
             {level}
