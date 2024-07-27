@@ -177,8 +177,8 @@ const JobSearchCard: React.FC = () => {
   };
   const totalPages = Math.ceil(totalCount / itemsPerPage);
   return (
-    <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4 dark:bg-gray-800">
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row">
+    <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
+      <div className="mb-6 flex flex-col gap-1 sm:flex-row">
         <div className="sm:w-1/5">
           <JobLevelFilter
             selectedLevels={selectedLevels}

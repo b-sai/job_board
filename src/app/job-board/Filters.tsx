@@ -33,8 +33,8 @@ const JobLevelFilter: React.FC<{
             className={cx(
               "rounded-full px-3 py-1 text-sm font-medium transition-all duration-200 dark:bg-gray-500 dark:text-white",
               selectedLevels.includes(level)
-                ? "scale-105 transform bg-blue-500 text-white shadow-md dark:bg-blue-500"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                ? "scale-105 transform bg-blue-500 text-white shadow-md dark:bg-blue-500 dark:hover:bg-blue-600"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:bg-gray-700"
             )}
           >
             {level}

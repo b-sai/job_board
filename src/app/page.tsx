@@ -20,7 +20,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex-grow overflow-y-auto">
-          <div className="min-h-full p-4">
+          <div className="min-h-full p-0">
             <JobSearchCard />
           </div>
         </div>
