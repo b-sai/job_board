@@ -2,6 +2,7 @@ import "globals.css";
 import { TopNavBar } from "components/TopNavBar";
 import { ResumeProvider } from "ResumeContext";
 import { DarkModeProvider } from "job-board/DarkModeContext";
+import { CSPostHogProvider } from "./provider";
 
 export default function RootLayout({
   children,
@@ -10,11 +11,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <DarkModeProvider>
-          <ResumeProvider>{children}</ResumeProvider>
-        </DarkModeProvider>
-      </body>
+      <CSPostHogProvider>
+        <body>
+          <DarkModeProvider>
+            <ResumeProvider>{children}</ResumeProvider>
+          </DarkModeProvider>
+        </body>
+      </CSPostHogProvider>
     </html>
   );
 }

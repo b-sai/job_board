@@ -31,6 +31,7 @@
     "pdfjs": "^2.5.0",
     "pdfjs-dist": "^3.7.107",
     "postcss": "8.4.24",
+    "posthog-js": "^1.150.1",
     "react": "18.2.0",
     "react-contenteditable": "^3.3.7",
     "react-dom": "18.2.0",
