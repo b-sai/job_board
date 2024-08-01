@@ -11,7 +11,7 @@ const DateSelectorDropdown: React.FC<DateSelectorDropdownProps> = ({
   setDatePosted,
 }: DateSelectorDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState("1 Day ago");
+  const [selected, setSelected] = useState("3 Days ago");
   const dropdownRef = useRef(null);
 
   const options = [

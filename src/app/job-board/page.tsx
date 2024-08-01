@@ -36,7 +36,7 @@ const JobSearchCard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [datePosted, setDatePosted] = useState(1);
+  const [datePosted, setDatePosted] = useState(3);
   const { resume, setPositions, selectedPositions } = useResume();
   const jobListRef = useRef<HTMLDivElement>(null);
 
@@ -259,7 +259,8 @@ const JobSearchCard: React.FC = () => {
           ) : (
             <div className="flex h-full items-center justify-center">
               <p className="text-lg text-gray-500">
-                No Jobs Match Selected Filters
+                Could not find relevant roles for your resume. Try increasing
+                the number of days.
               </p>
             </div>
           )}
