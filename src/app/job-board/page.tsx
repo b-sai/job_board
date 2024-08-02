@@ -15,6 +15,8 @@ import DetailedLoadingCard from "./loading";
 import ReactMarkdown from "react-markdown";
 import DateFilter from "./DateFilter";
 import "./customScrollBar.css"; // Add this import
+import JobCard from "./JobCard";
+import { useMediaQuery } from "react-responsive"; // Add this import
 
 interface Job {
   id: number;
@@ -180,16 +182,16 @@ const JobSearchCard: React.FC = () => {
   return (
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
       <div className="mb-6 flex flex-col gap-1 sm:flex-row">
-        <div className="sm:w-1/5">
+        <div className="sm:mr-auto sm:w-1/5">
           <JobLevelFilter
             selectedLevels={selectedLevels}
             setSelectedLevels={handleLevelFilterChange}
           />
         </div>
-        <div className="sm:w-1/6">
+        <div className="sm:mr-auto">
           <DateFilter datePosted={datePosted} setDatePosted={setDatePosted} />
         </div>
-        <div className="w-full sm:w-3/5">
+        <div className="w-full sm:mr-auto sm:w-3/5">
           <StateFilter
             selectedLocations={selectedLocations}
             setSelectedLocations={handleLocationFilterChange}
@@ -225,46 +227,12 @@ const JobSearchCard: React.FC = () => {
                 </div>
               ))}
         </div>
-        <div
-          ref={jobDetailsRef}
-          className="w-full overflow-y-auto py-4 pl-0 pr-4 lg:w-2/3"
-        >
-          {loading ? (
-            <DetailedLoadingCard />
-          ) : selectedJob ? (
-            <div>
-              <h2 className="mb-2 text-2xl font-bold text-gray-800 dark:text-white sm:text-3xl">
-                {selectedJob.title}
-              </h2>
-              <p className="mb-4 text-lg text-gray-600 dark:text-gray-300 sm:text-xl">
-                {selectedJob.company}
-              </p>
-              <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">
-                {selectedJob.date_posted} • {selectedJob.location}
-              </p>
-              <button
-                onClick={() =>
-                  window.open(selectedJob.job_url_direct, "_blank")
-                }
-                className="mb-4 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 hover:bg-blue-600"
-              >
-                Apply Now
-              </button>
-              <div className="text-12 -50 rounded-lg p-4">
-                <ReactMarkdown components={customComponents}>
-                  {selectedJob.description || "No description available"}
-                </ReactMarkdown>
-              </div>
-            </div>
-          ) : (
-            <div className="flex h-full items-center justify-center">
-              <p className="text-lg text-gray-500">
-                Could not find relevant roles for your resume. Try increasing
-                the number of days.
-              </p>
-            </div>
-          )}
-        </div>
+        <JobCard
+          loading={loading}
+          selectedJob={selectedJob}
+          customComponents={customComponents}
+          jobDetailsRef={jobDetailsRef}
+        />
       </div>
     </div>
   );

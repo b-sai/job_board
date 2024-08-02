@@ -114,7 +114,7 @@ const StateFilter: React.FC<StateFilterProps> = ({
           <input
             type="text"
             className="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
-            placeholder="Choose a Location"
+            placeholder="Location"
             value={input}
             onChange={handleInputChange}
             onFocus={() => setIsOpen(true)}
