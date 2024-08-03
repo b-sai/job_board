@@ -71,10 +71,6 @@ const JobSearchCard: React.FC = () => {
       setIsResumeUpload(true);
       setSelectedPositions([0]);
       fetchJobs().then(() => {
-        if (isMobile) {
-          console.log(isMobile);
-          setSidebarOpen(true);
-        }
         setIsResumeUpload(false);
       });
     }
