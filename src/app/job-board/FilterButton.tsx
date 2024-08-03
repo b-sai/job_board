@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Filter, X } from "lucide-react";
 import { createPortal } from "react-dom";
 import FilterMain from "./FilterMain";
+import { useFilter } from "FilterDataProvider";
 
 const Overlay = ({
   children,
@@ -64,7 +65,10 @@ const Overlay = ({
 const FilterButtonWithModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleModal = () => setIsOpen(!isOpen);
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+  const { filterButtonClicked, setFilterButtonClicked } = useFilter();
 
   return (
     <>
@@ -92,8 +96,14 @@ const FilterButtonWithModal = () => {
               <FilterMain />
               <div className="mt-6">
                 <button
-                  onClick={toggleModal}
-                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:text-sm"
+                  onClick={() => {
+                    setFilterButtonClicked(true);
+                    toggleModal();
+                  }}
+                  className={`inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:text-sm ${
+                    filterButtonClicked ? "cursor-not-allowed opacity-50" : ""
+                  }`}
+                  disabled={filterButtonClicked}
                 >
                   Apply Filters
                 </button>

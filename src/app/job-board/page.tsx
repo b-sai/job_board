@@ -51,17 +51,22 @@ const JobSearchCard: React.FC = () => {
   const jobListRef = useRef<HTMLDivElement>(null);
   const [isJobCardOpen, setIsJobCardOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const { filterButtonClicked, setFilterButtonClicked } = useFilter();
 
   useEffect(() => {
-    fetchJobs();
+    if (!isMobile) {
+      fetchJobs();
+    }
   }, [selectedLocations, currentPage, datePosted]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchJobs();
-    }, 700);
+    if (!isMobile) {
+      const timer = setTimeout(() => {
+        fetchJobs();
+      }, 700);
 
-    return () => clearTimeout(timer);
+      return () => clearTimeout(timer);
+    }
   }, [selectedLevels]);
 
   const [isResumeUpload, setIsResumeUpload] = useState(false);
@@ -77,7 +82,7 @@ const JobSearchCard: React.FC = () => {
   }, [resume]);
 
   useEffect(() => {
-    if (selectedPositions.length > 0 && !isResumeUpload) {
+    if (!isMobile && selectedPositions.length > 0 && !isResumeUpload) {
       const timer = setTimeout(() => {
         fetchJobs();
       }, 700);
@@ -87,6 +92,14 @@ const JobSearchCard: React.FC = () => {
 
     console.log(selectedPositions);
   }, [selectedPositions]);
+
+  useEffect(() => {
+    if (filterButtonClicked) {
+      fetchJobs();
+    }
+    setFilterButtonClicked(false);
+  }, [filterButtonClicked]);
+
 
   const fetchJobs = async () => {
     try {
