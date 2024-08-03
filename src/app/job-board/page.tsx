@@ -40,8 +40,13 @@ const JobSearchCard: React.FC = () => {
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [datePosted, setDatePosted] = useState(3);
-  const { resume, setPositions, selectedPositions, setSidebarOpen } =
-    useResume();
+  const {
+    resume,
+    setPositions,
+    selectedPositions,
+    setSidebarOpen,
+    setSelectedPositions,
+  } = useResume();
   const jobListRef = useRef<HTMLDivElement>(null);
   const [isJobCardOpen, setIsJobCardOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -50,25 +55,29 @@ const JobSearchCard: React.FC = () => {
     fetchJobs();
   }, [selectedLevels, selectedLocations, currentPage, datePosted]);
 
+  const [isResumeUpload, setIsResumeUpload] = useState(false);
+
   useEffect(() => {
     if (resume && resume !== "null" && resume !== null) {
+      setIsResumeUpload(true);
+      setSelectedPositions([0]);
       fetchJobs().then(() => {
         if (isMobile) {
-          console.log("here!");
           console.log(isMobile);
           setSidebarOpen(true);
         }
+        setIsResumeUpload(false);
       });
     }
   }, [resume]);
 
   useEffect(() => {
-    if (selectedPositions.length > 0) {
+    if (selectedPositions.length > 0 && !isResumeUpload) {
       fetchJobs();
     }
 
     console.log(selectedPositions);
-  }, [selectedPositions]);
+  }, [selectedPositions, isResumeUpload]);
 
   const fetchJobs = async () => {
     try {
