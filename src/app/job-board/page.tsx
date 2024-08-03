@@ -54,7 +54,15 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     fetchJobs();
-  }, [selectedLevels, selectedLocations, currentPage, datePosted]);
+  }, [selectedLocations, currentPage, datePosted]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchJobs();
+    }, 700);
+
+    return () => clearTimeout(timer);
+  }, [selectedLevels]);
 
   const [isResumeUpload, setIsResumeUpload] = useState(false);
 
@@ -74,11 +82,15 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     if (selectedPositions.length > 0 && !isResumeUpload) {
-      fetchJobs();
+      const timer = setTimeout(() => {
+        fetchJobs();
+      }, 700);
+
+      return () => clearTimeout(timer);
     }
 
     console.log(selectedPositions);
-  }, [selectedPositions, isResumeUpload]);
+  }, [selectedPositions]);
 
   const fetchJobs = async () => {
     try {
