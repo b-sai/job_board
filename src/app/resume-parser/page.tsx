@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { ResumeDropzone } from "components/ResumeDropzone";
-import { Heading } from "components/documentation";
 import { useResume } from "ResumeContext";
 
 export default function ResumeParser() {
@@ -46,12 +45,9 @@ export default function ResumeParser() {
       </div>
       {positions.length > 0 && (
         <div className="flex-grow overflow-y-auto p-4">
-          <Heading
-            level={2}
-            className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100"
-          >
+          <h1 className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
             Roles Tailored to Selected Experiences
-          </Heading>
+          </h1>
           <div className="grid gap-2">
             {positions.map((option, index) => (
               <label
