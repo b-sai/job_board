@@ -48,14 +48,20 @@ const JobSearchCard: React.FC = () => {
   useEffect(() => {
     fetchJobs();
   }, [selectedLevels, selectedLocations, currentPage, datePosted]);
+
+
   useEffect(() => {
     if (resume && resume !== "null" && resume !== null) {
-      fetchJobs();
-      if (isMobile) {
-        setSidebarOpen(true);
-      }
+      fetchJobs().then(() => {
+        if (isMobile) {
+          console.log("here!");
+          console.log(isMobile);
+          setSidebarOpen(true);
+        }
+      });
     }
   }, [resume]);
+
   useEffect(() => {
     if (selectedPositions.length > 0) {
       fetchJobs();
