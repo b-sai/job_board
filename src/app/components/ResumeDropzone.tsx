@@ -114,7 +114,7 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
               className={cx(
                 "text-gray-700 dark:text-gray-300",
                 !playgroundView && "text-base font-semibold",
-                isMobile ? "mr-2" : "mb-3"
+                isMobile ? "mr-2" : "mb-5"
               )}
             >
               Browse a pdf file or drop it here
