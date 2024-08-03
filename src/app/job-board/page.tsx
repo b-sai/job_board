@@ -51,6 +51,9 @@ const JobSearchCard: React.FC = () => {
   useEffect(() => {
     if (resume && resume !== "null" && resume !== null) {
       fetchJobs();
+      if (isMobile) {
+        setSidebarOpen(true);
+      }
     }
   }, [resume]);
   useEffect(() => {
@@ -110,9 +113,7 @@ const JobSearchCard: React.FC = () => {
       setTotalCount(data.total_count);
       setLoading(false);
       setPositions(data.positions);
-      if (isMobile) {
-        setSidebarOpen(true);
-      }
+
       if (data.jobs.length > 0) {
         setSelectedJob(data.jobs[0]);
       } else {
