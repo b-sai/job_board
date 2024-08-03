@@ -7,17 +7,13 @@ import React, {
   SetStateAction,
   useRef,
 } from "react";
-import JobLevelFilter from "./Filters";
-import StateFilter from "./StateFilter";
 import { useResume } from "ResumeContext";
 import LoadingCard from "./loadingcard";
-import DetailedLoadingCard from "./loading";
-import ReactMarkdown from "react-markdown";
-import DateFilter from "./DateFilter";
 import "./customScrollBar.css"; // Add this import
 import JobCard from "./JobCard";
 import { useMediaQuery } from "react-responsive"; // Add this import
 import PulsingLoadingComponent from "./FilterLoading";
+import FilterGroup from "./FilterMain";
 
 interface Job {
   id: number;
@@ -28,18 +24,23 @@ interface Job {
   date_posted?: string;
   location?: string;
 }
-
+import { useFilter } from "FilterDataProvider";
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [datePosted, setDatePosted] = useState(3);
+  const {
+    selectedLevels,
+    selectedLocations,
+    datePosted,
+    setSelectedLevels,
+    setSelectedLocations,
+    setDatePosted,
+  } = useFilter();
   const {
     resume,
     setPositions,
@@ -207,32 +208,11 @@ const JobSearchCard: React.FC = () => {
   };
   return (
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
-      <div className="mb-6 flex flex-col gap-1 sm:flex-row">
-        {loading ? (
-          <PulsingLoadingComponent />
-        ) : (
-          <>
-            <div className="sm:mr-auto sm:w-1/4">
-              <JobLevelFilter
-                selectedLevels={selectedLevels}
-                setSelectedLevels={handleLevelFilterChange}
-              />
-            </div>
-            <div className="sm:mr-auto">
-              <DateFilter
-                datePosted={datePosted}
-                setDatePosted={setDatePosted}
-              />
-            </div>
-            <div className="w-full sm:mr-auto sm:w-3/5">
-              <StateFilter
-                selectedLocations={selectedLocations}
-                setSelectedLocations={handleLocationFilterChange}
-              />
-            </div>
-          </>
-        )}
-      </div>
+      {!isMobile && (
+        <div className="mb-6 flex flex-col gap-1 sm:flex-row">
+          {loading ? <PulsingLoadingComponent /> : <FilterGroup />}
+        </div>
+      )}
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 lg:flex-row lg:gap-6">
         <div
           ref={jobListRef}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Filter, X } from "lucide-react";
 import { createPortal } from "react-dom";
+import FilterMain from "./FilterMain";
 
 const Overlay = ({
   children,
@@ -88,40 +89,7 @@ const FilterButtonWithModal = () => {
                   <X className="h-6 w-6" />
                 </button>
               </div>
-              <div className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="jobType"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Job Type
-                  </label>
-                  <select
-                    id="jobType"
-                    className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-                  >
-                    <option>Full-time</option>
-                    <option>Part-time</option>
-                    <option>Contract</option>
-                  </select>
-                </div>
-                <div>
-                  <label
-                    htmlFor="experience"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Experience Level
-                  </label>
-                  <select
-                    id="experience"
-                    className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-                  >
-                    <option>Entry Level</option>
-                    <option>Mid Level</option>
-                    <option>Senior</option>
-                  </select>
-                </div>
-              </div>
+              <FilterMain />
               <div className="mt-6">
                 <button
                   onClick={toggleModal}
