@@ -17,6 +17,7 @@ import DateFilter from "./DateFilter";
 import "./customScrollBar.css"; // Add this import
 import JobCard from "./JobCard";
 import { useMediaQuery } from "react-responsive"; // Add this import
+import PulsingLoadingComponent from "./FilterLoading";
 
 interface Job {
   id: number;
@@ -48,7 +49,6 @@ const JobSearchCard: React.FC = () => {
   useEffect(() => {
     fetchJobs();
   }, [selectedLevels, selectedLocations, currentPage, datePosted]);
-
 
   useEffect(() => {
     if (resume && resume !== "null" && resume !== null) {
@@ -199,21 +199,30 @@ const JobSearchCard: React.FC = () => {
   return (
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
       <div className="mb-6 flex flex-col gap-1 sm:flex-row">
-        <div className="sm:mr-auto sm:w-1/5">
-          <JobLevelFilter
-            selectedLevels={selectedLevels}
-            setSelectedLevels={handleLevelFilterChange}
-          />
-        </div>
-        <div className="sm:mr-auto">
-          <DateFilter datePosted={datePosted} setDatePosted={setDatePosted} />
-        </div>
-        <div className="w-full sm:mr-auto sm:w-3/5">
-          <StateFilter
-            selectedLocations={selectedLocations}
-            setSelectedLocations={handleLocationFilterChange}
-          />
-        </div>
+        {loading ? (
+          <PulsingLoadingComponent />
+        ) : (
+          <>
+            <div className="sm:mr-auto sm:w-1/4">
+              <JobLevelFilter
+                selectedLevels={selectedLevels}
+                setSelectedLevels={handleLevelFilterChange}
+              />
+            </div>
+            <div className="sm:mr-auto">
+              <DateFilter
+                datePosted={datePosted}
+                setDatePosted={setDatePosted}
+              />
+            </div>
+            <div className="w-full sm:mr-auto sm:w-3/5">
+              <StateFilter
+                selectedLocations={selectedLocations}
+                setSelectedLocations={handleLocationFilterChange}
+              />
+            </div>
+          </>
+        )}
       </div>
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 lg:flex-row lg:gap-6">
         <div
