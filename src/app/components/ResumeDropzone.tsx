@@ -1,8 +1,10 @@
+"use client";
 import React, { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { cx } from "lib/cx";
 import addPdfSrc from "public/assets/add-pdf.svg";
+import { useMediaQuery } from "react-responsive";
 
 interface ResumeDropzoneProps {
   onFileUrlChange: (fileUrl: string) => void;
@@ -22,6 +24,7 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
   const [isHoveredOnDropzone, setIsHoveredOnDropzone] =
     useState<boolean>(false);
   const [hasNonPdfFile, setHasNonPdfFile] = useState<boolean>(false);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const hasFile = Boolean(file);
 
@@ -70,12 +73,12 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
   return (
     <div
       className={cx(
-        "mx-auto flex w-3/4 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-2",
+        "mx-auto flex w-[90%] items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-2",
         isHoveredOnDropzone && "border-sky-400",
-        playgroundView ? "pb-2 pt-2" : "py-2",
+        isMobile ? "py-2" : playgroundView ? "pb-4 pt-2" : "py-2",
         className
       )}
-      onDragOver={(event: React.DragEvent<HTMLDivElement>) => {
+      onDragOver={(event) => {
         event.preventDefault();
         setIsHoveredOnDropzone(true);
       }}
@@ -84,11 +87,11 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
     >
       <div
         className={cx(
-          "text-center",
-          playgroundView ? "space-y-2" : "space-y-2"
+          "w-full text-center",
+          isMobile ? "space-y-2" : "space-y-3"
         )}
       >
-        {!playgroundView && (
+        {!playgroundView && !isMobile && (
           <Image
             src={addPdfSrc}
             className="mx-auto h-10 w-14"
@@ -97,28 +100,58 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
             priority
           />
         )}
+
         {!hasFile ? (
-          <>
+          <div
+            className={cx(
+              "flex",
+              isMobile
+                ? "flex-row items-center justify-between"
+                : "flex-col items-center"
+            )}
+          >
             <p
               className={cx(
-                "pt-3 text-gray-700",
-                !playgroundView && "text-lg font-semibold"
+                "text-gray-700 dark:text-gray-300",
+                !playgroundView && "text-base font-semibold",
+                isMobile ? "mr-2" : "mb-5"
               )}
             >
-              <span className="dark:text-gray-300">
-                Browse a pdf file or drop it here
-              </span>
+              Browse a pdf file or drop it here
             </p>
-          </>
+            <label
+              className={cx(
+                "within-outline-theme-purple cursor-pointer rounded-full px-4 py-2 font-semibold shadow-sm",
+                playgroundView ? "border" : "bg-primary",
+                "inline-block text-center",
+                isMobile ? "flex-shrink-0" : ""
+              )}
+            >
+              <span className="inline-block">Browse file</span>
+              <input
+                type="file"
+                className="sr-only"
+                accept=".pdf"
+                onChange={onInputChange}
+              />
+            </label>
+          </div>
         ) : (
-          <div className="flex flex-col items-center justify-center pt-3">
-            <div className="max-w-[20ch] truncate font-semibold text-gray-900 dark:text-gray-300 ">
-              {file?.name ?? "Unknown"} -{" "}
-              {file ? getFileSizeString(file.size) : "0 KB"}
+          <div
+            className={cx(
+              "flex items-center justify-center",
+              isMobile ? "flex-row" : "flex-col"
+            )}
+          >
+            <div className="max-w-[20ch] truncate font-semibold text-gray-900 dark:text-gray-300">
+              {file?.name ?? "Unknown"}
             </div>
             <button
               type="button"
-              className="outline-theme-blue mt-2 rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+              className={cx(
+                "outline-theme-blue rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500",
+                isMobile ? "ml-4" : "mt-4"
+              )}
               title="Remove file"
               onClick={onRemove}
             >
@@ -126,41 +159,22 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
             </button>
           </div>
         )}
-        <div className="pt-4">
-          {!hasFile ? (
-            <>
-              <label
-                className={cx(
-                  "within-outline-theme-purple cursor-pointer rounded-full px-6 pb-2.5 pt-2 font-semibold shadow-sm",
-                  playgroundView ? "border" : "bg-primary",
-                  "inline-block text-center"
-                )}
-              >
-                <span className="inline-block">Browse file</span>{" "}
-                <input
-                  type="file"
-                  className="sr-only"
-                  accept=".pdf"
-                  onChange={onInputChange}
-                />
-              </label>
-              {hasNonPdfFile && (
-                <p className="mt-6 text-red-400">Only pdf file is supported</p>
-              )}
-            </>
-          ) : (
-            <p className={cx("text-gray-500", !playgroundView && "mt-6")}>
-              Note: {!playgroundView ? "Import" : "Parser"} takes
-              <br />
-              5-10 seconds
-            </p>
-          )}
-        </div>
+
+        {hasFile && !isMobile && (
+          <p className={cx("text-gray-500", !playgroundView && "mt-4")}>
+            Note: {!playgroundView ? "Import" : "Parser"} takes
+            <br />
+            5-10 seconds
+          </p>
+        )}
+
+        {hasNonPdfFile && (
+          <p className="mt-2 text-red-400">Only pdf file is supported</p>
+        )}
       </div>
     </div>
   );
 };
-
 const getFileSizeString = (fileSizeB: number): string => {
   const fileSizeKB = fileSizeB / 1024;
   const fileSizeMB = fileSizeKB / 1024;

@@ -1,10 +1,10 @@
-import ResumeParser from "resume-parser/page";
-import JobSearchCard from "job-board/page";
+import dynamic from "next/dynamic";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { TopNavBar } from "components/TopNavBar";
-import CollapsibleSidebarLayout from "resume-parser/SideBar";
+
+const MainApp = dynamic(() => import("./MainApp"), { ssr: false });
 
 export const metadata: Metadata = {
   title: "Rocket Jobs",
@@ -15,18 +15,7 @@ export default function Home() {
   return (
     <div className="flex h-screen flex-col">
       <TopNavBar />
-      <CollapsibleSidebarLayout
-        sidebar={
-          <div className="min-h-full p-4">
-            <ResumeParser />
-          </div>
-        }
-        main={
-          <div className="min-h-full p-0">
-            <JobSearchCard />
-          </div>
-        }
-      />
+      <MainApp />
       <Analytics />
       <SpeedInsights />
     </div>

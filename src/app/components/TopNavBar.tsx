@@ -6,6 +6,7 @@ import logoSrc from "public/icon.png";
 import { cx } from "lib/cx";
 import { useDarkMode } from "job-board/DarkModeContext";
 import { Sun, Moon } from "lucide-react";
+import FilterButtonWithModal from "job-board/FilterButton";
 
 export const TopNavBar = () => {
   const pathName = usePathname();
@@ -21,18 +22,21 @@ export const TopNavBar = () => {
         "bg-white dark:bg-gray-900"
       )}
     >
-      <div className="flex h-10 w-full items-center justify-between">
-        <Link href="/">
+      <div className="flex h-10 w-full items-center justify-end">
+        <Link href="/" className="mr-auto">
           <span className="sr-only">Job Board</span>
           <Image src={logoSrc} alt="Logo" width={90} height={45} priority />
         </Link>
-        <button
-          onClick={toggleDarkMode}
-          className="rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-          aria-label="Toggle dark mode"
-        >
-          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
+        <div className="flex items-center space-x-4">
+          <FilterButtonWithModal />
+          <button
+            onClick={toggleDarkMode}
+            className="rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+        </div>
       </div>
     </header>
   );

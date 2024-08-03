@@ -11,7 +11,6 @@ const DateSelectorDropdown: React.FC<DateSelectorDropdownProps> = ({
   setDatePosted,
 }: DateSelectorDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState("3 Days ago");
   const dropdownRef = useRef(null);
 
   const options = [
@@ -20,8 +19,10 @@ const DateSelectorDropdown: React.FC<DateSelectorDropdownProps> = ({
     { label: "7 Days ago", value: 7 },
   ];
 
-  const handleSelect = (option: any) => {
-    setSelected(option.label);
+  const currentOption =
+    options.find((option) => option.value === datePosted) || options[1];
+
+  const handleSelect = (option: (typeof options)[0]) => {
     setDatePosted(option.value);
     setIsOpen(false);
   };
@@ -50,7 +51,7 @@ const DateSelectorDropdown: React.FC<DateSelectorDropdownProps> = ({
           className="inline-flex w-full transform justify-between rounded-md border bg-white px-4 py-[0.62rem] text-sm font-medium text-gray-700  transition-all duration-300 ease-in-out hover:bg-gray-50 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {selected}
+          {currentOption.label}
           <ChevronDown
             className={`duration-50 -mr-1 ml-2 h-5 w-5 transition-transform ${
               isOpen ? "rotate-180" : ""
@@ -88,5 +89,6 @@ const DateSelectorDropdown: React.FC<DateSelectorDropdownProps> = ({
     </div>
   );
 };
+
 
 export default DateSelectorDropdown;

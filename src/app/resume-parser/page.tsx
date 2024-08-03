@@ -1,10 +1,12 @@
 "use client";
 import { useState } from "react";
 import { ResumeDropzone } from "components/ResumeDropzone";
-import { Heading } from "components/documentation";
 import { useResume } from "ResumeContext";
+import { PositionSelector } from "resume-parser/PositionSelector";
+import { useMediaQuery } from "react-responsive";
 
 export default function ResumeParser() {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const {
     setResume,
@@ -33,12 +35,10 @@ export default function ResumeParser() {
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <div className="flex-shrink-0 p-4">
+      <div className="flex-shrink-0 p-1">
         <h1 className="mb-4 text-center text-xl font-bold">
-          Drop Your Resume to get{" "}
-          <span className="text-blue-500 dark:text-blue-300">
-            personalized recommendations
-          </span>
+          Find Jobs Personalized to Your Resume
+          <span className="text-blue-500 dark:text-blue-300"></span>
         </h1>
         <ResumeDropzone
           onFileUrlChange={handleFileUrlChange}
@@ -46,33 +46,12 @@ export default function ResumeParser() {
           playgroundView={true}
         />
       </div>
-      {positions.length > 0 && (
-        <div className="flex-grow overflow-y-auto p-4">
-          <Heading
-            level={2}
-            className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100"
-          >
-            Roles Tailored to Selected Experiences
-          </Heading>
-          <div className="grid gap-2">
-            {positions.map((option, index) => (
-              <label
-                key={index}
-                className="grid grid-cols-[auto,1fr] items-start gap-3"
-              >
-                <input
-                  type="checkbox"
-                  className="form-checkbox mt-1 h-5 w-5 rounded border-gray-300 text-blue-600 transition duration-150 ease-in-out dark:bg-gray-800 dark:text-white"
-                  checked={selectedPositions.includes(index)}
-                  onChange={() => handlePositionToggle(index)}
-                />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {option}
-                </span>
-              </label>
-            ))}
-          </div>
-        </div>
+      {!isMobile && positions.length > 0 && (
+        <PositionSelector
+          positions={positions}
+          selectedPositions={selectedPositions}
+          onPositionToggle={handlePositionToggle}
+        />
       )}
     </div>
   );
