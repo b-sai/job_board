@@ -1,8 +1,10 @@
+"use client";
 import React, { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { cx } from "lib/cx";
 import addPdfSrc from "public/assets/add-pdf.svg";
+import { useMediaQuery } from "react-responsive";
 
 interface ResumeDropzoneProps {
   onFileUrlChange: (fileUrl: string) => void;
@@ -22,6 +24,7 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
   const [isHoveredOnDropzone, setIsHoveredOnDropzone] =
     useState<boolean>(false);
   const [hasNonPdfFile, setHasNonPdfFile] = useState<boolean>(false);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const hasFile = Boolean(file);
 
@@ -70,9 +73,9 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
   return (
     <div
       className={cx(
-        "mx-auto flex w-3/4 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-2",
+        "mx-auto flex w-[90%] items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-2",
         isHoveredOnDropzone && "border-sky-400",
-        playgroundView ? "pb-2 pt-2" : "py-2",
+        playgroundView ? ` ${!isMobile ? "pb-4 pt-2" : "pb-2"}` : "py-2",
         className
       )}
       onDragOver={(event: React.DragEvent<HTMLDivElement>) => {
@@ -85,7 +88,7 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
       <div
         className={cx(
           "text-center",
-          playgroundView ? "space-y-2" : "space-y-2"
+          playgroundView ? "space-y-3" : "space-y-3"
         )}
       >
         {!playgroundView && (
@@ -101,24 +104,25 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
           <>
             <p
               className={cx(
-                "pt-3 text-gray-700",
+                "pt-2 text-gray-700",
                 !playgroundView && "text-lg font-semibold"
               )}
-            >
-              <span className="dark:text-gray-300">
-                Browse a pdf file or drop it here
-              </span>
-            </p>
+            ></p>
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center pt-3">
-            <div className="max-w-[20ch] truncate font-semibold text-gray-900 dark:text-gray-300 ">
-              {file?.name ?? "Unknown"} -{" "}
-              {file ? getFileSizeString(file.size) : "0 KB"}
+          <div
+            className={`flex ${
+              isMobile ? "flex-row" : "flex-col"
+            } items-center justify-center ${isMobile ? "pt-0" : "pt-2"}`}
+          >
+            <div className="max-w-[20ch] truncate font-semibold text-gray-900 dark:text-gray-300">
+              {file?.name ?? "Unknown"}
             </div>
             <button
               type="button"
-              className="outline-theme-blue mt-2 rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+              className={`outline-theme-blue rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500 ${
+                isMobile ? "ml-4" : "mt-4"
+              }`}
               title="Remove file"
               onClick={onRemove}
             >
@@ -126,17 +130,41 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
             </button>
           </div>
         )}
-        <div className="pt-4">
+        <div
+          className={cx(
+            "text-center",
+            playgroundView ? "space-y-2" : "space-y-2"
+          )}
+        >
           {!hasFile ? (
-            <>
-              <label
+            <div
+              className={cx(
+                "flex",
+                isMobile
+                  ? "flex-row items-center justify-between"
+                  : "flex-col items-center"
+              )}
+            >
+              <p
                 className={cx(
-                  "within-outline-theme-purple cursor-pointer rounded-full px-6 pb-2.5 pt-2 font-semibold shadow-sm",
-                  playgroundView ? "border" : "bg-primary",
-                  "inline-block text-center"
+                  "text-gray-700",
+                  !playgroundView && "text-base font-semibold",
+                  isMobile && "mr-2"
                 )}
               >
-                <span className="inline-block">Browse file</span>{" "}
+                <span className="dark:text-gray-300">
+                  Browse a pdf file or drop it here
+                </span>
+              </p>
+              <label
+                className={cx(
+                  "within-outline-theme-purple cursor-pointer rounded-full px-4 py-2 font-semibold shadow-sm",
+                  playgroundView ? "border" : "bg-primary",
+                  "inline-block text-center",
+                  !isMobile && "mb-4 mt-2"
+                )}
+              >
+                <span className="inline-block">Browse file</span>
                 <input
                   type="file"
                   className="sr-only"
@@ -144,16 +172,18 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
                   onChange={onInputChange}
                 />
               </label>
-              {hasNonPdfFile && (
-                <p className="mt-6 text-red-400">Only pdf file is supported</p>
-              )}
-            </>
+            </div>
           ) : (
-            <p className={cx("text-gray-500", !playgroundView && "mt-6")}>
-              Note: {!playgroundView ? "Import" : "Parser"} takes
-              <br />
-              5-10 seconds
-            </p>
+            !isMobile && (
+              <p className={cx("text-gray-500", !playgroundView && "mt-4 ")}>
+                Note: {!playgroundView ? "Import" : "Parser"} takes
+                <br />
+                5-10 seconds
+              </p>
+            )
+          )}
+          {hasNonPdfFile && (
+            <p className="mt-2 text-red-400">Only pdf file is supported</p>
           )}
         </div>
       </div>

@@ -33,12 +33,10 @@ export default function ResumeParser() {
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <div className="flex-shrink-0 p-4">
+      <div className="flex-shrink-0 p-1">
         <h1 className="mb-4 text-center text-xl font-bold">
-          Drop Your Resume to get{" "}
-          <span className="text-blue-500 dark:text-blue-300">
-            personalized recommendations
-          </span>
+          Find Jobs Personalized to Your Resume
+          <span className="text-blue-500 dark:text-blue-300"></span>
         </h1>
         <ResumeDropzone
           onFileUrlChange={handleFileUrlChange}
