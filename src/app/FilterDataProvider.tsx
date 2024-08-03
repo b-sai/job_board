@@ -18,6 +18,8 @@ interface FilterContextType {
   setSelectedLocations: Dispatch<SetStateAction<string[]>>;
   filterButtonClicked: boolean;
   setFilterButtonClicked: Dispatch<SetStateAction<boolean>>;
+  locationData: string[];
+  setLocationData: Dispatch<SetStateAction<string[]>>;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -39,6 +41,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
   const [datePosted, setDatePosted] = useState(3);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [filterButtonClicked, setFilterButtonClicked] = useState(false);
+  const [locationData, setLocationData] = useState<string[]>([]);
   return (
     <FilterContext.Provider
       value={{
@@ -50,6 +53,8 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
         setSelectedLocations,
         filterButtonClicked,
         setFilterButtonClicked,
+        locationData,
+        setLocationData,
       }}
     >
       {children}

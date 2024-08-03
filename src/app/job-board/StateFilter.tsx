@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import React, { useState, useEffect, ChangeEvent, useRef } from "react";
 import { X } from "lucide-react";
 import { fetchData, fetchLocations } from "./FetchData";
+import { useFilter } from "FilterDataProvider";
 
 interface StateFilterProps {
   selectedLocations: string[];
@@ -16,44 +17,9 @@ const StateFilter: React.FC<StateFilterProps> = ({
 }: StateFilterProps) => {
   const [input, setInput] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [locationData, setLocationData] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const fetchLocationData = async () => {
-      try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-        if (!baseUrl) {
-          throw new Error(
-            "API URL is not defined. Please check your environment variables."
-          );
-        }
-
-        const response = await fetch(`${baseUrl}locations/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}), // Add any required body parameters here
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const locationList = data.map(
-          (item: { location: string }) => item.location
-        );
-        setLocationData(locationList);
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      }
-    };
-
-    fetchLocationData();
-  }, []);
+  const { locationData, setLocationData } = useFilter();
 
   useEffect(() => {
     if (input.length > 0) {

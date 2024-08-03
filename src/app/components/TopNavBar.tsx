@@ -7,11 +7,13 @@ import { cx } from "lib/cx";
 import { useDarkMode } from "job-board/DarkModeContext";
 import { Sun, Moon } from "lucide-react";
 import FilterButtonWithModal from "job-board/FilterButton";
+import { useMediaQuery } from "react-responsive"; // Add this import
 
 export const TopNavBar = () => {
   const pathName = usePathname();
   const isHomePage = pathName === "/";
   const { darkMode, toggleDarkMode } = useDarkMode();
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   return (
     <header
@@ -28,7 +30,7 @@ export const TopNavBar = () => {
           <Image src={logoSrc} alt="Logo" width={90} height={45} priority />
         </Link>
         <div className="flex items-center space-x-4">
-          <FilterButtonWithModal />
+          {isMobile && <FilterButtonWithModal />}
           <button
             onClick={toggleDarkMode}
             className="rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
