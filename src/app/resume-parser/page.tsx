@@ -50,7 +50,7 @@ export default function ResumeParser() {
         <div className="flex-grow overflow-y-auto p-4">
           <Heading
             level={2}
-            className="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-100"
+            className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100"
           >
             Roles Tailored to Selected Experiences
           </Heading>

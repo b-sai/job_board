@@ -70,9 +70,9 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
   return (
     <div
       className={cx(
-        "mx-auto flex w-3/4 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-6",
+        "mx-auto flex w-3/4 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-2",
         isHoveredOnDropzone && "border-sky-400",
-        playgroundView ? "pb-6 pt-4" : "py-12",
+        playgroundView ? "pb-2 pt-2" : "py-2",
         className
       )}
       onDragOver={(event: React.DragEvent<HTMLDivElement>) => {
@@ -85,13 +85,13 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
       <div
         className={cx(
           "text-center",
-          playgroundView ? "space-y-2" : "space-y-3"
+          playgroundView ? "space-y-2" : "space-y-2"
         )}
       >
         {!playgroundView && (
           <Image
             src={addPdfSrc}
-            className="mx-auto h-14 w-14"
+            className="mx-auto h-10 w-14"
             alt="Add pdf"
             aria-hidden="true"
             priority
@@ -133,11 +133,10 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
                 className={cx(
                   "within-outline-theme-purple cursor-pointer rounded-full px-6 pb-2.5 pt-2 font-semibold shadow-sm",
                   playgroundView ? "border" : "bg-primary",
-                  "inline-block text-center" // Added classes for multi-line support
+                  "inline-block text-center"
                 )}
               >
                 <span className="inline-block">Browse file</span>{" "}
-                {/* Wrapped text in a span */}
                 <input
                   type="file"
                   className="sr-only"

@@ -8,6 +8,8 @@ interface ResumeContextType {
   setPositions: (positions: Array<string>) => void;
   selectedPositions: Array<number>;
   setSelectedPositions: React.Dispatch<React.SetStateAction<Array<number>>>;
+  sidebarOpen: boolean;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -20,6 +22,8 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
   const [selectedPositions, setSelectedPositions] = useState<Array<number>>([
     0,
   ]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <ResumeContext.Provider
       value={{
@@ -29,6 +33,8 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
         setPositions,
         selectedPositions,
         setSelectedPositions,
+        sidebarOpen,
+        setSidebarOpen,
       }}
     >
       {children}

@@ -39,7 +39,8 @@ const JobSearchCard: React.FC = () => {
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [datePosted, setDatePosted] = useState(3);
-  const { resume, setPositions, selectedPositions } = useResume();
+  const { resume, setPositions, selectedPositions, setSidebarOpen } =
+    useResume();
   const jobListRef = useRef<HTMLDivElement>(null);
   const [isJobCardOpen, setIsJobCardOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -109,7 +110,9 @@ const JobSearchCard: React.FC = () => {
       setTotalCount(data.total_count);
       setLoading(false);
       setPositions(data.positions);
-
+      if (isMobile) {
+        setSidebarOpen(true);
+      }
       if (data.jobs.length > 0) {
         setSelectedJob(data.jobs[0]);
       } else {
