@@ -41,6 +41,8 @@ const JobSearchCard: React.FC = () => {
   const [datePosted, setDatePosted] = useState(3);
   const { resume, setPositions, selectedPositions } = useResume();
   const jobListRef = useRef<HTMLDivElement>(null);
+  const [isJobCardOpen, setIsJobCardOpen] = useState(false);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   useEffect(() => {
     fetchJobs();
@@ -124,6 +126,9 @@ const JobSearchCard: React.FC = () => {
 
   const handleJobSelect = (job: Job) => {
     setSelectedJob(job);
+    if (isMobile) {
+      setIsJobCardOpen(true);
+    }
     if (jobDetailsRef.current) {
       jobDetailsRef.current.scrollTo(0, 0);
     }
@@ -178,7 +183,9 @@ const JobSearchCard: React.FC = () => {
       <li className="mb-1" {...props} />
     ),
   };
-  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  const closeJobCard = () => {
+    setIsJobCardOpen(false);
+  };
   return (
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
       <div className="mb-6 flex flex-col gap-1 sm:flex-row">
@@ -198,7 +205,7 @@ const JobSearchCard: React.FC = () => {
           />
         </div>
       </div>
-      <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-white dark:bg-gray-800 lg:flex-row lg:gap-6">
+      <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 lg:flex-row lg:gap-6">
         <div
           ref={jobListRef}
           className="custom-scrollbar w-full overflow-y-auto  lg:w-1/3 "
@@ -227,13 +234,33 @@ const JobSearchCard: React.FC = () => {
                 </div>
               ))}
         </div>
-        <JobCard
-          loading={loading}
-          selectedJob={selectedJob}
-          customComponents={customComponents}
-          jobDetailsRef={jobDetailsRef}
-        />
+        {!isMobile && (
+          <JobCard
+            loading={loading}
+            selectedJob={selectedJob}
+            customComponents={customComponents}
+            jobDetailsRef={jobDetailsRef}
+          />
+        )}
       </div>
+      {isMobile && isJobCardOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg bg-white p-6 dark:bg-gray-800">
+            <button
+              onClick={closeJobCard}
+              className="absolute right-4 top-4 text-2xl text-gray-500"
+            >
+              &times;
+            </button>
+            <JobCard
+              loading={loading}
+              selectedJob={selectedJob}
+              customComponents={customComponents}
+              jobDetailsRef={jobDetailsRef}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

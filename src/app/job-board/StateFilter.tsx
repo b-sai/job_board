@@ -113,18 +113,18 @@ const StateFilter: React.FC<StateFilterProps> = ({
         <div className="relative w-1/3" ref={wrapperRef}>
           <input
             type="text"
-            className="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+            className="w-full rounded-md border px-4 py-2 focus:outline-none dark:bg-gray-800 dark:text-white"
             placeholder="Location"
             value={input}
             onChange={handleInputChange}
             onFocus={() => setIsOpen(true)}
           />
           {isOpen && (
-            <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg dark:bg-gray-800">
+            <ul className="absolute z-10 mt-1 max-h-60 w-80 overflow-auto rounded-md border bg-white shadow-lg dark:bg-gray-800">
               {suggestions.map((suggestion) => (
                 <li
                   key={suggestion}
-                  className="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="cursor-pointer hyphens-auto break-words px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
                   onClick={() => handleSelectLocation(suggestion)}
                 >
                   {suggestion}

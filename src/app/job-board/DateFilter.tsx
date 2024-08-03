@@ -47,7 +47,7 @@ const DateSelectorDropdown: React.FC<DateSelectorDropdownProps> = ({
       <div>
         <button
           type="button"
-          className="inline-flex w-full transform justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-all duration-300 ease-in-out hover:bg-gray-50 dark:bg-gray-800  dark:text-white dark:hover:bg-gray-600"
+          className="inline-flex w-full transform justify-between rounded-md border bg-white px-4 py-[0.62rem] text-sm font-medium text-gray-700  transition-all duration-300 ease-in-out hover:bg-gray-50 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600"
           onClick={() => setIsOpen(!isOpen)}
         >
           {selected}
@@ -61,7 +61,7 @@ const DateSelectorDropdown: React.FC<DateSelectorDropdownProps> = ({
       </div>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-300 ease-in-out dark:bg-gray-800">
+        <div className="absolute right-0 z-50 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-300 ease-in-out dark:bg-gray-800">
           <div
             className="py-1"
             role="menu"
@@ -72,7 +72,7 @@ const DateSelectorDropdown: React.FC<DateSelectorDropdownProps> = ({
               <a
                 key={option.value}
                 href="#"
-                className="block px-4 py-2 text-sm text-gray-700 transition-colors duration-200 ease-in-out hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-slate-300"
+                className="z-10 block px-4 py-2 text-sm text-gray-700 transition-colors duration-200 ease-in-out hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-slate-300"
                 role="menuitem"
                 onClick={(e) => {
                   e.preventDefault();

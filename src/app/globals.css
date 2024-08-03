@@ -46,3 +46,8 @@
 .experience-level-checkbox:focus-visible {
   @apply outline-none ring-0;
 }
+.hyphens-auto {
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
