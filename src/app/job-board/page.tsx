@@ -41,17 +41,17 @@ const JobSearchCard: React.FC = () => {
     setSelectedLocations,
     setDatePosted,
   } = useFilter();
-  const {
-    resume,
-    setPositions,
-    selectedPositions,
-    setSidebarOpen,
-    setSelectedPositions,
-  } = useResume();
+  const { resume, setPositions, selectedPositions, setSelectedPositions } =
+    useResume();
   const jobListRef = useRef<HTMLDivElement>(null);
   const [isJobCardOpen, setIsJobCardOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
-  const { filterButtonClicked, setFilterButtonClicked } = useFilter();
+  const {
+    filterButtonClicked,
+    setFilterButtonClicked,
+    locationData,
+    setLocationData,
+  } = useFilter();
 
   useEffect(() => {
     if (!isMobile) {
@@ -100,7 +100,40 @@ const JobSearchCard: React.FC = () => {
     setFilterButtonClicked(false);
   }, [filterButtonClicked]);
 
+  useEffect(() => {
+    const fetchLocationData = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+        if (!baseUrl) {
+          throw new Error(
+            "API URL is not defined. Please check your environment variables."
+          );
+        }
 
+        const response = await fetch(`${baseUrl}locations/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}), // Add any required body parameters here
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const locationList = data.map(
+          (item: { location: string }) => item.location
+        );
+        setLocationData(locationList);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchLocationData();
+  }, []);
   const fetchJobs = async () => {
     try {
       const skip = (currentPage - 1) * itemsPerPage;
