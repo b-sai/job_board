@@ -2,8 +2,11 @@
 import { useState } from "react";
 import { ResumeDropzone } from "components/ResumeDropzone";
 import { useResume } from "ResumeContext";
+import { PositionSelector } from "resume-parser/PositionSelector";
+import { useMediaQuery } from "react-responsive";
 
 export default function ResumeParser() {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const {
     setResume,
@@ -43,30 +46,12 @@ export default function ResumeParser() {
           playgroundView={true}
         />
       </div>
-      {positions.length > 0 && (
-        <div className="flex-grow overflow-y-auto p-4">
-          <h1 className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
-            Roles Tailored to Selected Experiences
-          </h1>
-          <div className="grid gap-2">
-            {positions.map((option, index) => (
-              <label
-                key={index}
-                className="grid grid-cols-[auto,1fr] items-start gap-3"
-              >
-                <input
-                  type="checkbox"
-                  className="form-checkbox mt-1 h-5 w-5 rounded border-gray-300 text-blue-600 transition duration-150 ease-in-out dark:bg-gray-800 dark:text-white"
-                  checked={selectedPositions.includes(index)}
-                  onChange={() => handlePositionToggle(index)}
-                />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {option}
-                </span>
-              </label>
-            ))}
-          </div>
-        </div>
+      {!isMobile && positions.length > 0 && (
+        <PositionSelector
+          positions={positions}
+          selectedPositions={selectedPositions}
+          onPositionToggle={handlePositionToggle}
+        />
       )}
     </div>
   );
