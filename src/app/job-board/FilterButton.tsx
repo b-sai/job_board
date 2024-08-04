@@ -11,7 +11,7 @@ const Overlay = ({
   children: React.ReactNode;
   onClose: () => void;
 }) => {
-  const overlayRef = useRef(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -26,7 +26,7 @@ const Overlay = ({
   useEffect(() => {
     const overlay = overlayRef.current;
     if (overlay) {
-      const rect = (overlay as HTMLElement).getBoundingClientRect();
+      const rect = overlay.getBoundingClientRect();
       document.documentElement.style.setProperty(
         "--overlay-top",
         `${rect.top}px`
@@ -64,11 +64,20 @@ const Overlay = ({
 
 const FilterButtonWithModal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
   const { filterButtonClicked, setFilterButtonClicked } = useFilter();
+
+  if (!isMounted) {
+    return null; // or return a placeholder
+  }
 
   return (
     <>
