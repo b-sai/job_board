@@ -19,7 +19,7 @@ const StateFilter: React.FC<StateFilterProps> = ({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const { locationData, setLocationData } = useFilter();
+  const { locationData } = useFilter();
 
   useEffect(() => {
     if (input.length > 0) {
@@ -28,17 +28,14 @@ const StateFilter: React.FC<StateFilterProps> = ({
       );
       setSuggestions(filtered);
       setIsOpen(true);
-    } else {
-      setSuggestions([]);
-      setIsOpen(false);
     }
-  }, [input, locationData]);
+  }, [input]);
   useEffect(() => {
     if (isOpen) {
       setSuggestions(locationData);
       setIsOpen(true);
     }
-  }, [isOpen, locationData]);
+  }, [isOpen]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -72,7 +69,7 @@ const StateFilter: React.FC<StateFilterProps> = ({
   const handleRemoveLocation = (location: string) => {
     setSelectedLocations(selectedLocations.filter((loc) => loc !== location));
   };
-
+  console.log("in state filter");
   return (
     <div className="w-full">
       <div className="flex">
@@ -122,8 +119,4 @@ const StateFilter: React.FC<StateFilterProps> = ({
   );
 };
 
-const DynamicStateFilter = dynamic(() => Promise.resolve(StateFilter), {
-  ssr: false,
-});
-
-export default DynamicStateFilter;
+export default StateFilter;

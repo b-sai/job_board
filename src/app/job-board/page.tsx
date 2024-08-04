@@ -6,6 +6,7 @@ import React, {
   Dispatch,
   SetStateAction,
   useRef,
+  useCallback,
 } from "react";
 import { useResume } from "ResumeContext";
 import LoadingCard from "./loadingcard";
@@ -33,6 +34,11 @@ const JobSearchCard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const isInitialMount1 = useRef(true);
+  const isInitialMount2 = useRef(true);
+  const isInitialMount3 = useRef(true);
+  const isInitialMount4 = useRef(true);
+
   const {
     selectedLevels,
     selectedLocations,
@@ -54,42 +60,57 @@ const JobSearchCard: React.FC = () => {
   } = useFilter();
 
   useEffect(() => {
-    if (!isMobile) {
+    if (!isInitialMount1.current && !isMobile) {
+      console.log("in use effect", selectedLocations);
       fetchJobs();
     }
+    isInitialMount1.current = false;
   }, [selectedLocations, currentPage, datePosted]);
 
   useEffect(() => {
-    if (!isMobile) {
+    if (!isInitialMount2.current && !isMobile) {
       const timer = setTimeout(() => {
         fetchJobs();
       }, 700);
 
       return () => clearTimeout(timer);
     }
+    isInitialMount2.current = false;
   }, [selectedLevels]);
 
   const [isResumeUpload, setIsResumeUpload] = useState(false);
 
   useEffect(() => {
-    if (resume && resume !== "null" && resume !== null) {
+    if (
+      !isInitialMount3.current &&
+      !isMobile &&
+      resume &&
+      resume !== "null" &&
+      resume !== null
+    ) {
       setIsResumeUpload(true);
       setSelectedPositions([0]);
       fetchJobs().then(() => {
         setIsResumeUpload(false);
       });
     }
+    isInitialMount3.current = false;
   }, [resume]);
 
   useEffect(() => {
-    if (!isMobile && selectedPositions.length > 0 && !isResumeUpload) {
+    if (
+      !isInitialMount4.current &&
+      !isMobile &&
+      selectedPositions.length > 0 &&
+      !isResumeUpload
+    ) {
       const timer = setTimeout(() => {
         fetchJobs();
       }, 700);
 
       return () => clearTimeout(timer);
     }
-
+    isInitialMount4.current = false;
     console.log(selectedPositions);
   }, [selectedPositions]);
 
@@ -99,8 +120,6 @@ const JobSearchCard: React.FC = () => {
     }
     setFilterButtonClicked(false);
   }, [filterButtonClicked]);
-
-
 
   const fetchLocationData = async () => {
     try {
@@ -133,7 +152,7 @@ const JobSearchCard: React.FC = () => {
     }
   };
 
-  const fetchJobs = async () => {
+  const fetchJobs = useCallback(async () => {
     try {
       const skip = (currentPage - 1) * itemsPerPage;
       const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -193,11 +212,13 @@ const JobSearchCard: React.FC = () => {
       setError("Error fetching jobs. Please try again later.");
       setLoading(false);
     }
-  };
+  }, []);
+
   useEffect(() => {
     fetchJobs();
     fetchLocationData();
   }, []);
+
   const jobDetailsRef = useRef<HTMLDivElement>(null);
 
   const handleJobSelect = (job: Job) => {
