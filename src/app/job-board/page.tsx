@@ -100,40 +100,39 @@ const JobSearchCard: React.FC = () => {
     setFilterButtonClicked(false);
   }, [filterButtonClicked]);
 
-  useEffect(() => {
-    const fetchLocationData = async () => {
-      try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-        if (!baseUrl) {
-          throw new Error(
-            "API URL is not defined. Please check your environment variables."
-          );
-        }
 
-        const response = await fetch(`${baseUrl}locations/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}), // Add any required body parameters here
-        });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const locationList = data.map(
-          (item: { location: string }) => item.location
+  const fetchLocationData = async () => {
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+      if (!baseUrl) {
+        throw new Error(
+          "API URL is not defined. Please check your environment variables."
         );
-        setLocationData(locationList);
-      } catch (error) {
-        console.error("Error fetching locations:", error);
       }
-    };
 
-    fetchLocationData();
-  }, []);
+      const response = await fetch(`${baseUrl}locations/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}), // Add any required body parameters here
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const locationList = data.map(
+        (item: { location: string }) => item.location
+      );
+      setLocationData(locationList);
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
+  };
+
   const fetchJobs = async () => {
     try {
       const skip = (currentPage - 1) * itemsPerPage;
@@ -195,7 +194,10 @@ const JobSearchCard: React.FC = () => {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    fetchJobs();
+    fetchLocationData();
+  }, []);
   const jobDetailsRef = useRef<HTMLDivElement>(null);
 
   const handleJobSelect = (job: Job) => {
