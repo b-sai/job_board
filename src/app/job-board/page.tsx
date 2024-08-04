@@ -61,7 +61,6 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     if (!isInitialMount1.current && !isMobile) {
-      console.log("in use effect", selectedLocations);
       fetchJobs();
     }
     isInitialMount1.current = false;
@@ -111,7 +110,6 @@ const JobSearchCard: React.FC = () => {
       return () => clearTimeout(timer);
     }
     isInitialMount4.current = false;
-    console.log(selectedPositions);
   }, [selectedPositions]);
 
   useEffect(() => {

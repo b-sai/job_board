@@ -69,7 +69,6 @@ const StateFilter: React.FC<StateFilterProps> = ({
   const handleRemoveLocation = (location: string) => {
     setSelectedLocations(selectedLocations.filter((loc) => loc !== location));
   };
-  console.log("in state filter");
   return (
     <div className="w-full">
       <div className="flex">
