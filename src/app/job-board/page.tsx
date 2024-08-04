@@ -83,9 +83,11 @@ const JobSearchCard: React.FC = () => {
     if (resume && resume !== "null" && resume !== null) {
       setIsResumeUpload(true);
       setSelectedPositions([0]);
+      console.log("here in resume");
       fetchJobs().then(() => {
         setIsResumeUpload(false);
       });
+      console.log("finished setting up");
     }
   }, [resume]);
 
@@ -209,6 +211,9 @@ const JobSearchCard: React.FC = () => {
     datePosted,
     selectedLevels,
     selectedPositions,
+    resume,
+    itemsPerPage,
+    setPositions,
   ]);
   useEffect(() => {
     fetchJobs();

@@ -17,10 +17,12 @@ export default function ResumeParser() {
   } = useResume();
 
   const handleFileUrlChange = (fileUrl: string | null) => {
+    console.log("here in resume parser fileurlchange", fileUrl);
     setFileUrl(fileUrl);
   };
 
   const handleFileChange = (file: File | null) => {
+    console.log("here in resume parser filechange", file);
     setResume(file);
   };
 
