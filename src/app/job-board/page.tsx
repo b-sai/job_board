@@ -217,8 +217,13 @@ const JobSearchCard: React.FC = () => {
   useEffect(() => {
     fetchJobs();
     fetchLocationData();
-  }, []);
-
+  }, [
+    selectedLocations,
+    currentPage,
+    datePosted,
+    selectedLevels,
+    selectedPositions,
+  ]);
   const jobDetailsRef = useRef<HTMLDivElement>(null);
 
   const handleJobSelect = (job: Job) => {
