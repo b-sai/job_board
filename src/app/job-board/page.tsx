@@ -80,20 +80,13 @@ const JobSearchCard: React.FC = () => {
   const [isResumeUpload, setIsResumeUpload] = useState(false);
 
   useEffect(() => {
-    if (
-      !isInitialMount3.current &&
-      !isMobile &&
-      resume &&
-      resume !== "null" &&
-      resume !== null
-    ) {
+    if (resume && resume !== "null" && resume !== null) {
       setIsResumeUpload(true);
       setSelectedPositions([0]);
       fetchJobs().then(() => {
         setIsResumeUpload(false);
       });
     }
-    isInitialMount3.current = false;
   }, [resume]);
 
   useEffect(() => {
