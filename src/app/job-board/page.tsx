@@ -212,11 +212,6 @@ const JobSearchCard: React.FC = () => {
       setError("Error fetching jobs. Please try again later.");
       setLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    fetchJobs();
-    fetchLocationData();
   }, [
     selectedLocations,
     currentPage,
@@ -224,6 +219,10 @@ const JobSearchCard: React.FC = () => {
     selectedLevels,
     selectedPositions,
   ]);
+  useEffect(() => {
+    fetchJobs();
+    fetchLocationData();
+  }, []);
   const jobDetailsRef = useRef<HTMLDivElement>(null);
 
   const handleJobSelect = (job: Job) => {
