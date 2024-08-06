@@ -21,7 +21,7 @@ const BaseChip: React.FC<BaseChipProps> = ({
   children,
 }) => (
   <div
-    className={`inline-flex select-none items-center whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-300 ease-in-out ${color} ${bgColor} ${borderColor} border shadow-sm hover:shadow-md ${className}`}
+    className={`inline-flex select-none items-center whitespace-nowrap rounded-full px-2 py-0.5 text-sm font-medium transition-all duration-300 ease-in-out ${color} ${bgColor} ${borderColor} border shadow-sm hover:shadow-md ${className}`}
   >
     {Icon ? <Icon size={16} className="mr-1.5" strokeWidth={2.5} /> : children}
     <span>{text}</span>
@@ -35,7 +35,7 @@ const CompleteMatchChip: React.FC = () => (
     borderColor="border-indigo-200"
     text="Complete Match"
   >
-    <span className="mr-1.5 text-base" role="img" aria-label="sparkles">
+    <span className="mr-1 text-sm" role="img" aria-label="sparkles">
       ✨
     </span>
   </BaseChip>

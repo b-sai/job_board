@@ -321,18 +321,18 @@ const JobSearchCard: React.FC = () => {
                     <Image
                       src={job.logo_photo_url || "/company_na.png"}
                       alt={"Company Logo"}
-                      width={40}
-                      height={40}
+                      width={30}
+                      height={30}
                       className="mr-3 rounded-full"
                     />
                     <div className="flex-grow">
                       <h3 className="pb-1 font-semibold text-gray-800 dark:text-blue-500">
                         {job.title}
                       </h3>
-                      <p className="text-sm text-gray-600">{job.company}</p>
-                      <p className="text-sm text-gray-500">{job.location}</p>
-                      <div className="mt-1 flex items-center justify-between">
-                        <div>
+                      <p className="text-black-600 text-sm">{job.company}</p>
+                      <p className="text-sm text-gray-600 dark:text-white">
+                        {job.location}
+                        <div className="float-right">
                           {job.score && job.score > 0.32 ? (
                             <CompleteMatchChip />
                           ) : job.score && job.score > 0.25 ? (
@@ -343,7 +343,7 @@ const JobSearchCard: React.FC = () => {
                             <WeakMatchChip />
                           ) : null}
                         </div>
-                      </div>
+                      </p>
                     </div>
                   </div>
                 </div>
