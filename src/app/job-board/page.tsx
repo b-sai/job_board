@@ -179,11 +179,14 @@ const JobSearchCard: React.FC = () => {
       }
 
       if (resume instanceof File) {
+        const resumeType = resume.name.endsWith(".pdf") ? "pdf" : "docx";
         formData.append("resume", resume, resume.name);
-        console.log("Appending resume file:", resume.name);
+        formData.append("file_type", resumeType);
+        console.log("Appending resume file:", resume.name, "Type:", resumeType);
       } else {
         console.log("No resume file to append");
       }
+
 
       const response = await fetch(`${baseUrl}jobs/`, {
         method: "POST",

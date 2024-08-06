@@ -131,7 +131,7 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
               <input
                 type="file"
                 className="sr-only"
-                accept=".pdf"
+                accept=".pdf, .docx"
                 onChange={onInputChange}
               />
             </label>
