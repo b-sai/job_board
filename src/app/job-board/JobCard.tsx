@@ -1,7 +1,7 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import DetailedLoadingCard from "./loading";
-
+import Image from "next/image";
 interface JobDetailsProps {
   loading: boolean;
   selectedJob: any | null;
@@ -24,6 +24,15 @@ const JobDetails: React.FC<JobDetailsProps> = ({
         <DetailedLoadingCard />
       ) : selectedJob ? (
         <div>
+          <div className="mb-4">
+            <Image
+              src={selectedJob.logo_photo_url || "/company_na.png"}
+              alt={`${selectedJob.company} logo`}
+              width={50}
+              height={50}
+              className="h-16 w-16 rounded-full object-cover"
+            />
+          </div>
           <h2 className="mb-2 text-2xl font-bold text-gray-800 dark:text-white sm:text-3xl">
             {selectedJob.title}
           </h2>

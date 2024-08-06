@@ -15,7 +15,7 @@ import JobCard from "./JobCard";
 import { useMediaQuery } from "react-responsive"; // Add this import
 import PulsingLoadingComponent from "./FilterLoading";
 import FilterGroup from "./FilterMain";
-
+import Image from "next/image";
 interface Job {
   id: number;
   title: string;
@@ -25,6 +25,7 @@ interface Job {
   date_posted?: string;
   location?: string;
   score?: number;
+  logo_photo_url?: string;
 }
 import { useFilter } from "FilterDataProvider";
 import {
@@ -187,7 +188,6 @@ const JobSearchCard: React.FC = () => {
         console.log("No resume file to append");
       }
 
-
       const response = await fetch(`${baseUrl}jobs/`, {
         method: "POST",
         body: formData,
@@ -317,24 +317,35 @@ const JobSearchCard: React.FC = () => {
                   }`}
                   onClick={() => handleJobSelect(job)}
                 >
-                  <h3 className="pb-1 font-semibold text-gray-800 dark:text-blue-500">
-                    {job.title}
-                  </h3>
-                  <p className="text-black-600 text-sm">{job.company}</p>
-                  <p className="text-sm text-gray-600 dark:text-white">
-                    {job.location}
-                    <div className="float-right">
-                      {job.score && job.score > 0.32 ? (
-                        <CompleteMatchChip />
-                      ) : job.score && job.score > 0.25 ? (
-                        <StrongFitChip />
-                      ) : job.score && job.score > 0.21 ? (
-                        <PartialMatchChip />
-                      ) : job.score && job.score <= 0.21 ? (
-                        <WeakMatchChip />
-                      ) : null}
+                  <div className="flex items-start">
+                    <Image
+                      src={job.logo_photo_url || "/company_na.png"}
+                      alt={"Company Logo"}
+                      width={40}
+                      height={40}
+                      className="mr-3 rounded-full"
+                    />
+                    <div className="flex-grow">
+                      <h3 className="pb-1 font-semibold text-gray-800 dark:text-blue-500">
+                        {job.title}
+                      </h3>
+                      <p className="text-sm text-gray-600">{job.company}</p>
+                      <p className="text-sm text-gray-500">{job.location}</p>
+                      <div className="mt-1 flex items-center justify-between">
+                        <div>
+                          {job.score && job.score > 0.32 ? (
+                            <CompleteMatchChip />
+                          ) : job.score && job.score > 0.25 ? (
+                            <StrongFitChip />
+                          ) : job.score && job.score > 0.21 ? (
+                            <PartialMatchChip />
+                          ) : job.score && job.score <= 0.21 ? (
+                            <WeakMatchChip />
+                          ) : null}
+                        </div>
+                      </div>
                     </div>
-                  </p>
+                  </div>
                 </div>
               ))}
         </div>
