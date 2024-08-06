@@ -24,8 +24,15 @@ interface Job {
   job_url_direct?: string;
   date_posted?: string;
   location?: string;
+  score?: number;
 }
 import { useFilter } from "FilterDataProvider";
+import {
+  CompleteMatchChip,
+  PartialMatchChip,
+  StrongFitChip,
+  WeakMatchChip,
+} from "./Chips";
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -315,6 +322,17 @@ const JobSearchCard: React.FC = () => {
                   <p className="text-black-600 text-sm">{job.company}</p>
                   <p className="text-sm text-gray-600 dark:text-white">
                     {job.location}
+                    <div className="float-right">
+                      {job.score && job.score > 0.32 ? (
+                        <CompleteMatchChip />
+                      ) : job.score && job.score > 0.25 ? (
+                        <StrongFitChip />
+                      ) : job.score && job.score > 0.21 ? (
+                        <PartialMatchChip />
+                      ) : job.score && job.score <= 0.21 ? (
+                        <WeakMatchChip />
+                      ) : null}
+                    </div>
                   </p>
                 </div>
               ))}
