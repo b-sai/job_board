@@ -26,6 +26,8 @@ interface Job {
   location?: string;
   score?: number;
   logo_photo_url?: string;
+  min_amount?: number;
+  max_amount?: number;
 }
 import { useFilter } from "FilterDataProvider";
 import {

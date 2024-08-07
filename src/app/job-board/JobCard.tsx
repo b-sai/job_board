@@ -2,6 +2,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import DetailedLoadingCard from "./loading";
 import Image from "next/image";
+import { DateChip, LocationChip, SalaryChip } from "./Chips";
 interface JobDetailsProps {
   loading: boolean;
   selectedJob: any | null;
@@ -39,9 +40,14 @@ const JobDetails: React.FC<JobDetailsProps> = ({
           <p className="mb-4 text-lg text-gray-600 dark:text-gray-300 sm:text-xl">
             {selectedJob.company}
           </p>
-          <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">
-            {selectedJob.date_posted} • {selectedJob.location}
-          </p>
+          <div className="mb-4 flex flex-wrap gap-2">
+            <SalaryChip
+              minSalary={selectedJob.min_amount}
+              maxSalary={selectedJob.max_amount}
+            />
+            <DateChip date={selectedJob.date_posted} />
+            <LocationChip location={selectedJob.location} />
+          </div>
           <button
             onClick={() => window.open(selectedJob.job_url_direct, "_blank")}
             className="mb-4 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 hover:bg-blue-600"
