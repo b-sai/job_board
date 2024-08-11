@@ -55,7 +55,7 @@ const JobSearchCard: React.FC = () => {
     datePosted,
     setSelectedLevels,
     setSelectedLocations,
-    setDatePosted,
+    needVisaSponsorship,
   } = useFilter();
   const { resume, setPositions, selectedPositions, setSelectedPositions } =
     useResume();
@@ -71,10 +71,12 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     if (!isInitialMount1.current && !isMobile) {
+      console.log(needVisaSponsorship);
       fetchJobs();
+      console.log(needVisaSponsorship);
     }
     isInitialMount1.current = false;
-  }, [selectedLocations, currentPage, datePosted]);
+  }, [selectedLocations, currentPage, datePosted, needVisaSponsorship]);
 
   useEffect(() => {
     if (!isInitialMount2.current && !isMobile) {
@@ -108,7 +110,7 @@ const JobSearchCard: React.FC = () => {
     ) {
       const timer = setTimeout(() => {
         fetchJobs();
-      }, 700);
+      }, 500);
 
       return () => clearTimeout(timer);
     }
@@ -180,6 +182,10 @@ const JobSearchCard: React.FC = () => {
           formData.append("positions_to_filter", position.toString())
         );
       }
+      console.log(needVisaSponsorship, "fetchjobs");
+      if (needVisaSponsorship) {
+        formData.append("needs_visa_sponsorship", "true");
+      }
 
       if (resume instanceof File) {
         const resumeType = resume.name.endsWith(".pdf") ? "pdf" : "docx";
@@ -224,6 +230,7 @@ const JobSearchCard: React.FC = () => {
     resume,
     itemsPerPage,
     setPositions,
+    needVisaSponsorship,
   ]);
   useEffect(() => {
     fetchJobs();

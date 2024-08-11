@@ -79,15 +79,6 @@ const FilterGroup: React.FC = () => {
               setSelectedLocations={setSelectedLocations}
             />
           </div>
-          {isMobile && positions.length > 0 && (
-            <div className="w-full sm:mr-auto sm:w-3/5">
-              <PositionSelector
-                positions={positions}
-                selectedPositions={selectedPositions}
-                onPositionToggle={handlePositionToggle}
-              />
-            </div>
-          )}
         </>
       )}
     </>

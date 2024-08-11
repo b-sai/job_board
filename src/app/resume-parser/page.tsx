@@ -4,6 +4,8 @@ import { ResumeDropzone } from "components/ResumeDropzone";
 import { useResume } from "ResumeContext";
 import { PositionSelector } from "resume-parser/PositionSelector";
 import { useMediaQuery } from "react-responsive";
+import Switch from "job-board/Switch";
+import { useFilter } from "FilterDataProvider";
 
 export default function ResumeParser() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -15,7 +17,7 @@ export default function ResumeParser() {
     selectedPositions,
     setSelectedPositions,
   } = useResume();
-
+  const { needVisaSponsorship, setNeedVisaSponsorship } = useFilter();
   const handleFileUrlChange = (fileUrl: string | null) => {
     setFileUrl(fileUrl);
   };
@@ -53,6 +55,13 @@ export default function ResumeParser() {
           onPositionToggle={handlePositionToggle}
         />
       )}
+      <div>
+        <Switch
+          label="Need Visa Sponsorship"
+          isChecked={needVisaSponsorship}
+          setIsChecked={setNeedVisaSponsorship}
+        />
+      </div>
     </div>
   );
 }

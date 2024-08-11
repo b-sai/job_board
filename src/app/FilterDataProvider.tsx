@@ -20,6 +20,8 @@ interface FilterContextType {
   setFilterButtonClicked: Dispatch<SetStateAction<boolean>>;
   locationData: string[];
   setLocationData: Dispatch<SetStateAction<string[]>>;
+  needVisaSponsorship: boolean;
+  setNeedVisaSponsorship: Dispatch<SetStateAction<boolean>>;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -42,6 +44,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [filterButtonClicked, setFilterButtonClicked] = useState(false);
   const [locationData, setLocationData] = useState<string[]>([]);
+  const [needVisaSponsorship, setNeedVisaSponsorship] = useState(false);
   return (
     <FilterContext.Provider
       value={{
@@ -55,6 +58,8 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
         setFilterButtonClicked,
         locationData,
         setLocationData,
+        needVisaSponsorship,
+        setNeedVisaSponsorship,
       }}
     >
       {children}
