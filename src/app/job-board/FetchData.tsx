@@ -24,16 +24,16 @@ export async function fetchLocations(url: string): Promise<any> {
 export async function upsertJobs({
   resume,
   userId,
-  file_type,
+  fileName,
 }: {
   resume: any;
-  userId: string;
-  file_type: string;
+  userId: any;
+  fileName: string;
 }) {
   const formData = new FormData();
   formData.append("resume", resume);
   formData.append("user_id", userId);
-  formData.append("file_type", file_type);
+  formData.append("file_name", fileName);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const response = await fetch(`${baseUrl}upsert_user/`, {

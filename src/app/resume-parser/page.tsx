@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ResumeDropzone } from "components/ResumeDropzone";
 import { useResume } from "ResumeContext";
 import { PositionSelector } from "resume-parser/PositionSelector";
@@ -11,6 +11,7 @@ export default function ResumeParser() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const {
+    resume,
     setResume,
     positions,
     setPositions,
@@ -21,11 +22,9 @@ export default function ResumeParser() {
   const handleFileUrlChange = (fileUrl: string | null) => {
     setFileUrl(fileUrl);
   };
-
   const handleFileChange = (file: File | null) => {
     setResume(file);
   };
-
   const handlePositionToggle = (index: number) => {
     setSelectedPositions((prev) => {
       const newSelectedPositions = prev.includes(index)

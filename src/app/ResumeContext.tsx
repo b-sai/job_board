@@ -8,8 +8,14 @@ interface ResumeContextType {
   setPositions: (positions: Array<string>) => void;
   selectedPositions: Array<number>;
   setSelectedPositions: React.Dispatch<React.SetStateAction<Array<number>>>;
-  sidebarOpen: boolean;
-  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  useUserId: boolean | null;
+  setUseUserId: React.Dispatch<React.SetStateAction<boolean | null>>;
+  isParsing: boolean;
+  setIsParsing: React.Dispatch<React.SetStateAction<boolean>>;
+  fileUrl: string;
+  setFileUrl: React.Dispatch<React.SetStateAction<string>>;
+  dummyResumeName: string;
+  setDummyResumeName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -22,8 +28,11 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
   const [selectedPositions, setSelectedPositions] = useState<Array<number>>([
     0,
   ]);
+  const [useUserId, setUseUserId] = useState<boolean | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const [isParsing, setIsParsing] = useState(false);
+  const [fileUrl, setFileUrl] = useState<string>("");
+  const [dummyResumeName, setDummyResumeName] = useState<string>("");
   return (
     <ResumeContext.Provider
       value={{
@@ -33,8 +42,14 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
         setPositions,
         selectedPositions,
         setSelectedPositions,
-        sidebarOpen,
-        setSidebarOpen,
+        useUserId,
+        setUseUserId,
+        isParsing,
+        setIsParsing,
+        fileUrl,
+        setFileUrl,
+        dummyResumeName,
+        setDummyResumeName,
       }}
     >
       {children}

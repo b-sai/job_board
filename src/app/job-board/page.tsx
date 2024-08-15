@@ -46,15 +46,14 @@ const JobSearchCard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [useUserId, setUseUserId] = useState<boolean | null>(null);
   const isInitialMount1 = useRef(true);
   const isInitialMount2 = useRef(true);
-  const isInitialMount3 = useRef(true);
   const isInitialMount4 = useRef(true);
+  const [isResumeUpload, setIsResumeUpload] = useState(false);
+  const [resumeUploadCount, setResumeUploadCount] = useState(0);
   const posthog = usePostHog();
-  const userId: string =
-    posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID || "";
-  console.log(userId, "user id");
+  const userId = posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID;
+
   const {
     selectedLevels,
     selectedLocations,
@@ -63,8 +62,18 @@ const JobSearchCard: React.FC = () => {
     setSelectedLocations,
     needVisaSponsorship,
   } = useFilter();
-  const { resume, setPositions, selectedPositions, setSelectedPositions } =
-    useResume();
+  const {
+    resume,
+    setPositions,
+    selectedPositions,
+    setSelectedPositions,
+    useUserId,
+    setUseUserId,
+    setIsParsing,
+    fileUrl,
+    dummyResumeName,
+    setDummyResumeName,
+  } = useResume();
   const jobListRef = useRef<HTMLDivElement>(null);
   const [isJobCardOpen, setIsJobCardOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -95,26 +104,16 @@ const JobSearchCard: React.FC = () => {
     isInitialMount2.current = false;
   }, [selectedLevels]);
 
-  const [isResumeUpload, setIsResumeUpload] = useState(false);
-
   useEffect(() => {
-    if (resume && resume !== "null" && resume !== null) {
-      const resumeType: string = resume.name.endsWith(".pdf") ? "pdf" : "docx";
+    if (resume && resume !== "null" && resume !== null && fileUrl !== "") {
       setIsResumeUpload(true);
-      upsertJobs({ resume, userId, file_type: resumeType })
-        .then(() => {
-          setUseUserId(true);
-          setSelectedPositions([0]);
-          console.log("triggered from resume");
-          fetchJobs();
-        })
-        .then(() => {
-          setIsResumeUpload(false);
-        })
-        .catch((error: any) => {
-          console.error("Error during job upsert or fetch:", error);
-          setIsResumeUpload(false);
-        });
+      setIsParsing(true);
+      setLoading(true);
+      upsertJobs({ resume, userId, fileName: resume.name }).then(() => {
+        setUseUserId(true);
+        setResumeUploadCount(resumeUploadCount + 1);
+        setIsParsing(false);
+      });
     }
   }, [resume]);
   useEffect(() => {
@@ -242,6 +241,8 @@ const JobSearchCard: React.FC = () => {
           }
           const data = await response.json();
           setUseUserId(data.user_exists);
+          console.log(data.file_name, "file name");
+          setDummyResumeName(data.file_name);
         } catch (error) {
           console.error("Error checking user existence:", error);
           setUseUserId(false);
@@ -249,21 +250,22 @@ const JobSearchCard: React.FC = () => {
       } else {
         setUseUserId(false);
       }
+      setResumeUploadCount(resumeUploadCount + 1);
+      console.log(resumeUploadCount, "resume upload count");
     };
 
     initializeData();
   }, []); // Only runs once on mount
 
   useEffect(() => {
-    // Only trigger fetchJobs and fetchLocationData when useUserId is true or false
     if (useUserId !== null) {
       console.log("useUserId updated to:", useUserId);
-
-      // Now fetch jobs and location data
+      setSelectedPositions([0]);
+      console.log("triggered from useUserId");
       fetchJobs();
       fetchLocationData();
     }
-  }, [useUserId]); // This runs only when useUserId changes from null to a valid value
+  }, [resumeUploadCount]);
   const jobDetailsRef = useRef<HTMLDivElement>(null);
 
   const handleJobSelect = (job: Job) => {
@@ -419,3 +421,4 @@ const JobSearchCard: React.FC = () => {
 };
 
 export default JobSearchCard;
+

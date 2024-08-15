@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { cx } from "lib/cx";
 import addPdfSrc from "public/assets/add-pdf.svg";
 import { useMediaQuery } from "react-responsive";
+import { useResume } from "ResumeContext";
+import FakeLoadingBar from "./FakeLoading";
 
 interface ResumeDropzoneProps {
   onFileUrlChange: (fileUrl: string) => void;
@@ -20,30 +22,42 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
   playgroundView = false,
 }) => {
   const [file, setFile] = useState<File | null>(null);
-  const [fileUrl, setFileUrl] = useState<string>("");
   const [isHoveredOnDropzone, setIsHoveredOnDropzone] =
     useState<boolean>(false);
   const [hasNonPdfFile, setHasNonPdfFile] = useState<boolean>(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
-
+  const { useUserId, isParsing, fileUrl, setFileUrl, dummyResumeName } =
+    useResume();
   const hasFile = Boolean(file);
 
-  const setNewFile = (newFile: File): void => {
+  const setNewFile = (newFile: File, isDummy = false): void => {
     if (fileUrl) {
       URL.revokeObjectURL(fileUrl);
     }
 
     const newFileUrl = URL.createObjectURL(newFile);
     setFile(newFile);
-    setFileUrl(newFileUrl);
-    onFileUrlChange(newFileUrl);
+    setFileUrl(isDummy ? "" : newFileUrl);
+    onFileUrlChange(isDummy ? "" : newFileUrl);
     onFileChange(newFile);
   };
+  const createDummyFile = () => {
+    return new File(["dummy content"], dummyResumeName, {
+      type: "application/pdf",
+    });
+  };
+  const dummyFile = createDummyFile();
+
+  useEffect(() => {
+    if (useUserId !== null && useUserId) {
+      setNewFile(dummyFile, true);
+    }
+  }, [useUserId]);
 
   const onDrop = (event: React.DragEvent<HTMLDivElement>): void => {
     event.preventDefault();
     const newFile = event.dataTransfer.files[0];
-    if (newFile.name.endsWith(".pdf")) {
+    if (newFile.name.endsWith(".pdf") || newFile.name.endsWith(".docx")) {
       setHasNonPdfFile(false);
       setNewFile(newFile);
     } else {
@@ -160,13 +174,7 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
           </div>
         )}
 
-        {hasFile && !isMobile && (
-          <p className={cx("text-gray-500", !playgroundView && "mt-4")}>
-            Note: {!playgroundView ? "Import" : "Parser"} takes
-            <br />
-            5-10 seconds
-          </p>
-        )}
+        {hasFile && !isMobile && isParsing && <FakeLoadingBar />}
 
         {hasNonPdfFile && (
           <p className="mt-2 text-red-400">Only pdf file is supported</p>
