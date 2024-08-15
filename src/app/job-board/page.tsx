@@ -16,6 +16,7 @@ import { useMediaQuery } from "react-responsive"; // Add this import
 import PulsingLoadingComponent from "./FilterLoading";
 import FilterGroup from "./FilterMain";
 import Image from "next/image";
+import { usePostHog } from "posthog-js/react";
 interface Job {
   id: number;
   title: string;
@@ -36,6 +37,7 @@ import {
   StrongFitChip,
   WeakMatchChip,
 } from "./Chips";
+import { upsertJobs } from "./FetchData";
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -44,11 +46,15 @@ const JobSearchCard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [useUserId, setUseUserId] = useState<boolean | null>(null);
   const isInitialMount1 = useRef(true);
   const isInitialMount2 = useRef(true);
   const isInitialMount3 = useRef(true);
   const isInitialMount4 = useRef(true);
-
+  const posthog = usePostHog();
+  const userId: string =
+    posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID || "";
+  console.log(userId, "user id");
   const {
     selectedLevels,
     selectedLocations,
@@ -72,6 +78,9 @@ const JobSearchCard: React.FC = () => {
   useEffect(() => {
     if (!isInitialMount1.current && !isMobile) {
       console.log(needVisaSponsorship);
+      console.log(
+        "triggered from selected locations, current page, date posted, visa"
+      );
       fetchJobs();
       console.log(needVisaSponsorship);
     }
@@ -80,11 +89,8 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     if (!isInitialMount2.current && !isMobile) {
-      const timer = setTimeout(() => {
-        fetchJobs();
-      }, 700);
-
-      return () => clearTimeout(timer);
+      console.log("triggered from selected levels");
+      fetchJobs();
     }
     isInitialMount2.current = false;
   }, [selectedLevels]);
@@ -93,14 +99,24 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     if (resume && resume !== "null" && resume !== null) {
+      const resumeType: string = resume.name.endsWith(".pdf") ? "pdf" : "docx";
       setIsResumeUpload(true);
-      setSelectedPositions([0]);
-      fetchJobs().then(() => {
-        setIsResumeUpload(false);
-      });
+      upsertJobs({ resume, userId, file_type: resumeType })
+        .then(() => {
+          setUseUserId(true);
+          setSelectedPositions([0]);
+          console.log("triggered from resume");
+          fetchJobs();
+        })
+        .then(() => {
+          setIsResumeUpload(false);
+        })
+        .catch((error: any) => {
+          console.error("Error during job upsert or fetch:", error);
+          setIsResumeUpload(false);
+        });
     }
   }, [resume]);
-
   useEffect(() => {
     if (
       !isInitialMount4.current &&
@@ -108,17 +124,15 @@ const JobSearchCard: React.FC = () => {
       selectedPositions.length > 0 &&
       !isResumeUpload
     ) {
-      const timer = setTimeout(() => {
-        fetchJobs();
-      }, 500);
-
-      return () => clearTimeout(timer);
+      console.log("triggered from selected positions");
+      fetchJobs();
     }
     isInitialMount4.current = false;
   }, [selectedPositions]);
 
   useEffect(() => {
     if (filterButtonClicked) {
+      console.log("triggered from filter button clicked");
       fetchJobs();
     }
     setFilterButtonClicked(false);
@@ -154,11 +168,11 @@ const JobSearchCard: React.FC = () => {
       console.error("Error fetching locations:", error);
     }
   };
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const fetchJobs = useCallback(async () => {
+  const fetchJobs = async () => {
     try {
       const skip = (currentPage - 1) * itemsPerPage;
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
       setLoading(true);
       // Create FormData object for both query parameters and file
       const formData = new FormData();
@@ -167,6 +181,10 @@ const JobSearchCard: React.FC = () => {
       formData.append("skip", skip.toString());
       formData.append("limit", itemsPerPage.toString());
       formData.append("dateset", datePosted.toString());
+      console.log(userId, useUserId, "user id");
+      if (userId && useUserId) {
+        formData.append("user_id", userId);
+      }
 
       if (selectedLevels?.length > 0) {
         selectedLevels.forEach((level) => formData.append("job_level", level));
@@ -185,15 +203,6 @@ const JobSearchCard: React.FC = () => {
       console.log(needVisaSponsorship, "fetchjobs");
       if (needVisaSponsorship) {
         formData.append("needs_visa_sponsorship", "true");
-      }
-
-      if (resume instanceof File) {
-        const resumeType = resume.name.endsWith(".pdf") ? "pdf" : "docx";
-        formData.append("resume", resume, resume.name);
-        formData.append("file_type", resumeType);
-        console.log("Appending resume file:", resume.name, "Type:", resumeType);
-      } else {
-        console.log("No resume file to append");
       }
 
       const response = await fetch(`${baseUrl}jobs/`, {
@@ -221,21 +230,40 @@ const JobSearchCard: React.FC = () => {
       setError("Error fetching jobs. Please try again later.");
       setLoading(false);
     }
-  }, [
-    selectedLocations,
-    currentPage,
-    datePosted,
-    selectedLevels,
-    selectedPositions,
-    resume,
-    itemsPerPage,
-    setPositions,
-    needVisaSponsorship,
-  ]);
+  };
+
   useEffect(() => {
-    fetchJobs();
-    fetchLocationData();
-  }, []);
+    const initializeData = async () => {
+      if (userId) {
+        try {
+          const response = await fetch(`${baseUrl}user/${userId}`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          setUseUserId(data.user_exists);
+        } catch (error) {
+          console.error("Error checking user existence:", error);
+          setUseUserId(false);
+        }
+      } else {
+        setUseUserId(false);
+      }
+    };
+
+    initializeData();
+  }, []); // Only runs once on mount
+
+  useEffect(() => {
+    // Only trigger fetchJobs and fetchLocationData when useUserId is true or false
+    if (useUserId !== null) {
+      console.log("useUserId updated to:", useUserId);
+
+      // Now fetch jobs and location data
+      fetchJobs();
+      fetchLocationData();
+    }
+  }, [useUserId]); // This runs only when useUserId changes from null to a valid value
   const jobDetailsRef = useRef<HTMLDivElement>(null);
 
   const handleJobSelect = (job: Job) => {
@@ -300,6 +328,7 @@ const JobSearchCard: React.FC = () => {
   const closeJobCard = () => {
     setIsJobCardOpen(false);
   };
+
   return (
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
       {!isMobile && (

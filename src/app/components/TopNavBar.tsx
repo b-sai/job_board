@@ -8,6 +8,7 @@ import { useDarkMode } from "job-board/DarkModeContext";
 import { Sun, Moon } from "lucide-react";
 import FilterButtonWithModal from "job-board/FilterButton";
 import { useMediaQuery } from "react-responsive"; // Add this import
+import AuthButton from "auth/AuthButton";
 
 export const TopNavBar = () => {
   const pathName = usePathname();
@@ -29,6 +30,7 @@ export const TopNavBar = () => {
           <span className="sr-only">Job Board</span>
           <Image src={logoSrc} alt="Logo" width={90} height={45} priority />
         </Link>
+        <AuthButton />
         <div className="flex items-center space-x-4">
           {isMobile && <FilterButtonWithModal />}
           <button
