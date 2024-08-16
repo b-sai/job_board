@@ -199,7 +199,6 @@ const JobSearchCard: React.FC = () => {
           formData.append("positions_to_filter", position.toString())
         );
       }
-      console.log(needVisaSponsorship, "fetchjobs");
       if (needVisaSponsorship) {
         formData.append("needs_visa_sponsorship", "true");
       }
@@ -240,9 +239,12 @@ const JobSearchCard: React.FC = () => {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          setUseUserId(data.user_exists);
-          console.log(data.file_name, "file name");
-          setDummyResumeName(data.file_name);
+          if (data.file_name) {
+            setDummyResumeName(data.file_name);
+            setUseUserId(true);
+          } else {
+            setUseUserId(false);
+          }
         } catch (error) {
           console.error("Error checking user existence:", error);
           setUseUserId(false);
@@ -251,7 +253,6 @@ const JobSearchCard: React.FC = () => {
         setUseUserId(false);
       }
       setResumeUploadCount(resumeUploadCount + 1);
-      console.log(resumeUploadCount, "resume upload count");
     };
 
     initializeData();
