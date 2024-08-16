@@ -36,7 +36,8 @@ const GoogleSignInButton = ({ handleSignIn }: { handleSignIn: () => void }) => {
   );
 };
 import Image from "next/image";
-
+import { auth } from "../../../auth";
+import { handleAuth } from "./authComponent";
 export default function SignInModal() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -79,7 +80,17 @@ export default function SignInModal() {
               Sign up to track jobs you've applied to and save your resume
             </p>
             <div className="pb-4 pt-2">
-              <GoogleSignInButton handleSignIn={() => signIn("google")} />
+              <GoogleSignInButton
+                handleSignIn={async () => {
+                  try {
+                    const result = await signIn("google", {
+                      callbackUrl: "/handleAuth",
+                    });
+                  } catch (error) {
+                    console.error("error123", error);
+                  }
+                }}
+              />
             </div>
           </div>
         </div>

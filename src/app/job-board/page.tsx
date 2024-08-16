@@ -86,19 +86,13 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     if (!isInitialMount1.current && !isMobile) {
-      console.log(needVisaSponsorship);
-      console.log(
-        "triggered from selected locations, current page, date posted, visa"
-      );
       fetchJobs();
-      console.log(needVisaSponsorship);
     }
     isInitialMount1.current = false;
   }, [selectedLocations, currentPage, datePosted, needVisaSponsorship]);
 
   useEffect(() => {
     if (!isInitialMount2.current && !isMobile) {
-      console.log("triggered from selected levels");
       fetchJobs();
     }
     isInitialMount2.current = false;
@@ -123,7 +117,6 @@ const JobSearchCard: React.FC = () => {
       selectedPositions.length > 0 &&
       !isResumeUpload
     ) {
-      console.log("triggered from selected positions");
       fetchJobs();
     }
     isInitialMount4.current = false;
@@ -131,7 +124,6 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     if (filterButtonClicked) {
-      console.log("triggered from filter button clicked");
       fetchJobs();
     }
     setFilterButtonClicked(false);
@@ -180,7 +172,6 @@ const JobSearchCard: React.FC = () => {
       formData.append("skip", skip.toString());
       formData.append("limit", itemsPerPage.toString());
       formData.append("dateset", datePosted.toString());
-      console.log(userId, useUserId, "user id");
       if (userId && useUserId) {
         formData.append("user_id", userId);
       }
@@ -260,9 +251,7 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     if (useUserId !== null) {
-      console.log("useUserId updated to:", useUserId);
       setSelectedPositions([0]);
-      console.log("triggered from useUserId");
       fetchJobs();
       fetchLocationData();
     }
