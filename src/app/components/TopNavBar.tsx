@@ -9,13 +9,14 @@ import { Sun, Moon } from "lucide-react";
 import FilterButtonWithModal from "job-board/FilterButton";
 import { useMediaQuery } from "react-responsive"; // Add this import
 import AuthButton from "auth/AuthButton";
-
+import SignOutButton from "auth/signOutButton";
+import { useSession } from "next-auth/react";
 export const TopNavBar = () => {
   const pathName = usePathname();
   const isHomePage = pathName === "/";
   const { darkMode, toggleDarkMode } = useDarkMode();
   const isMobile = useMediaQuery({ maxWidth: 768 });
-
+  const session = useSession();
   return (
     <header
       aria-label="Site Header"
@@ -30,7 +31,11 @@ export const TopNavBar = () => {
           <span className="sr-only">Job Board</span>
           <Image src={logoSrc} alt="Logo" width={90} height={45} priority />
         </Link>
-        <AuthButton />
+        {session.status === "authenticated" ? (
+          <SignOutButton />
+        ) : (
+          <AuthButton />
+        )}
         <div className="flex items-center space-x-4">
           {isMobile && <FilterButtonWithModal />}
           <button

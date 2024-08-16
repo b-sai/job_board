@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { X } from "lucide-react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import React from "react";
 
@@ -36,14 +36,10 @@ const GoogleSignInButton = ({ handleSignIn }: { handleSignIn: () => void }) => {
   );
 };
 import Image from "next/image";
-import { auth } from "../../../auth";
-import { handleAuth } from "./authComponent";
 export default function SignInModal() {
   const [isOpen, setIsOpen] = useState(false);
-
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
-
   return (
     <>
       <button

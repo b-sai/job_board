@@ -1,16 +1,48 @@
-// handleAuth/page.tsx
-"use server";
+"use client";
+import { useEffect } from "react";
 import { redirect } from "next/navigation";
-import { auth } from "../../../auth";
-import ClientUpdateUser from "./userUpsert";
-export default async function HandleAuth() {
-  const session = await auth();
+import { useSession } from "next-auth/react";
+import { usePostHog } from "posthog-js/react";
 
-  if (session) {
-    console.log("User is signed in");
-    return <ClientUpdateUser session={session} />;
-  } else {
-    console.log("User is not signed in");
-    redirect("/");
+export default function HandleAuth() {
+  const posthog = usePostHog();
+  const { data: session, status } = useSession();
+
+  function updateUser(session: any) {
+    console.log("in userUpsert");
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    const user_id =
+      posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID;
+    const formData = new FormData();
+    if (user_id !== null) formData.append("user_id", user_id || "");
+    if (session?.user?.email) formData.append("email", session.user.email);
+    if (session?.user?.name) formData.append("name", session.user.name);
+    posthog.identify(user_id, {
+      email: session?.user?.email,
+      name: session?.user?.name,
+    });
+
+    fetch(`${baseUrl}upsert_user/`, {
+      method: "POST",
+      body: formData,
+    });
   }
+
+  useEffect(() => {
+    if (status === "loading") return; // Don't do anything while loading
+
+    if (status === "authenticated") {
+      console.log("User is signed in");
+      updateUser(session);
+    } else {
+      console.log("User is not signed in");
+    }
+    redirect("/");
+  }, [status, session]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>; // Or any loading indicator
+  }
+
+  return null; // This component doesn't render anything
 }
