@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 
 import React, { useState, useEffect, ChangeEvent, useRef } from "react";
 import { X } from "lucide-react";
-import { fetchData, fetchLocations } from "./FetchData";
 import { useFilter } from "FilterDataProvider";
 
 interface StateFilterProps {
