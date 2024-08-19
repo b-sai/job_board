@@ -8,6 +8,7 @@ interface JobDetailsProps {
   selectedJob: any | null;
   customComponents: Record<string, React.FC<any>>;
   jobDetailsRef: React.RefObject<HTMLDivElement>;
+  setAppliedJobs: React.Dispatch<React.SetStateAction<Set<number>>>;
 }
 
 const JobDetails: React.FC<JobDetailsProps> = ({
@@ -15,6 +16,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({
   selectedJob,
   customComponents,
   jobDetailsRef,
+  setAppliedJobs,
 }) => {
   return (
     <div
@@ -49,7 +51,10 @@ const JobDetails: React.FC<JobDetailsProps> = ({
             <LocationChip location={selectedJob.location} />
           </div>
           <button
-            onClick={() => window.open(selectedJob.job_url_direct, "_blank")}
+            onClick={() => {
+              window.open(selectedJob.job_url_direct, "_blank");
+              setAppliedJobs((prevSet) => new Set(prevSet).add(selectedJob.id));
+            }}
             className="mb-4 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 hover:bg-blue-600"
           >
             Apply Now

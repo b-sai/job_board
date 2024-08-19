@@ -32,12 +32,16 @@ interface Job {
 }
 import { useFilter } from "FilterDataProvider";
 import {
+  AppliedChip,
   CompleteMatchChip,
   PartialMatchChip,
   StrongFitChip,
+  ViewedChip,
   WeakMatchChip,
 } from "./Chips";
 import { upsertJobs } from "./FetchData";
+import useTrackExit from "hooks/unload";
+import { useSession } from "next-auth/react";
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -52,8 +56,18 @@ const JobSearchCard: React.FC = () => {
   const [isResumeUpload, setIsResumeUpload] = useState(false);
   const [resumeUploadCount, setResumeUploadCount] = useState(0);
   const posthog = usePostHog();
-  const userId = posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID;
-
+  const [viewedJobs, setViewedJobs] = useState<Set<number>>(new Set());
+  const [appliedJobs, setAppliedJobs] = useState<Set<number>>(new Set());
+  const [originalViewedJobs, setOriginalViewedJobs] = useState<Set<number>>(
+    new Set()
+  );
+  const [originalAppliedJobs, setOriginalAppliedJobs] = useState<Set<number>>(
+    new Set()
+  );
+  const userId: string | undefined =
+    posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID;
+  useTrackExit(userId, appliedJobs, viewedJobs);
+  const session = useSession();
   const {
     selectedLevels,
     selectedLocations,
@@ -103,6 +117,7 @@ const JobSearchCard: React.FC = () => {
       setIsResumeUpload(true);
       setIsParsing(true);
       setLoading(true);
+      setDummyResumeName(resume.name);
       upsertJobs({ resume, userId, fileName: resume.name }).then(() => {
         setUseUserId(true);
         setResumeUploadCount(resumeUploadCount + 1);
@@ -211,6 +226,7 @@ const JobSearchCard: React.FC = () => {
 
       if (data.jobs.length > 0) {
         setSelectedJob(data.jobs[0]);
+        setViewedJobs((prevSet) => new Set(prevSet).add(data.jobs[0].id));
       } else {
         setSelectedJob(null);
       }
@@ -223,7 +239,13 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     const initializeData = async () => {
-      if (userId) {
+      console.log("userId HERE 12345", userId, session.status);
+      if (session.status === "loading") {
+        setLoading(true);
+        return;
+      }
+      if (userId && session.status === "authenticated") {
+        console.log("userId HERE 123", userId);
         try {
           const response = await fetch(`${baseUrl}user/${userId}`);
           if (!response.ok) {
@@ -243,11 +265,35 @@ const JobSearchCard: React.FC = () => {
       } else {
         setUseUserId(false);
       }
+
+      if (session.status === "authenticated") {
+        try {
+          const response = await fetch(
+            `${baseUrl}interactions/?user_id=${userId}`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            for (const job of data) {
+              if (job.interaction_type === "viewed") {
+                setOriginalViewedJobs((prevSet) =>
+                  new Set(prevSet).add(job.application_id)
+                );
+              } else if (job.interaction_type === "applied") {
+                setOriginalAppliedJobs((prevSet) =>
+                  new Set(prevSet).add(job.application_id)
+                );
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching trackings:", error);
+        }
+      }
       setResumeUploadCount(resumeUploadCount + 1);
     };
 
     initializeData();
-  }, []); // Only runs once on mount
+  }, [session.status]);
 
   useEffect(() => {
     if (useUserId !== null) {
@@ -266,6 +312,7 @@ const JobSearchCard: React.FC = () => {
     if (jobDetailsRef.current) {
       jobDetailsRef.current.scrollTo(0, 0);
     }
+    setViewedJobs((prevSet) => new Set(prevSet).add(job.id));
   };
   const scrollToTop = () => {
     if (jobListRef.current) {
@@ -280,25 +327,6 @@ const JobSearchCard: React.FC = () => {
       scrollToTop();
     }
   }, [jobs]);
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    setLoading(true);
-  };
-
-  const handleLevelFilterChange: Dispatch<SetStateAction<string[]>> = (
-    levels
-  ) => {
-    setSelectedLevels(levels);
-    setCurrentPage(1); // Reset to first page
-  };
-
-  const handleLocationFilterChange: Dispatch<SetStateAction<string[]>> = (
-    locations
-  ) => {
-    setSelectedLocations(locations);
-    setCurrentPage(1); // Reset to first page
-  };
 
   const customComponents = {
     h1: ({ ...props }: React.HTMLProps<HTMLHeadingElement>) => (
@@ -362,18 +390,40 @@ const JobSearchCard: React.FC = () => {
                       <p className="text-black-600 text-sm">{job.company}</p>
                       <p className="text-sm text-gray-600 dark:text-white">
                         {job.location}
-                        <div className="float-right">
-                          {job.score && job.score > 0.32 ? (
-                            <CompleteMatchChip />
-                          ) : job.score && job.score > 0.25 ? (
-                            <StrongFitChip />
-                          ) : job.score && job.score > 0.21 ? (
-                            <PartialMatchChip />
-                          ) : job.score && job.score <= 0.21 ? (
-                            <WeakMatchChip />
-                          ) : null}
-                        </div>
                       </p>
+                      <div className="mt-1 flex items-center gap-2">
+                        {job.score && job.score > 0.32 ? (
+                          <CompleteMatchChip />
+                        ) : job.score && job.score > 0.25 ? (
+                          <StrongFitChip />
+                        ) : job.score && job.score > 0.21 ? (
+                          <PartialMatchChip />
+                        ) : job.score && job.score <= 0.21 ? (
+                          <WeakMatchChip />
+                        ) : null}
+
+                        {appliedJobs.has(job.id) ||
+                        originalAppliedJobs.has(job.id) ? (
+                          <div className="flex items-center gap-2">
+                            {job.score && (
+                              <p className="text-sm text-black dark:text-white">
+                                •
+                              </p>
+                            )}
+                            <AppliedChip />
+                          </div>
+                        ) : viewedJobs.has(job.id) ||
+                          originalViewedJobs.has(job.id) ? (
+                          <div className="flex items-center gap-2">
+                            {job.score && (
+                              <p className="text-sm text-black dark:text-white">
+                                •
+                              </p>
+                            )}
+                            <ViewedChip />
+                          </div>
+                        ) : null}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -385,6 +435,7 @@ const JobSearchCard: React.FC = () => {
             selectedJob={selectedJob}
             customComponents={customComponents}
             jobDetailsRef={jobDetailsRef}
+            setAppliedJobs={setAppliedJobs}
           />
         )}
       </div>
@@ -402,6 +453,7 @@ const JobSearchCard: React.FC = () => {
               selectedJob={selectedJob}
               customComponents={customComponents}
               jobDetailsRef={jobDetailsRef}
+              setAppliedJobs={setAppliedJobs}
             />
           </div>
         </div>
