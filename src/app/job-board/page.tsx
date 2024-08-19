@@ -241,13 +241,11 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     const initializeData = async () => {
-      console.log("userId HERE 12345", userId, session.status);
       if (session.status === "loading") {
         setLoading(true);
         return;
       }
       if (userId && session.status === "authenticated") {
-        console.log("userId HERE 123", userId);
         try {
           const response = await fetch(`${baseUrl}user/${userId}`);
           if (!response.ok) {

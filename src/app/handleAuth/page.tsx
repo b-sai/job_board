@@ -9,7 +9,6 @@ export default function HandleAuth() {
   const { data: session, status } = useSession();
 
   function updateUser(session: any) {
-    console.log("in userUpsert");
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
     const user_id =
       posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID;

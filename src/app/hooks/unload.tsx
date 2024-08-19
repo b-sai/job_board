@@ -8,7 +8,6 @@ const useTrackExit = (
 ) => {
   const session = useSession();
   useEffect(() => {
-    console.log("HERE UNLOAD", session.status);
     if (session.status !== "authenticated") return;
     const handleVisibilityChange = () => {
       if (
@@ -44,7 +43,6 @@ const useTrackExit = (
 
   const trackExit = () => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}trackings/`;
-    console.log("VIEWED", viewedSetRef.current);
     const interactionsData = {
       viewed: Array.from(viewedSetRef.current),
       applied: Array.from(appliedSetRef.current),
@@ -54,7 +52,6 @@ const useTrackExit = (
       viewed: interactionsData.viewed,
       applied: interactionsData.applied,
     });
-    console.log("DATA", data);
 
     fetch(url, {
       method: "POST",
