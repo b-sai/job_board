@@ -16,6 +16,10 @@ interface ResumeContextType {
   setFileUrl: React.Dispatch<React.SetStateAction<string>>;
   dummyResumeName: string;
   setDummyResumeName: React.Dispatch<React.SetStateAction<string>>;
+  viewedJobs: Set<number>;
+  setViewedJobs: React.Dispatch<React.SetStateAction<Set<number>>>;
+  appliedJobs: Set<number>;
+  setAppliedJobs: React.Dispatch<React.SetStateAction<Set<number>>>;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -33,6 +37,9 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
   const [isParsing, setIsParsing] = useState(false);
   const [fileUrl, setFileUrl] = useState<string>("");
   const [dummyResumeName, setDummyResumeName] = useState<string>("");
+  const [viewedJobs, setViewedJobs] = useState<Set<number>>(new Set());
+  const [appliedJobs, setAppliedJobs] = useState<Set<number>>(new Set());
+
   return (
     <ResumeContext.Provider
       value={{
@@ -50,6 +57,10 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
         setFileUrl,
         dummyResumeName,
         setDummyResumeName,
+        viewedJobs,
+        setViewedJobs,
+        appliedJobs,
+        setAppliedJobs,
       }}
     >
       {children}

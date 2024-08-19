@@ -55,9 +55,8 @@ const JobSearchCard: React.FC = () => {
   const isInitialMount4 = useRef(true);
   const [isResumeUpload, setIsResumeUpload] = useState(false);
   const [resumeUploadCount, setResumeUploadCount] = useState(0);
+
   const posthog = usePostHog();
-  const [viewedJobs, setViewedJobs] = useState<Set<number>>(new Set());
-  const [appliedJobs, setAppliedJobs] = useState<Set<number>>(new Set());
   const [originalViewedJobs, setOriginalViewedJobs] = useState<Set<number>>(
     new Set()
   );
@@ -66,7 +65,6 @@ const JobSearchCard: React.FC = () => {
   );
   const userId: string | undefined =
     posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID;
-  useTrackExit(userId, appliedJobs, viewedJobs);
   const session = useSession();
   const {
     selectedLevels,
@@ -87,6 +85,10 @@ const JobSearchCard: React.FC = () => {
     fileUrl,
     dummyResumeName,
     setDummyResumeName,
+    viewedJobs,
+    setViewedJobs,
+    appliedJobs,
+    setAppliedJobs,
   } = useResume();
   const jobListRef = useRef<HTMLDivElement>(null);
   const [isJobCardOpen, setIsJobCardOpen] = useState(false);
@@ -348,6 +350,7 @@ const JobSearchCard: React.FC = () => {
   const closeJobCard = () => {
     setIsJobCardOpen(false);
   };
+  useTrackExit(userId, viewedJobs, appliedJobs);
 
   return (
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
