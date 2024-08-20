@@ -8,9 +8,9 @@ export default function SignInPage() {
       <h1>Sign in</h1>
       {Object.values(providerMap).map((provider) => (
         <form
-          action={async () => {
+          action={async (formData: FormData) => {
+            "use server";
             try {
-              ("use server");
               await signIn(provider.id);
             } catch (error) {
               throw error;
