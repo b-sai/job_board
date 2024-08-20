@@ -16,10 +16,8 @@ interface ResumeContextType {
   setFileUrl: React.Dispatch<React.SetStateAction<string>>;
   dummyResumeName: string;
   setDummyResumeName: React.Dispatch<React.SetStateAction<string>>;
-  viewedJobs: Set<number>;
-  setViewedJobs: React.Dispatch<React.SetStateAction<Set<number>>>;
-  appliedJobs: Set<number>;
-  setAppliedJobs: React.Dispatch<React.SetStateAction<Set<number>>>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -33,12 +31,10 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
     0,
   ]);
   const [useUserId, setUseUserId] = useState<boolean | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isParsing, setIsParsing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [fileUrl, setFileUrl] = useState<string>("");
   const [dummyResumeName, setDummyResumeName] = useState<string>("");
-  const [viewedJobs, setViewedJobs] = useState<Set<number>>(new Set());
-  const [appliedJobs, setAppliedJobs] = useState<Set<number>>(new Set());
 
   return (
     <ResumeContext.Provider
@@ -57,10 +53,8 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
         setFileUrl,
         dummyResumeName,
         setDummyResumeName,
-        viewedJobs,
-        setViewedJobs,
-        appliedJobs,
-        setAppliedJobs,
+        isLoading,
+        setIsLoading,
       }}
     >
       {children}

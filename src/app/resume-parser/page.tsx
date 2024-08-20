@@ -17,6 +17,7 @@ export default function ResumeParser() {
     setPositions,
     selectedPositions,
     setSelectedPositions,
+    isLoading,
   } = useResume();
   const { needVisaSponsorship, setNeedVisaSponsorship } = useFilter();
   const handleFileUrlChange = (fileUrl: string | null) => {
@@ -47,20 +48,26 @@ export default function ResumeParser() {
           playgroundView={true}
         />
       </div>
-      {!isMobile && positions.length > 0 && (
-        <PositionSelector
-          positions={positions}
-          selectedPositions={selectedPositions}
-          onPositionToggle={handlePositionToggle}
-        />
+      {!isLoading && (
+        <div>
+          <div>
+            {!isMobile && positions.length > 0 && (
+              <PositionSelector
+                positions={positions}
+                selectedPositions={selectedPositions}
+                onPositionToggle={handlePositionToggle}
+              />
+            )}
+          </div>
+          <div>
+            <Switch
+              label="Need Visa Sponsorship"
+              isChecked={needVisaSponsorship}
+              setIsChecked={setNeedVisaSponsorship}
+            />
+          </div>
+        </div>
       )}
-      <div>
-        <Switch
-          label="Need Visa Sponsorship"
-          isChecked={needVisaSponsorship}
-          setIsChecked={setNeedVisaSponsorship}
-        />
-      </div>
     </div>
   );
 }

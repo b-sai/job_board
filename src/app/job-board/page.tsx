@@ -45,7 +45,6 @@ import { useSession } from "next-auth/react";
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -63,6 +62,8 @@ const JobSearchCard: React.FC = () => {
   const [originalAppliedJobs, setOriginalAppliedJobs] = useState<Set<number>>(
     new Set()
   );
+  const [viewedJobs, setViewedJobs] = useState<Set<number>>(new Set());
+  const [appliedJobs, setAppliedJobs] = useState<Set<number>>(new Set());
   const userId: string | undefined =
     posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID;
   const session = useSession();
@@ -85,10 +86,8 @@ const JobSearchCard: React.FC = () => {
     fileUrl,
     dummyResumeName,
     setDummyResumeName,
-    viewedJobs,
-    setViewedJobs,
-    appliedJobs,
-    setAppliedJobs,
+    isLoading,
+    setIsLoading,
   } = useResume();
   const jobListRef = useRef<HTMLDivElement>(null);
   const [isJobCardOpen, setIsJobCardOpen] = useState(false);
@@ -118,7 +117,7 @@ const JobSearchCard: React.FC = () => {
     if (resume && resume !== "null" && resume !== null && fileUrl !== "") {
       setIsResumeUpload(true);
       setIsParsing(true);
-      setLoading(true);
+      setIsLoading(true);
       setDummyResumeName(resume.name);
       upsertJobs({ resume, userId, fileName: resume.name }).then(() => {
         setUseUserId(true);
@@ -181,7 +180,7 @@ const JobSearchCard: React.FC = () => {
   const fetchJobs = async () => {
     try {
       const skip = (currentPage - 1) * itemsPerPage;
-      setLoading(true);
+      setIsLoading(true);
       // Create FormData object for both query parameters and file
       const formData = new FormData();
 
@@ -223,7 +222,7 @@ const JobSearchCard: React.FC = () => {
       const data = await response.json();
       setJobs(data.jobs);
       setTotalCount(data.total_count);
-      setLoading(false);
+      setIsLoading(false);
       setPositions(data.positions);
 
       if (data.jobs.length > 0) {
@@ -235,14 +234,14 @@ const JobSearchCard: React.FC = () => {
     } catch (err) {
       console.error("Error fetching jobs:", err);
       setError("Error fetching jobs. Please try again later.");
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     const initializeData = async () => {
       if (session.status === "loading") {
-        setLoading(true);
+        setIsLoading(true);
         return;
       }
       if (userId && session.status === "authenticated") {
@@ -354,7 +353,7 @@ const JobSearchCard: React.FC = () => {
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
       {!isMobile && (
         <div className="mb-6 flex flex-col gap-1 sm:flex-row">
-          {loading ? <PulsingLoadingComponent /> : <FilterGroup />}
+          {isLoading ? <PulsingLoadingComponent /> : <FilterGroup />}
         </div>
       )}
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 lg:flex-row lg:gap-6">
@@ -362,7 +361,7 @@ const JobSearchCard: React.FC = () => {
           ref={jobListRef}
           className="custom-scrollbar w-full overflow-y-auto  lg:w-1/3 "
         >
-          {loading
+          {isLoading
             ? Array(10)
                 .fill(null)
                 .map((_, index) => <LoadingCard key={index} />)
@@ -432,7 +431,7 @@ const JobSearchCard: React.FC = () => {
         </div>
         {!isMobile && (
           <JobCard
-            loading={loading}
+            loading={isLoading}
             selectedJob={selectedJob}
             customComponents={customComponents}
             jobDetailsRef={jobDetailsRef}
@@ -450,7 +449,7 @@ const JobSearchCard: React.FC = () => {
               &times;
             </button>
             <JobCard
-              loading={loading}
+              loading={isLoading}
               selectedJob={selectedJob}
               customComponents={customComponents}
               jobDetailsRef={jobDetailsRef}
