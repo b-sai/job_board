@@ -17,7 +17,8 @@ const FilterGroup: React.FC = () => {
     setDatePosted,
     selectedLocations,
     setSelectedLocations,
-
+    showTopCompanies,
+    setShowTopCompanies,
   } = useFilter();
 
   const { positions, selectedPositions, setSelectedPositions } = useResume();

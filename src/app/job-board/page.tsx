@@ -74,6 +74,7 @@ const JobSearchCard: React.FC = () => {
     setSelectedLevels,
     setSelectedLocations,
     needVisaSponsorship,
+    showTopCompanies,
   } = useFilter();
   const {
     resume,
@@ -104,7 +105,13 @@ const JobSearchCard: React.FC = () => {
       fetchJobs();
     }
     isInitialMount1.current = false;
-  }, [selectedLocations, currentPage, datePosted, needVisaSponsorship]);
+  }, [
+    selectedLocations,
+    currentPage,
+    datePosted,
+    needVisaSponsorship,
+    showTopCompanies,
+  ]);
 
   useEffect(() => {
     if (!isInitialMount2.current && !isMobile) {
@@ -208,6 +215,9 @@ const JobSearchCard: React.FC = () => {
       }
       if (needVisaSponsorship) {
         formData.append("needs_visa_sponsorship", "true");
+      }
+      if (showTopCompanies) {
+        formData.append("show_top_companies", "true");
       }
 
       const response = await fetch(`${baseUrl}jobs/`, {
