@@ -12,7 +12,7 @@ export function PositionSelector({
   onPositionToggle,
 }: PositionSelectorProps) {
   return (
-    <div className="flex-grow overflow-y-auto p-4">
+    <div className="flex-grow overflow-y-auto">
       <h1 className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
         Roles Tailored to Selected Experiences
       </h1>

@@ -361,11 +361,7 @@ const JobSearchCard: React.FC = () => {
 
   return (
     <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
-      {!isMobile && (
-        <div className="mb-6 flex flex-col gap-1 sm:flex-row">
-          {isLoading ? <PulsingLoadingComponent /> : <FilterGroup />}
-        </div>
-      )}
+
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 lg:flex-row lg:gap-6">
         <div
           ref={jobListRef}
