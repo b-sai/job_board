@@ -8,10 +8,21 @@ export default function HandleAuth() {
   const posthog = usePostHog();
   const { data: session, status } = useSession();
 
-  function updateUser(session: any) {
+  async function updateUser(session: any) {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-    const user_id =
-      posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID;
+    const response = await fetch(
+      `${baseUrl}user_exists/${session?.user?.email}`
+    );
+    const data = await response.json();
+    const isOldUser = data.user_exists; // returns true
+    let user_id;
+    if (isOldUser) {
+      console.log("Old user");
+      user_id = data.user_id; // not null
+    } else {
+      console.log("New user");
+      user_id = posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID; // use new generated user ID
+    }
     const formData = new FormData();
     if (user_id !== null) formData.append("user_id", user_id || "");
     if (session?.user?.email) formData.append("email", session.user.email);
