@@ -19,7 +19,13 @@ export default function ResumeParser() {
     setSelectedPositions,
     isLoading,
   } = useResume();
-  const { needVisaSponsorship, setNeedVisaSponsorship } = useFilter();
+  const {
+    needVisaSponsorship,
+    setNeedVisaSponsorship,
+    showTopCompanies,
+    setShowTopCompanies,
+  } = useFilter();
+
   const handleFileUrlChange = (fileUrl: string | null) => {
     setFileUrl(fileUrl);
   };
@@ -61,9 +67,16 @@ export default function ResumeParser() {
           </div>
           <div>
             <Switch
-              label="Need Visa Sponsorship"
+              label="Require Visa Sponsorship"
               isChecked={needVisaSponsorship}
               setIsChecked={setNeedVisaSponsorship}
+            />
+          </div>
+          <div>
+            <Switch
+              label="Show Top Companies"
+              isChecked={showTopCompanies}
+              setIsChecked={setShowTopCompanies}
             />
           </div>
         </div>

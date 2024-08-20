@@ -13,7 +13,7 @@ const FakeLoadingBar = () => {
 
   useEffect(() => {
     const totalDuration = 30000; // 30 seconds total
-    const chunkInterval = 200; // Update every 200ms for chunky progress
+    const chunkInterval = 500; // Update every 200ms for chunky progress
     const pauseAt = 95; // Pause at 95%
     const chunkSize = 3; // Progress increases by 0-3% each chunk
     let timer: any;
@@ -47,7 +47,7 @@ const FakeLoadingBar = () => {
     };
 
     timer = setInterval(updateProgress, chunkInterval);
-    messageTimer = setInterval(updateMessage, 1000); // Change message every second
+    messageTimer = setInterval(updateMessage, 4000); // Change message every second
 
     return () => {
       clearInterval(timer);
