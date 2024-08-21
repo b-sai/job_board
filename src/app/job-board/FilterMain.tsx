@@ -17,7 +17,11 @@ import {
   MapPin,
   Sparkles,
 } from "lucide-react";
-
+const HorizontalLine = () => {
+  return (
+    <div className="my-4 border-t border-gray-200 dark:border-gray-300"></div>
+  );
+};
 const FilterGroup: React.FC = () => {
   const {
     selectedLevels,
@@ -48,8 +52,8 @@ const FilterGroup: React.FC = () => {
   return (
     <div className="space-y-4 p-4">
       <div className="w-full">
-        <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
-        <div className="mb-3 flex items-center space-x-2 font-medium text-gray-700">
+        <HorizontalLine />
+        <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
           <BarChart2 className="h-5 w-5" />
           <span>Level</span>
         </div>
@@ -59,10 +63,9 @@ const FilterGroup: React.FC = () => {
         />
       </div>
 
-      <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
-
+      <HorizontalLine />
       <div className="w-full">
-        <div className="mb-3 flex items-center space-x-2 font-medium text-gray-700">
+        <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
           <CalendarIcon className="h-5 w-5" />
           <span>Date Posted</span>
         </div>
@@ -72,7 +75,7 @@ const FilterGroup: React.FC = () => {
       <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
 
       <div className="w-full">
-        <div className="mb-3 flex items-center space-x-2 font-medium text-gray-700">
+        <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
           <MapPin className="h-5 w-5" />
           <span>Location</span>
         </div>
@@ -85,10 +88,10 @@ const FilterGroup: React.FC = () => {
 
       {positions.length > 0 && (
         <div className="w-full">
-          <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
-          <div className="mb-3 flex  space-x-2 font-medium text-gray-700">
+          <HorizontalLine />
+          <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
             <div className="h-5 w-5 flex-shrink-0">
-              <Sparkles className="h-full w-full" />
+              <Sparkles className="dark: h-full w-full" />
             </div>
             <span>Roles Tailored to Selected Positions</span>
           </div>
@@ -104,10 +107,10 @@ const FilterGroup: React.FC = () => {
           )}
         </div>
       )}
-      <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
+      <HorizontalLine />
 
       <div>
-        <div className="mb-3 flex items-center space-x-2 font-medium text-gray-700">
+        <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
           <Ellipsis className="h-5 w-5" />
           <span>More Filters</span>
         </div>

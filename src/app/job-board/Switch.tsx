@@ -9,7 +9,7 @@ interface SwitchProps {
 const Switch: React.FC<SwitchProps> = ({ label, isChecked, setIsChecked }) => {
   return (
     <div>
-      <label className="inline-flex cursor-pointer items-center">
+      <label className="inline-flex cursor-pointer items-center ">
         <div className="relative">
           <input
             type="checkbox"
@@ -29,7 +29,7 @@ const Switch: React.FC<SwitchProps> = ({ label, isChecked, setIsChecked }) => {
           ></div>
         </div>
         {label && (
-          <span className="ml-3 text-sm font-medium text-gray-700">
+          <span className="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
             {label}
           </span>
         )}
