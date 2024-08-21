@@ -34,7 +34,10 @@ export const Tooltip = ({
       const rect = span.getBoundingClientRect();
       const TOP_OFFSET = 6;
       const newTop = rect.top + rect.height + TOP_OFFSET;
-      const newLeft = rect.left - tooltip.offsetWidth / 2 + rect.width / 2;
+      const newLeft = Math.max(
+        rect.left - tooltip.offsetWidth / 2 + rect.width / 2,
+        10
+      );
       setTooltipPos({
         top: newTop,
         left: newLeft,
@@ -58,7 +61,7 @@ export const Tooltip = ({
           <div
             ref={tooltipRef}
             role="tooltip"
-            className="absolute left-0 top-0 z-10 w-max rounded-md bg-gray-600 px-2 py-0.5 text-sm text-white"
+            className="absolute left-0 top-0 z-10 w-max whitespace-pre-wrap rounded-md bg-gray-600 px-2 py-0.5 text-sm text-white"
             style={{
               left: `${tooltipPos.left}px`,
               top: `${tooltipPos.top}px`,

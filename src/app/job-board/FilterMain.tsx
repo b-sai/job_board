@@ -17,6 +17,7 @@ import {
   MapPin,
   Sparkles,
 } from "lucide-react";
+import { Tooltip } from "components/Tooltip";
 const HorizontalLine = () => {
   return (
     <div className="my-4 border-t border-gray-200 dark:border-gray-300"></div>
@@ -53,10 +54,12 @@ const FilterGroup: React.FC = () => {
     <div className="space-y-4 p-4">
       <div className="w-full">
         <HorizontalLine />
-        <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
-          <BarChart2 className="h-5 w-5" />
-          <span>Level</span>
-        </div>
+        <Tooltip text="Filter jobs by experience level">
+          <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
+            <BarChart2 className="h-5 w-5" />
+            <span>Level</span>
+          </div>
+        </Tooltip>
         <JobLevelFilter
           selectedLevels={selectedLevels}
           setSelectedLevels={setSelectedLevels}
@@ -65,20 +68,24 @@ const FilterGroup: React.FC = () => {
 
       <HorizontalLine />
       <div className="w-full">
-        <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
-          <CalendarIcon className="h-5 w-5" />
-          <span>Date Posted</span>
-        </div>
+        <Tooltip text="Show jobs posted in last 1/3/7 days">
+          <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
+            <CalendarIcon className="h-5 w-5" />
+            <span>Date Posted</span>
+          </div>
+        </Tooltip>
 
         <DateFilter datePosted={datePosted} setDatePosted={setDatePosted} />
       </div>
       <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
 
       <div className="w-full">
-        <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
-          <MapPin className="h-5 w-5" />
-          <span>Location</span>
-        </div>
+        <Tooltip text="Show jobs within location and all remote eligible locations">
+          <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
+            <MapPin className="h-5 w-5" />
+            <span>Location</span>
+          </div>
+        </Tooltip>
 
         <StateFilter
           selectedLocations={selectedLocations}
@@ -89,10 +96,16 @@ const FilterGroup: React.FC = () => {
       <HorizontalLine />
 
       <div>
-        <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
-          <Ellipsis className="h-5 w-5" />
-          <span>More Filters</span>
-        </div>
+        <Tooltip
+          text={`Top Companies: Show only high paying jobs based on levels.fyi data
+
+Visa Sponsorship: Hides jobs that require clearance or doesn't sponsor visas`}
+        >
+          <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
+            <Ellipsis className="h-5 w-5" />
+            <span>More Filters</span>
+          </div>
+        </Tooltip>
         <Switch
           label="Show Top Companies"
           isChecked={showTopCompanies}
@@ -107,12 +120,14 @@ const FilterGroup: React.FC = () => {
       {positions.length > 0 && (
         <div className="w-full">
           <HorizontalLine />
-          <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
-            <div className="h-5 w-5 flex-shrink-0">
-              <Sparkles className="dark: h-full w-full" />
+          <Tooltip text="AI looks at only selected roles to give you tailored job recommendations">
+            <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
+              <div className="h-5 w-5 flex-shrink-0">
+                <Sparkles className="dark: h-full w-full" />
+              </div>
+              <span>Roles Tailored to Selected Positions</span>
             </div>
-            <span>Roles Tailored to Selected Positions</span>
-          </div>
+          </Tooltip>
           <PositionSelector
             positions={positions}
             selectedPositions={selectedPositions}
@@ -127,7 +142,6 @@ const FilterGroup: React.FC = () => {
       )}
     </div>
   );
-  
 };
 
 export default FilterGroup;
