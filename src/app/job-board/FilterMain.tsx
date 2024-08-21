@@ -83,23 +83,27 @@ const FilterGroup: React.FC = () => {
         />
       </div>
 
-      <div className="w-full">
-        <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
-        <div className="mb-3 flex  space-x-2 font-medium text-gray-700">
-          <div className="h-5 w-5 flex-shrink-0">
-            <Sparkles className="h-full w-full" />
+      {positions.length > 0 && (
+        <div className="w-full">
+          <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
+          <div className="mb-3 flex  space-x-2 font-medium text-gray-700">
+            <div className="h-5 w-5 flex-shrink-0">
+              <Sparkles className="h-full w-full" />
+            </div>
+            <span>Roles Tailored to Selected Positions</span>
           </div>
-          <span>Roles Tailored to Selected Positions</span>
-        </div>
-
-        {positions.length > 0 && (
           <PositionSelector
             positions={positions}
             selectedPositions={selectedPositions}
             onPositionToggle={handlePositionToggle}
           />
-        )}
-      </div>
+          {selectedPositions.length <= 0 && (
+            <p className="pt-2 text-sm text-red-500">
+              * select atleast 1 position to enable this filter
+            </p>
+          )}
+        </div>
+      )}
       <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
 
       <div>
