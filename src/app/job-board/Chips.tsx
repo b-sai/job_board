@@ -170,14 +170,9 @@ const LocationChip: React.FC<LocationChipProps> = ({ location }) => (
 );
 
 const CompleteMatchChip: React.FC = () => (
-  <Chip
-    color="text-indigo-700"
-    bgColor="bg-indigo-50"
-    borderColor="border-indigo-200"
-    icon={<SparklesIcon className="mr-1 h-4 w-4" />}
-  >
-    Complete Match
-  </Chip>
+  <p className="flex items-center text-sm font-bold text-indigo-600">
+    Complete Match <SparklesIcon className="ml-1 h-4 w-4" />
+  </p>
 );
 
 const StrongFitChip: React.FC = () => (
