@@ -9,6 +9,7 @@ import { PositionSelector } from "../resume-parser/PositionSelector";
 import { useResume } from "ResumeContext";
 import { useMediaQuery } from "react-responsive"; // Add this import
 import Switch from "./Switch";
+import { BarChart2, CalendarIcon, ChevronRight, MapPin } from "lucide-react";
 
 const FilterGroup: React.FC = () => {
   const {
@@ -40,15 +41,35 @@ const FilterGroup: React.FC = () => {
   return (
     <div className="space-y-4 p-4">
       <div className="w-full">
+        <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
+        <div className="mb-3 flex items-center space-x-2 font-medium text-gray-700">
+          <BarChart2 className="h-5 w-5" />
+          <span>Level</span>
+        </div>
         <JobLevelFilter
           selectedLevels={selectedLevels}
           setSelectedLevels={setSelectedLevels}
         />
       </div>
+
+      <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
+
       <div className="w-full">
+        <div className="mb-3 flex items-center space-x-2 font-medium text-gray-700">
+          <CalendarIcon className="h-5 w-5" />
+          <span>Date Posted</span>
+        </div>
+
         <DateFilter datePosted={datePosted} setDatePosted={setDatePosted} />
       </div>
+      <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
+
       <div className="w-full">
+        <div className="mb-3 flex items-center space-x-2 font-medium text-gray-700">
+          <MapPin className="h-5 w-5" />
+          <span>Location</span>
+        </div>
+
         <StateFilter
           selectedLocations={selectedLocations}
           setSelectedLocations={setSelectedLocations}
@@ -61,7 +82,13 @@ const FilterGroup: React.FC = () => {
           onPositionToggle={handlePositionToggle}
         />
       )}
+      <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
+
       <div>
+        <div className="mb-3 flex items-center space-x-2 font-medium text-gray-700">
+          <ChevronRight className="h-5 w-5" />
+          <span>More Filters</span>
+        </div>
         <Switch
           label="Require Visa Sponsorship"
           isChecked={needVisaSponsorship}

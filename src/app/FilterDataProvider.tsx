@@ -16,8 +16,8 @@ interface FilterContextType {
   setDatePosted: Dispatch<SetStateAction<number>>;
   selectedLocations: string[];
   setSelectedLocations: Dispatch<SetStateAction<string[]>>;
-  filterButtonClicked: boolean;
-  setFilterButtonClicked: Dispatch<SetStateAction<boolean>>;
+  filterIsEnabled: boolean;
+  setFilterIsEnabled: Dispatch<SetStateAction<boolean>>;
   locationData: string[];
   setLocationData: Dispatch<SetStateAction<string[]>>;
   needVisaSponsorship: boolean;
@@ -44,7 +44,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   const [datePosted, setDatePosted] = useState(3);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
-  const [filterButtonClicked, setFilterButtonClicked] = useState(false);
+  const [filterIsEnabled, setFilterIsEnabled] = useState(false);
   const [locationData, setLocationData] = useState<string[]>([]);
   const [needVisaSponsorship, setNeedVisaSponsorship] = useState(false);
   const [showTopCompanies, setShowTopCompanies] = useState(true);
@@ -57,8 +57,8 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
         setDatePosted,
         selectedLocations,
         setSelectedLocations,
-        filterButtonClicked,
-        setFilterButtonClicked,
+        filterIsEnabled,
+        setFilterIsEnabled,
         locationData,
         setLocationData,
         needVisaSponsorship,

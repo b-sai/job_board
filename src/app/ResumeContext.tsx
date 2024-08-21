@@ -18,6 +18,8 @@ interface ResumeContextType {
   setDummyResumeName: React.Dispatch<React.SetStateAction<string>>;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  resumeUploadCount: number;
+  setResumeUploadCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -35,6 +37,7 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [fileUrl, setFileUrl] = useState<string>("");
   const [dummyResumeName, setDummyResumeName] = useState<string>("");
+  const [resumeUploadCount, setResumeUploadCount] = useState(0);
 
   return (
     <ResumeContext.Provider
@@ -55,6 +58,8 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
         setDummyResumeName,
         isLoading,
         setIsLoading,
+        resumeUploadCount,
+        setResumeUploadCount,
       }}
     >
       {children}
