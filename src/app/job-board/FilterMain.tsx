@@ -86,6 +86,24 @@ const FilterGroup: React.FC = () => {
         />
       </div>
 
+      <HorizontalLine />
+
+      <div>
+        <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
+          <Ellipsis className="h-5 w-5" />
+          <span>More Filters</span>
+        </div>
+        <Switch
+          label="Show Top Companies"
+          isChecked={showTopCompanies}
+          setIsChecked={setShowTopCompanies}
+        />
+        <Switch
+          label="Require Visa Sponsorship"
+          isChecked={needVisaSponsorship}
+          setIsChecked={setNeedVisaSponsorship}
+        />
+      </div>
       {positions.length > 0 && (
         <div className="w-full">
           <HorizontalLine />
@@ -107,28 +125,9 @@ const FilterGroup: React.FC = () => {
           )}
         </div>
       )}
-      <HorizontalLine />
-
-      <div>
-        <div className="mb-3 flex  space-x-2 font-medium text-gray-700 dark:text-gray-300">
-          <Ellipsis className="h-5 w-5" />
-          <span>More Filters</span>
-        </div>
-        <Switch
-          label="Require Visa Sponsorship"
-          isChecked={needVisaSponsorship}
-          setIsChecked={setNeedVisaSponsorship}
-        />
-      </div>
-      <div>
-        <Switch
-          label="Show Top Companies"
-          isChecked={showTopCompanies}
-          setIsChecked={setShowTopCompanies}
-        />
-      </div>
     </div>
   );
+  
 };
 
 export default FilterGroup;
