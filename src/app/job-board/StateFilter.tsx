@@ -69,48 +69,46 @@ const StateFilter: React.FC<StateFilterProps> = ({
     setSelectedLocations(selectedLocations.filter((loc) => loc !== location));
   };
   return (
-    <div className="w-full">
-      <div className="flex">
-        <div className="relative w-1/3" ref={wrapperRef}>
-          <input
-            type="text"
-            className="w-full rounded-md border px-4 py-2 focus:outline-none dark:bg-gray-800 dark:text-white"
-            placeholder="Location"
-            value={input}
-            onChange={handleInputChange}
-            onFocus={() => setIsOpen(true)}
-          />
-          {isOpen && (
-            <ul className="absolute z-10 mt-1 max-h-60 w-80 overflow-auto rounded-md border bg-white shadow-lg dark:bg-gray-800">
-              {suggestions.map((suggestion) => (
-                <li
-                  key={suggestion}
-                  className="cursor-pointer hyphens-auto break-words px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
-                  onClick={() => handleSelectLocation(suggestion)}
-                >
-                  {suggestion}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <div className="w-1/2 pl-4">
-          <div className="flex flex-wrap">
-            {selectedLocations.map((location) => (
-              <span
-                key={location}
-                className="mb-2 mr-2 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800"
+    <div className="flex w-full flex-col">
+      <div className="relative w-full" ref={wrapperRef}>
+        <input
+          type="text"
+          className="w-full rounded-md border px-4 py-2 focus:outline-none dark:bg-gray-800 dark:text-white"
+          placeholder="Location"
+          value={input}
+          onChange={handleInputChange}
+          onFocus={() => setIsOpen(true)}
+        />
+        {isOpen && (
+          <ul className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg dark:bg-gray-800">
+            {suggestions.map((suggestion) => (
+              <li
+                key={suggestion}
+                className="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                onClick={() => handleSelectLocation(suggestion)}
               >
-                {location}
-                <button
-                  onClick={() => handleRemoveLocation(location)}
-                  className="ml-1 text-blue-600 hover:text-blue-800"
-                >
-                  <X size={14} />
-                </button>
-              </span>
+                {suggestion}
+              </li>
             ))}
-          </div>
+          </ul>
+        )}
+      </div>
+      <div className="mt-2 w-full">
+        <div className="flex flex-wrap">
+          {selectedLocations.map((location) => (
+            <span
+              key={location}
+              className="m-1 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800"
+            >
+              {location}
+              <button
+                onClick={() => handleRemoveLocation(location)}
+                className="ml-1 text-blue-600 hover:text-blue-800"
+              >
+                <X size={14} />
+              </button>
+            </span>
+          ))}
         </div>
       </div>
     </div>

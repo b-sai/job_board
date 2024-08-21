@@ -3,6 +3,7 @@ import { Filter, X } from "lucide-react";
 import { createPortal } from "react-dom";
 import FilterMain from "./FilterMain";
 import { useFilter } from "FilterDataProvider";
+import { useResume } from "ResumeContext";
 
 const Overlay = ({
   children,
@@ -73,7 +74,8 @@ const FilterButtonWithModal = () => {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-  const { filterButtonClicked, setFilterButtonClicked } = useFilter();
+  const { filterIsEnabled, setFilterIsEnabled } = useFilter();
+  const { resumeUploadCount, setResumeUploadCount } = useResume();
 
   if (!isMounted) {
     return null; // or return a placeholder
@@ -91,8 +93,8 @@ const FilterButtonWithModal = () => {
 
       {isOpen && (
         <Overlay onClose={toggleModal}>
-          <div className="w-full max-w-md rounded-lg bg-white shadow-xl">
-            <div className="p-6">
+          <div className="w-full max-w-md overflow-hidden rounded-lg bg-white shadow-xl">
+            <div className="max-h-[90vh] overflow-y-auto p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-xl font-bold">Filters</h2>
                 <button
@@ -106,13 +108,14 @@ const FilterButtonWithModal = () => {
               <div className="mt-6">
                 <button
                   onClick={() => {
-                    setFilterButtonClicked(true);
+                    setFilterIsEnabled(true);
+                    setResumeUploadCount(resumeUploadCount + 1);
                     toggleModal();
                   }}
                   className={`inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:text-sm ${
-                    filterButtonClicked ? "cursor-not-allowed opacity-50" : ""
+                    filterIsEnabled ? "cursor-not-allowed opacity-50" : ""
                   }`}
-                  disabled={filterButtonClicked}
+                  disabled={filterIsEnabled}
                 >
                   Apply Filters
                 </button>

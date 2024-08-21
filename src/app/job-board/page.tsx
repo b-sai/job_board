@@ -42,6 +42,7 @@ import {
 import { upsertJobs } from "./FetchData";
 import useTrackExit from "hooks/unload";
 import { useSession } from "next-auth/react";
+import ResumeParser from "resume-parser/page";
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -49,11 +50,7 @@ const JobSearchCard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const isInitialMount1 = useRef(true);
-  const isInitialMount2 = useRef(true);
-  const isInitialMount4 = useRef(true);
   const [isResumeUpload, setIsResumeUpload] = useState(false);
-  const [resumeUploadCount, setResumeUploadCount] = useState(0);
 
   const posthog = usePostHog();
   const [originalViewedJobs, setOriginalViewedJobs] = useState<Set<number>>(
@@ -71,8 +68,6 @@ const JobSearchCard: React.FC = () => {
     selectedLevels,
     selectedLocations,
     datePosted,
-    setSelectedLevels,
-    setSelectedLocations,
     needVisaSponsorship,
     showTopCompanies,
   } = useFilter();
@@ -85,40 +80,37 @@ const JobSearchCard: React.FC = () => {
     setUseUserId,
     setIsParsing,
     fileUrl,
-    dummyResumeName,
     setDummyResumeName,
     isLoading,
     setIsLoading,
+    resumeUploadCount,
+    setResumeUploadCount,
   } = useResume();
   const jobListRef = useRef<HTMLDivElement>(null);
   const [isJobCardOpen, setIsJobCardOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
-  const {
-    filterButtonClicked,
-    setFilterButtonClicked,
-    locationData,
-    setLocationData,
-  } = useFilter();
-
+  const { filterIsEnabled, setFilterIsEnabled, locationData, setLocationData } =
+    useFilter();
   useEffect(() => {
-    if (!isInitialMount1.current && !isMobile) {
-      fetchJobs();
+    if (resume !== null) {
+      if (selectedPositions.length > 0) {
+        setFilterIsEnabled(false);
+      } else {
+        setFilterIsEnabled(true);
+      }
+    } else {
+      setFilterIsEnabled(false);
     }
-    isInitialMount1.current = false;
   }, [
     selectedLocations,
     currentPage,
     datePosted,
     needVisaSponsorship,
     showTopCompanies,
+    selectedLevels,
+    selectedPositions,
   ]);
-
-  useEffect(() => {
-    if (!isInitialMount2.current && !isMobile) {
-      fetchJobs();
-    }
-    isInitialMount2.current = false;
-  }, [selectedLevels]);
+  console.log("resume", resume);
 
   useEffect(() => {
     if (resume && resume !== "null" && resume !== null && fileUrl !== "") {
@@ -133,24 +125,8 @@ const JobSearchCard: React.FC = () => {
       });
     }
   }, [resume]);
-  useEffect(() => {
-    if (
-      !isInitialMount4.current &&
-      !isMobile &&
-      selectedPositions.length > 0 &&
-      !isResumeUpload
-    ) {
-      fetchJobs();
-    }
-    isInitialMount4.current = false;
-  }, [selectedPositions]);
 
-  useEffect(() => {
-    if (filterButtonClicked) {
-      fetchJobs();
-    }
-    setFilterButtonClicked(false);
-  }, [filterButtonClicked]);
+  
 
   const fetchLocationData = async () => {
     try {
@@ -264,6 +240,7 @@ const JobSearchCard: React.FC = () => {
           if (data.file_name) {
             setDummyResumeName(data.file_name);
             setUseUserId(true);
+            setSelectedPositions([0]);
           } else {
             setUseUserId(false);
           }
@@ -306,7 +283,6 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     if (useUserId !== null) {
-      setSelectedPositions([0]);
       fetchJobs();
       fetchLocationData();
     }
@@ -360,17 +336,21 @@ const JobSearchCard: React.FC = () => {
   useTrackExit(userId, viewedJobs, appliedJobs);
 
   return (
-    <div className="container mx-auto flex h-[calc(100vh-80px)] flex-col p-4">
-      {!isMobile && (
-        <div className="mb-6 flex flex-col gap-1 sm:flex-row">
-          {isLoading ? <PulsingLoadingComponent /> : <FilterGroup />}
-        </div>
-      )}
+    <div
+      className={`container mx-auto flex h-[calc(100vh-80px)] flex-col ${
+        !isMobile ? "p-4" : ""
+      }`}
+    >
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 lg:flex-row lg:gap-6">
         <div
           ref={jobListRef}
           className="custom-scrollbar w-full overflow-y-auto  lg:w-1/3 "
         >
+          {isMobile && (
+            <div className="p-2">
+              <ResumeParser />
+            </div>
+          )}
           {isLoading
             ? Array(10)
                 .fill(null)

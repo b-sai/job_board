@@ -6,6 +6,7 @@ import { PositionSelector } from "resume-parser/PositionSelector";
 import { useMediaQuery } from "react-responsive";
 import Switch from "job-board/Switch";
 import { useFilter } from "FilterDataProvider";
+import FilterMain from "job-board/FilterMain";
 
 export default function ResumeParser() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -42,8 +43,8 @@ export default function ResumeParser() {
   };
 
   return (
-    <div className="flex h-full flex-col overflow-hidden">
-      <div className="flex-shrink-0 p-1">
+    <div className="flex flex-col">
+      <div>
         <h1 className="mb-4 text-center text-xl font-bold">
           Find Jobs Personalized to Your Resume
           <span className="text-blue-500 dark:text-blue-300"></span>
@@ -54,33 +55,13 @@ export default function ResumeParser() {
           playgroundView={true}
         />
       </div>
-      {!isLoading && (
-        <div>
+      <div>
+        {!isMobile && (
           <div>
-            {!isMobile && positions.length > 0 && (
-              <PositionSelector
-                positions={positions}
-                selectedPositions={selectedPositions}
-                onPositionToggle={handlePositionToggle}
-              />
-            )}
+            <FilterMain />
           </div>
-          <div>
-            <Switch
-              label="Require Visa Sponsorship"
-              isChecked={needVisaSponsorship}
-              setIsChecked={setNeedVisaSponsorship}
-            />
-          </div>
-          <div>
-            <Switch
-              label="Show Top Companies"
-              isChecked={showTopCompanies}
-              setIsChecked={setShowTopCompanies}
-            />
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

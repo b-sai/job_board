@@ -12,10 +12,8 @@ export function PositionSelector({
   onPositionToggle,
 }: PositionSelectorProps) {
   return (
-    <div className="flex-grow overflow-y-auto p-4">
-      <h1 className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
-        Roles Tailored to Selected Experiences
-      </h1>
+    <div className="flex-grow overflow-y-auto">
+
       <div className="grid gap-2">
         {positions.map((option, index) => (
           <label

@@ -8,8 +8,7 @@ interface SwitchProps {
 
 const Switch: React.FC<SwitchProps> = ({ label, isChecked, setIsChecked }) => {
   return (
-    <div className="p-4">
-      {" "}
+    <div>
       <label className="inline-flex cursor-pointer items-center">
         <div className="relative">
           <input
