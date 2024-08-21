@@ -380,15 +380,22 @@ const JobSearchCard: React.FC = () => {
                       <p className="text-black-600 text-sm">{job.company}</p>
                       <p className="text-sm text-gray-600 dark:text-white">
                         {job.location}
+                        {job.min_amount !== null && job.max_amount !== null && (
+                          <>
+                            {" • $"}
+                            {job.min_amount?.toLocaleString()} -{" "}
+                            {job.max_amount?.toLocaleString()}
+                          </>
+                        )}
                       </p>
                       <div className="mt-1 flex items-center gap-2">
-                        {job.score && job.score > 0.32 ? (
+                        {job.score && job.score > 0.25 ? (
                           <CompleteMatchChip />
-                        ) : job.score && job.score > 0.25 ? (
+                        ) : job.score && job.score > 0.2 ? (
                           <StrongFitChip />
-                        ) : job.score && job.score > 0.21 ? (
+                        ) : job.score && job.score > 0.18 ? (
                           <PartialMatchChip />
-                        ) : job.score && job.score <= 0.21 ? (
+                        ) : job.score && job.score <= 0.15 ? (
                           <WeakMatchChip />
                         ) : null}
 
