@@ -9,7 +9,14 @@ import { PositionSelector } from "../resume-parser/PositionSelector";
 import { useResume } from "ResumeContext";
 import { useMediaQuery } from "react-responsive"; // Add this import
 import Switch from "./Switch";
-import { BarChart2, CalendarIcon, ChevronRight, MapPin } from "lucide-react";
+import {
+  BarChart2,
+  CalendarIcon,
+  ChevronRight,
+  Ellipsis,
+  MapPin,
+  Sparkles,
+} from "lucide-react";
 
 const FilterGroup: React.FC = () => {
   const {
@@ -75,18 +82,29 @@ const FilterGroup: React.FC = () => {
           setSelectedLocations={setSelectedLocations}
         />
       </div>
-      {positions.length > 0 && (
-        <PositionSelector
-          positions={positions}
-          selectedPositions={selectedPositions}
-          onPositionToggle={handlePositionToggle}
-        />
-      )}
+
+      <div className="w-full">
+        <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
+        <div className="mb-3 flex  space-x-2 font-medium text-gray-700">
+          <div className="h-5 w-5 flex-shrink-0">
+            <Sparkles className="h-full w-full" />
+          </div>
+          <span>Roles Tailored to Selected Positions</span>
+        </div>
+
+        {positions.length > 0 && (
+          <PositionSelector
+            positions={positions}
+            selectedPositions={selectedPositions}
+            onPositionToggle={handlePositionToggle}
+          />
+        )}
+      </div>
       <div className="my-4 border-t border-gray-200 dark:border-gray-700"></div>
 
       <div>
         <div className="mb-3 flex items-center space-x-2 font-medium text-gray-700">
-          <ChevronRight className="h-5 w-5" />
+          <Ellipsis className="h-5 w-5" />
           <span>More Filters</span>
         </div>
         <Switch

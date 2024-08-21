@@ -50,9 +50,6 @@ const JobSearchCard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const isInitialMount1 = useRef(true);
-  const isInitialMount2 = useRef(true);
-  const isInitialMount4 = useRef(true);
   const [isResumeUpload, setIsResumeUpload] = useState(false);
 
   const posthog = usePostHog();
@@ -71,8 +68,6 @@ const JobSearchCard: React.FC = () => {
     selectedLevels,
     selectedLocations,
     datePosted,
-    setSelectedLevels,
-    setSelectedLocations,
     needVisaSponsorship,
     showTopCompanies,
   } = useFilter();
@@ -85,7 +80,6 @@ const JobSearchCard: React.FC = () => {
     setUseUserId,
     setIsParsing,
     fileUrl,
-    dummyResumeName,
     setDummyResumeName,
     isLoading,
     setIsLoading,
@@ -118,13 +112,6 @@ const JobSearchCard: React.FC = () => {
   ]);
   console.log("resume", resume);
 
-  // useEffect(() => {
-  //   if (!isInitialMount2.current && !isMobile) {
-  //     fetchJobs();
-  //   }
-  //   isInitialMount2.current = false;
-  // }, [selectedLevels]);
-
   useEffect(() => {
     if (resume && resume !== "null" && resume !== null && fileUrl !== "") {
       setIsResumeUpload(true);
@@ -138,17 +125,8 @@ const JobSearchCard: React.FC = () => {
       });
     }
   }, [resume]);
-  // useEffect(() => {
-  //   if (
-  //     !isInitialMount4.current &&
-  //     !isMobile &&
-  //     selectedPositions.length > 0 &&
-  //     !isResumeUpload
-  //   ) {
-  //     fetchJobs();
-  //   }
-  //   isInitialMount4.current = false;
-  // }, [selectedPositions]);
+
+  
 
   const fetchLocationData = async () => {
     try {
