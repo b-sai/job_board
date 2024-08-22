@@ -42,10 +42,7 @@ export default function SignInModal() {
   const closeModal = () => setIsOpen(false);
   return (
     <>
-      <button
-        onClick={openModal}
-        className="rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-      >
+      <button onClick={openModal} className="authButton">
         Sign in
       </button>
       {isOpen && (
