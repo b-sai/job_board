@@ -43,6 +43,7 @@ import { upsertJobs } from "./FetchData";
 import useTrackExit from "hooks/unload";
 import { useSession } from "next-auth/react";
 import ResumeParser from "resume-parser/page";
+import toggleLevel from "./Filters";
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -70,6 +71,7 @@ const JobSearchCard: React.FC = () => {
     datePosted,
     needVisaSponsorship,
     showTopCompanies,
+    setSelectedLevels,
   } = useFilter();
   const {
     resume,
@@ -110,23 +112,36 @@ const JobSearchCard: React.FC = () => {
     selectedLevels,
     selectedPositions,
   ]);
-  console.log("resume", resume);
 
   useEffect(() => {
-    if (resume && resume !== "null" && resume !== null && fileUrl !== "") {
-      setIsResumeUpload(true);
-      setIsParsing(true);
-      setIsLoading(true);
-      setDummyResumeName(resume.name);
-      upsertJobs({ resume, userId, fileName: resume.name }).then(() => {
-        setUseUserId(true);
-        setResumeUploadCount(resumeUploadCount + 1);
-        setIsParsing(false);
-      });
-    }
-  }, [resume]);
+    const handleResumeUpload = async () => {
+      if (resume && resume !== "null" && resume !== null && fileUrl !== "") {
+        setIsResumeUpload(true);
+        setIsParsing(true);
+        setIsLoading(true);
+        setDummyResumeName(resume.name);
+        try {
+          const data = await upsertJobs({
+            resume,
+            userId,
+            fileName: resume.name,
+          });
+          setUseUserId(true);
+          if (data.filters && data.filters.level) {
+            setSelectedLevels([data.filters.level]);
+          }
 
-  
+          setResumeUploadCount(resumeUploadCount + 1);
+        } catch (error) {
+          console.error("Error upserting jobs:", error);
+        } finally {
+          setIsParsing(false);
+        }
+      }
+    };
+
+    handleResumeUpload();
+  }, [resume]);
 
   const fetchLocationData = async () => {
     try {
@@ -232,7 +247,10 @@ const JobSearchCard: React.FC = () => {
       }
       if (userId && session.status === "authenticated") {
         try {
-          const response = await fetch(`${baseUrl}user/${userId}`);
+          const response = await fetch(
+            `${baseUrl}user_exists/${session.data.user?.email}`
+          );
+
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -241,6 +259,9 @@ const JobSearchCard: React.FC = () => {
             setDummyResumeName(data.file_name);
             setUseUserId(true);
             setSelectedPositions([0]);
+            if (data.filters && data.filters.level.length > 0) {
+              setSelectedLevels([data.filters.level]);
+            }
           } else {
             setUseUserId(false);
           }
@@ -284,9 +305,12 @@ const JobSearchCard: React.FC = () => {
   useEffect(() => {
     if (useUserId !== null) {
       fetchJobs();
-      fetchLocationData();
     }
   }, [resumeUploadCount]);
+
+  useEffect(() => {
+    fetchLocationData();
+  }, []);
   const jobDetailsRef = useRef<HTMLDivElement>(null);
 
   const handleJobSelect = (job: Job) => {
