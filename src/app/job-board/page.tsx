@@ -128,7 +128,7 @@ const JobSearchCard: React.FC = () => {
           });
           setUseUserId(true);
           if (data.filters && data.filters.level) {
-            setSelectedLevels([data.filters.level]);
+            setSelectedLevels(data.filters.level);
           }
 
           setResumeUploadCount(resumeUploadCount + 1);
@@ -260,7 +260,7 @@ const JobSearchCard: React.FC = () => {
             setUseUserId(true);
             setSelectedPositions([0]);
             if (data.filters && data.filters.level.length > 0) {
-              setSelectedLevels([data.filters.level]);
+              setSelectedLevels(data.filters.level);
             }
           } else {
             setUseUserId(false);
