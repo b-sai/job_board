@@ -52,7 +52,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({
           </div>
           <button
             onClick={() => {
-              window.open(selectedJob.job_url_direct, "_blank");
+              window.open(selectedJob.job_url_final, "_blank");
               setAppliedJobs((prevSet) => new Set(prevSet).add(selectedJob.id));
             }}
             className="mb-4 rounded-lg bg-blue-500 px-6 py-2 font-semibold text-white transition-all duration-300 hover:bg-blue-600"

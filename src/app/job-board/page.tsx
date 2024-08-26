@@ -22,7 +22,7 @@ interface Job {
   title: string;
   company?: string;
   description?: string;
-  job_url_direct?: string;
+  job_url_final?: string;
   date_posted?: string;
   location?: string;
   score?: number;
