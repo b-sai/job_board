@@ -419,9 +419,9 @@ const JobSearchCard: React.FC = () => {
                           <StrongFitChip />
                         ) : job.score && job.score > 0.18 ? (
                           <PartialMatchChip />
-                        ) : job.score && job.score <= 0.15 ? (
+                        ) : (
                           <WeakMatchChip />
-                        ) : null}
+                        )}
 
                         {appliedJobs.has(job.id) ||
                         originalAppliedJobs.has(job.id) ? (
