@@ -65,14 +65,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({
             </ReactMarkdown>
           </div>
         </div>
-      ) : (
-        <div className="flex h-full items-center justify-center">
-          <p className="text-lg text-gray-500">
-            Could not find relevant roles for your resume. Try increasing the
-            number of days.
-          </p>
-        </div>
-      )}
+      ) : null}
     </div>
   );
 };

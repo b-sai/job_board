@@ -28,6 +28,7 @@ const MainApp = () => {
               <div className="h-1/7 p-4 ">
                 <button
                   onClick={() => {
+                    setFilterIsEnabled(true);
                     setResumeUploadCount(resumeUploadCount + 1);
                   }}
                   disabled={filterIsEnabled}

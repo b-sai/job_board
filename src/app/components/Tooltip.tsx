@@ -23,8 +23,23 @@ export const Tooltip = ({
   const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 });
 
   const [show, setShow] = useState(false);
-  const showTooltip = () => setShow(true);
-  const hideTooltip = () => setShow(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const showTooltip = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setShow(true), 300);
+  };
+
+  const hideTooltip = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setShow(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   // Hook to set tooltip position to be right below children and centered
   useEffect(() => {

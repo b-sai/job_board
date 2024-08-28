@@ -72,6 +72,7 @@ const JobSearchCard: React.FC = () => {
     needVisaSponsorship,
     showTopCompanies,
     setSelectedLevels,
+    setShowTopCompanies,
   } = useFilter();
   const {
     resume,
@@ -225,7 +226,7 @@ const JobSearchCard: React.FC = () => {
       setTotalCount(data.total_count);
       setIsLoading(false);
       setPositions(data.positions);
-
+      setFilterIsEnabled(false);
       if (data.jobs.length > 0) {
         setSelectedJob(data.jobs[0]);
         setViewedJobs((prevSet) => new Set(prevSet).add(data.jobs[0].id));
@@ -359,6 +360,11 @@ const JobSearchCard: React.FC = () => {
   };
   useTrackExit(userId, viewedJobs, appliedJobs);
 
+  const handleExpandSearch = () => {
+    setShowTopCompanies(false);
+    setResumeUploadCount(resumeUploadCount + 1);
+  };
+
   return (
     <div
       className={`container mx-auto flex h-[calc(100vh-80px)] flex-col ${
@@ -375,80 +381,99 @@ const JobSearchCard: React.FC = () => {
               <ResumeParser />
             </div>
           )}
-          {isLoading
-            ? Array(10)
-                .fill(null)
-                .map((_, index) => <LoadingCard key={index} />)
-            : jobs.map((job) => (
-                <div
-                  key={job.id}
-                  className={`cursor-pointer border-l-4 p-4 transition-all duration-300 ${
-                    selectedJob?.id === job.id
-                      ? "border-blue-500 bg-blue-50 dark:bg-slate-700"
-                      : "border-transparent hover:bg-gray-50 dark:hover:bg-gray-700"
-                  }`}
-                  onClick={() => handleJobSelect(job)}
-                >
-                  <div className="flex items-start">
-                    <Image
-                      src={job.logo_photo_url || "/company_na.png"}
-                      alt={"Company Logo"}
-                      width={30}
-                      height={30}
-                      className="mr-3 rounded-full"
-                    />
-                    <div className="flex-grow">
-                      <h3 className="pb-1 font-semibold text-gray-800 dark:text-blue-500">
-                        {job.title}
-                      </h3>
-                      <p className="text-black-600 text-sm">{job.company}</p>
-                      <p className="text-sm text-gray-600 dark:text-white">
-                        {job.location}
-                        {job.min_amount !== null && job.max_amount !== null && (
-                          <>
-                            {" • $"}
-                            {job.min_amount?.toLocaleString()} -{" "}
-                            {job.max_amount?.toLocaleString()}
-                          </>
-                        )}
-                      </p>
-                      <div className="mt-1 flex items-center gap-2">
-                        {job.score && job.score > 0.25 ? (
-                          <CompleteMatchChip />
-                        ) : job.score && job.score > 0.2 ? (
-                          <StrongFitChip />
-                        ) : job.score && job.score > 0.18 ? (
-                          <PartialMatchChip />
-                        ) : (
-                          <WeakMatchChip />
-                        )}
+          {isLoading ? (
+            Array(10)
+              .fill(null)
+              .map((_, index) => <LoadingCard key={index} />)
+          ) : jobs.length === 0 ? (
+            <div className="p-4 text-center text-gray-600 dark:text-gray-400">
+              Could not find relevant roles for applied filters. Try increasing
+              the number of days.
+            </div>
+          ) : (
+            jobs.map((job) => (
+              <div
+                key={job.id}
+                className={`cursor-pointer border-l-4 p-4 transition-all duration-300 ${
+                  selectedJob?.id === job.id
+                    ? "border-blue-500 bg-blue-50 dark:bg-slate-700"
+                    : "border-transparent hover:bg-gray-50 dark:hover:bg-gray-700"
+                }`}
+                onClick={() => handleJobSelect(job)}
+              >
+                <div className="flex items-start">
+                  <Image
+                    src={job.logo_photo_url || "/company_na.png"}
+                    alt={"Company Logo"}
+                    width={30}
+                    height={30}
+                    className="mr-3 rounded-full"
+                  />
+                  <div className="flex-grow">
+                    <h3 className="pb-1 font-semibold text-gray-800 dark:text-blue-500">
+                      {job.title}
+                    </h3>
+                    <p className="text-black-600 text-sm">{job.company}</p>
+                    <p className="text-sm text-gray-600 dark:text-white">
+                      {job.location}
+                      {job.min_amount !== null && job.max_amount !== null && (
+                        <>
+                          {" • $"}
+                          {job.min_amount?.toLocaleString()} -{" "}
+                          {job.max_amount?.toLocaleString()}
+                        </>
+                      )}
+                    </p>
+                    <div className="mt-1 flex items-center gap-2">
+                      {job.score && job.score > 0.3 ? (
+                        <CompleteMatchChip />
+                      ) : job.score && job.score > 0.21 ? (
+                        <StrongFitChip />
+                      ) : job.score && job.score > 0.16 ? (
+                        <PartialMatchChip />
+                      ) : job.score && job.score >= 0 ? (
+                        <WeakMatchChip />
+                      ) : null}
 
-                        {appliedJobs.has(job.id) ||
-                        originalAppliedJobs.has(job.id) ? (
-                          <div className="flex items-center gap-2">
-                            {job.score && (
-                              <p className="text-sm text-black dark:text-white">
-                                •
-                              </p>
-                            )}
-                            <AppliedChip />
-                          </div>
-                        ) : viewedJobs.has(job.id) ||
-                          originalViewedJobs.has(job.id) ? (
-                          <div className="flex items-center gap-2">
-                            {job.score && (
-                              <p className="text-sm text-black dark:text-white">
-                                •
-                              </p>
-                            )}
-                            <ViewedChip />
-                          </div>
-                        ) : null}
-                      </div>
+                      {appliedJobs.has(job.id) ||
+                      originalAppliedJobs.has(job.id) ? (
+                        <div className="flex items-center gap-2">
+                          {job.score && (
+                            <p className="text-sm text-black dark:text-white">
+                              •
+                            </p>
+                          )}
+                          <AppliedChip />
+                        </div>
+                      ) : viewedJobs.has(job.id) ||
+                        originalViewedJobs.has(job.id) ? (
+                        <div className="flex items-center gap-2">
+                          {job.score && (
+                            <p className="text-sm text-black dark:text-white">
+                              •
+                            </p>
+                          )}
+                          <ViewedChip />
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
+            ))
+          )}
+
+          {showTopCompanies && jobs.length > 0 && (
+            <div className="p-4 text-center">
+              <button
+                onClick={handleExpandSearch}
+                className="text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+              >
+                Expand your search: Turn off "show top companies" to view more
+                jobs
+              </button>
+            </div>
+          )}
         </div>
         {!isMobile && (
           <JobCard
