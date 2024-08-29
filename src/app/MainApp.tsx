@@ -10,7 +10,7 @@ import { useResume } from "ResumeContext";
 const MainApp = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const { filterIsEnabled, setFilterIsEnabled } = useFilter();
-  const { resumeUploadCount, setResumeUploadCount } = useResume();
+  const { resumeUploadCount, setResumeUploadCount, isLoading } = useResume();
 
   return (
     <>
@@ -31,9 +31,9 @@ const MainApp = () => {
                     setFilterIsEnabled(true);
                     setResumeUploadCount(resumeUploadCount + 1);
                   }}
-                  disabled={filterIsEnabled}
+                  disabled={filterIsEnabled || isLoading}
                   className={`h-full w-full rounded px-4 py-2 font-bold text-white ${
-                    filterIsEnabled
+                    filterIsEnabled || isLoading
                       ? "bg-blue-500 opacity-75"
                       : "bg-blue-600 hover:bg-blue-700"
                   }`}

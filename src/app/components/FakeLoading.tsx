@@ -12,10 +12,11 @@ const FakeLoadingBar = () => {
   ];
 
   useEffect(() => {
-    const totalDuration = 30000; // 30 seconds total
-    const chunkInterval = 500; // Update every 200ms for chunky progress
+    const totalDuration = 15000; // 20 seconds total
+    const five_percent = Math.floor(totalDuration * 0.05);
+    const chunkInterval = 300; // Update every 200ms for chunky progress
     const pauseAt = 95; // Pause at 95%
-    const chunkSize = 3; // Progress increases by 0-3% each chunk
+    const chunkSize = 4; // Progress increases by 0-3% each chunk
     let timer: any;
     let messageTimer: any;
     let startTime = Date.now();
@@ -26,7 +27,7 @@ const FakeLoadingBar = () => {
 
       if (rawProgress >= pauseAt) {
         // Pause at 95% for the last 15 seconds
-        if (elapsedTime >= totalDuration - 15000) {
+        if (elapsedTime >= totalDuration - five_percent) {
           setProgress(100);
           clearInterval(timer);
           clearInterval(messageTimer);

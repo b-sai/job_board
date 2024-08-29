@@ -71,6 +71,25 @@ const StateFilter: React.FC<StateFilterProps> = ({
   return (
     <div className="flex w-full flex-col">
       <div className="relative w-full" ref={wrapperRef}>
+        <div className="mt-2 w-full">
+          <div className="flex flex-wrap">
+            {selectedLocations.map((location) => (
+              <span
+                key={location}
+                className="m-1 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800"
+              >
+                {location}
+                <button
+                  onClick={() => handleRemoveLocation(location)}
+                  className="ml-1 text-blue-600 hover:text-blue-800"
+                >
+                  <X size={14} />
+                </button>
+              </span>
+            ))}
+          </div>
+        </div>
+
         <input
           type="text"
           className="w-full rounded-md border px-4 py-2 focus:outline-none dark:bg-gray-800 dark:text-white"
@@ -92,24 +111,6 @@ const StateFilter: React.FC<StateFilterProps> = ({
             ))}
           </ul>
         )}
-      </div>
-      <div className="mt-2 w-full">
-        <div className="flex flex-wrap">
-          {selectedLocations.map((location) => (
-            <span
-              key={location}
-              className="m-1 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800"
-            >
-              {location}
-              <button
-                onClick={() => handleRemoveLocation(location)}
-                className="ml-1 text-blue-600 hover:text-blue-800"
-              >
-                <X size={14} />
-              </button>
-            </span>
-          ))}
-        </div>
       </div>
     </div>
   );
