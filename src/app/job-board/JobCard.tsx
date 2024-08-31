@@ -29,11 +29,11 @@ const JobDetails: React.FC<JobDetailsProps> = ({
         <div>
           <div className="mb-4">
             <Image
-              src={selectedJob.logo_photo_url || "/company_na.png"}
+              src={selectedJob.image_url || "/company_na.png"}
               alt={`${selectedJob.company} logo`}
               width={50}
               height={50}
-              className="h-16 w-16 rounded-full object-cover"
+              className="h-16 w-16"
             />
           </div>
           <h2 className="mb-2 text-2xl font-bold text-gray-800 dark:text-white sm:text-3xl">

@@ -26,7 +26,7 @@ interface Job {
   date_posted?: string;
   location?: string;
   score?: number;
-  logo_photo_url?: string;
+  image_url?: string;
   min_amount?: number;
   max_amount?: number;
 }
@@ -143,7 +143,6 @@ const JobSearchCard: React.FC = () => {
 
     handleResumeUpload();
   }, [resume]);
-
   const fetchLocationData = async () => {
     try {
       const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -403,11 +402,11 @@ const JobSearchCard: React.FC = () => {
               >
                 <div className="flex items-start">
                   <Image
-                    src={job.logo_photo_url || "/company_na.png"}
+                    src={job.image_url || "/company_na.png"}
                     alt={"Company Logo"}
                     width={30}
                     height={30}
-                    className="mr-3 rounded-full"
+                    className="mr-3"
                   />
                   <div className="flex-grow">
                     <h3 className="pb-1 font-semibold text-gray-800 dark:text-blue-500">
