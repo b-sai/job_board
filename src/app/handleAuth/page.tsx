@@ -3,17 +3,14 @@ import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { usePostHog } from "posthog-js/react";
+import { apiWrapper } from "../../utils/apiWrapper";
 
 export default function HandleAuth() {
   const posthog = usePostHog();
   const { data: session, status } = useSession();
 
   async function updateUser(session: any) {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-    const response = await fetch(
-      `${baseUrl}user_exists/${session?.user?.email}`
-    );
-    const data = await response.json();
+    const data = await apiWrapper(`/user_exists/${session?.user?.email}`);
     const isOldUser = data.user_exists; // returns true
     let user_id;
     if (isOldUser) {
@@ -32,10 +29,7 @@ export default function HandleAuth() {
       name: session?.user?.name,
     });
 
-    fetch(`${baseUrl}upsert_user/`, {
-      method: "POST",
-      body: formData,
-    });
+    await apiWrapper(`/upsert_user/`, "POST", formData);
   }
 
   useEffect(() => {

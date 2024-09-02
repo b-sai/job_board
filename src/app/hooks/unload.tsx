@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
+import { apiWrapper } from "../../utils/apiWrapper";
 
 const useTrackExit = (
   userId: string | undefined,
@@ -53,14 +54,9 @@ const useTrackExit = (
       applied: interactionsData.applied,
     });
 
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: data,
-      keepalive: true,
-    }).catch((error) => console.error("Error tracking exit:", error));
+    apiWrapper("/trackings/", "POST", data).catch((error) =>
+      console.error("Error tracking exit:", error)
+    );
   };
 };
 

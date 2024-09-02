@@ -19,7 +19,6 @@ export async function POST(request: Request) {
     // Construct the full URL with the query string
     const fullUrl = `${process.env.API}${url}?${queryString.toString()}`;
 
-    console.log("Attempting to fetch from:", fullUrl);
 
     const response = await fetch(fullUrl, {
       method: "POST",

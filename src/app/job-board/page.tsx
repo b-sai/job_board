@@ -44,6 +44,7 @@ import useTrackExit from "hooks/unload";
 import { useSession } from "next-auth/react";
 import ResumeParser from "resume-parser/page";
 import toggleLevel from "./Filters";
+import { apiWrapper } from "../../utils/apiWrapper";
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -145,26 +146,7 @@ const JobSearchCard: React.FC = () => {
   }, [resume]);
   const fetchLocationData = async () => {
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-      if (!baseUrl) {
-        throw new Error(
-          "API URL is not defined. Please check your environment variables."
-        );
-      }
-
-      const response = await fetch(`${baseUrl}locations/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}), // Add any required body parameters here
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await apiWrapper("/locations/", "POST", JSON.stringify({}));
       const locationList = data.map(
         (item: { location: string }) => item.location
       );
@@ -173,7 +155,6 @@ const JobSearchCard: React.FC = () => {
       console.error("Error fetching locations:", error);
     }
   };
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchJobs = async () => {
     try {
@@ -211,16 +192,8 @@ const JobSearchCard: React.FC = () => {
         formData.append("show_top_companies", "true");
       }
 
-      const response = await fetch(`${baseUrl}jobs/`, {
-        method: "POST",
-        body: formData,
-      });
+      const data = await apiWrapper(`/jobs/`, "POST", formData);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
       setJobs(data.jobs);
       setTotalCount(data.total_count);
       setIsLoading(false);
@@ -247,14 +220,9 @@ const JobSearchCard: React.FC = () => {
       }
       if (userId && session.status === "authenticated") {
         try {
-          const response = await fetch(
-            `${baseUrl}user_exists/${session.data.user?.email}`
+          const data = await apiWrapper(
+            `/user_exists/${session.data.user?.email}`
           );
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
           if (data.file_name) {
             setDummyResumeName(data.file_name);
             setUseUserId(true);
@@ -275,11 +243,8 @@ const JobSearchCard: React.FC = () => {
 
       if (session.status === "authenticated") {
         try {
-          const response = await fetch(
-            `${baseUrl}interactions/?user_id=${userId}`
-          );
-          if (response.ok) {
-            const data = await response.json();
+          const data = await apiWrapper(`/interactions/?user_id=${userId}`);
+          if (data) {
             for (const job of data) {
               if (job.interaction_type === "viewed") {
                 setOriginalViewedJobs((prevSet) =>
@@ -424,9 +389,9 @@ const JobSearchCard: React.FC = () => {
                       )}
                     </p>
                     <div className="mt-1 flex items-center gap-2">
-                      {job.score && job.score > 0.3 ? (
+                      {job.score && job.score > 0.35 ? (
                         <CompleteMatchChip />
-                      ) : job.score && job.score > 0.21 ? (
+                      ) : job.score && job.score > 0.27 ? (
                         <StrongFitChip />
                       ) : job.score && job.score > 0.12 ? (
                         <PartialMatchChip />
