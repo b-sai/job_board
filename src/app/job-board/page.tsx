@@ -345,6 +345,12 @@ const JobSearchCard: React.FC = () => {
               <ResumeParser />
             </div>
           )}
+
+          {!isLoading && (
+            <div className="text-md p-3 text-center font-semibold">
+              <p>AI scanned and ranked {totalCount} jobs by fit</p>
+            </div>
+          )}
           {isLoading ? (
             Array(10)
               .fill(null)
@@ -389,7 +395,7 @@ const JobSearchCard: React.FC = () => {
                       )}
                     </p>
                     <div className="mt-1 flex items-center gap-2">
-                      {job.score && job.score > 0.35 ? (
+                      {/* {job.score && job.score > 0.35 ? (
                         <CompleteMatchChip />
                       ) : job.score && job.score > 0.27 ? (
                         <StrongFitChip />
@@ -397,26 +403,26 @@ const JobSearchCard: React.FC = () => {
                         <PartialMatchChip />
                       ) : job.score && job.score >= -1 ? (
                         <WeakMatchChip />
-                      ) : null}
+                      ) : null} */}
 
                       {appliedJobs.has(job.id) ||
                       originalAppliedJobs.has(job.id) ? (
                         <div className="flex items-center gap-2">
-                          {job.score && (
+                          {/* {job.score && (
                             <p className="text-sm text-black dark:text-white">
                               •
                             </p>
-                          )}
+                          )} */}
                           <AppliedChip />
                         </div>
                       ) : viewedJobs.has(job.id) ||
                         originalViewedJobs.has(job.id) ? (
                         <div className="flex items-center gap-2">
-                          {job.score && (
+                          {/* {job.score && (
                             <p className="text-sm text-black dark:text-white">
                               •
                             </p>
-                          )}
+                          )} */}
                           <ViewedChip />
                         </div>
                       ) : null}
