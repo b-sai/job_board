@@ -427,7 +427,7 @@ const JobSearchCard: React.FC = () => {
             ))
           )}
 
-          {showTopCompanies && jobs.length > 0 && !isLoading && (
+          {showTopCompanies && jobs.length >= 0 && !isLoading && (
             <div className="p-4 text-center">
               <button
                 onClick={handleExpandSearch}
