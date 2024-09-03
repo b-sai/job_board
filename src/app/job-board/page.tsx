@@ -129,7 +129,7 @@ const JobSearchCard: React.FC = () => {
             fileName: resume.name,
           });
           setUseUserId(true);
-          if (data.filters && data.filters.level) {
+          if (data && data.filters && data.filters.level) {
             setSelectedLevels(data.filters.level);
           }
 
