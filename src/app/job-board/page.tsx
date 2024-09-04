@@ -346,7 +346,7 @@ const JobSearchCard: React.FC = () => {
             </div>
           )}
 
-          {!isLoading && (
+          {!isLoading && useUserId && (
             <div className="text-md p-3 text-center font-semibold">
               <p>AI scanned and ranked {totalCount} jobs by fit</p>
             </div>
