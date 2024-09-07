@@ -96,12 +96,14 @@ const SalaryChip: React.FC<SalaryChipProps> = ({ minSalary, maxSalary }) => {
 interface DateChipProps {
   date: string;
 }
-
 const DateChip: React.FC<DateChipProps> = ({ date }) => {
   const formatDate = (dateString: string): string => {
     const now = new Date();
-    const past = new Date(dateString);
-    const diffTime = Math.abs(now.getTime() - past.getTime());
+    const year = parseInt(dateString.slice(0, 4));
+    const month = parseInt(dateString.slice(5, 7));
+    const day = parseInt(dateString.slice(8, 10));
+    const past = new Date(year, month - 1, day);
+    const diffTime = now.getTime() - past.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays === 0) return "Today";
