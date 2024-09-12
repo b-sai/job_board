@@ -14,7 +14,6 @@ export async function upsertJobs({
   formData.append("resume", resume);
   formData.append("user_id", userId);
   formData.append("file_name", fileName);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const response = await apiWrapper("/upsert_user/", "POST", formData);
   return response;

@@ -123,17 +123,19 @@ const JobSearchCard: React.FC = () => {
         setIsLoading(true);
         setDummyResumeName(resume.name);
         try {
+          console.log("upserting jobs starting");
           const data = await upsertJobs({
             resume,
             userId,
             fileName: resume.name,
           });
+
           console.log("finished upserting jobs");
           setUseUserId(true);
           if (data && data.filters && data.filters.level) {
             setSelectedLevels(data.filters.level);
           }
-
+          console.log("incrementing resume upload count");
           setResumeUploadCount(resumeUploadCount + 1);
         } catch (error) {
           console.error("Error upserting jobs:", error);
