@@ -27,6 +27,8 @@ export async function apiWrapper(
   const options: RequestInit = {
     method,
     headers: defaultHeaders,
+    // Use native AbortController for Next.js
+    signal: AbortSignal.timeout(60000), // 60 seconds timeout
   };
 
   if (body) {
@@ -55,6 +57,10 @@ export async function apiWrapper(
 
     return await response.json();
   } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      console.error("API request timed out");
+      return NextResponse.json({ error: "Request Timeout" }, { status: 408 });
+    }
     console.error("API request failed:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
