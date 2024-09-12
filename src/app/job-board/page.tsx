@@ -128,6 +128,7 @@ const JobSearchCard: React.FC = () => {
             userId,
             fileName: resume.name,
           });
+          console.log("finished upserting jobs");
           setUseUserId(true);
           if (data && data.filters && data.filters.level) {
             setSelectedLevels(data.filters.level);
@@ -191,8 +192,9 @@ const JobSearchCard: React.FC = () => {
       if (showTopCompanies) {
         formData.append("show_top_companies", "true");
       }
-
+      console.log("fetching jobs");
       const data = await apiWrapper(`/jobs/`, "POST", formData);
+      console.log("finished fetching jobs");
 
       setJobs(data.jobs);
       setTotalCount(data.total_count);
