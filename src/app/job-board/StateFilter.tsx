@@ -100,7 +100,7 @@ const StateFilter: React.FC<StateFilterProps> = ({
         />
         {isOpen && (
           <ul className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg dark:bg-gray-800">
-            {suggestions.map((suggestion) => (
+            {suggestions.map((suggestion: string) => (
               <li
                 key={suggestion}
                 className="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
