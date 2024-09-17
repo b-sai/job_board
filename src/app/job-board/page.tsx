@@ -342,7 +342,7 @@ const JobSearchCard: React.FC = () => {
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 lg:flex-row lg:gap-6">
         <div
           ref={jobListRef}
-          className="custom-scrollbar w-full overflow-y-auto  lg:w-1/3 "
+          className="custom-scrollbar w-full overflow-y-auto  lg:w-2/5 "
         >
           {isMobile && (
             <div className="p-2">

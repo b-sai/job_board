@@ -1,10 +1,11 @@
-"use client";
+// app/job/[id]/page.tsx
 
-import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "next/navigation";
 import JobCard from "../../job-board/JobCard";
 import { apiWrapper } from "../../../utils/apiWrapper";
 import { TopNavBar } from "components/TopNavBar";
+import { Metadata } from "next";
+import JobCardClient from "./jobCardClient";
+
 interface Job {
   id: number;
   title: string;
@@ -19,61 +20,48 @@ interface Job {
   max_amount?: number;
 }
 
-const JobPage: React.FC = () => {
-  const { id } = useParams();
-  const [job, setJob] = useState<Job | null>(null);
-  const [loading, setLoading] = useState(true);
-  const jobDetailsRef = useRef<HTMLDivElement>(null);
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const job = await getJob(params.id);
 
-  useEffect(() => {
-    const fetchJob = async () => {
-      try {
-        const data = await apiWrapper(`/job/${id}/`, "GET");
-        setJob(data);
-      } catch (error) {
-        console.error("Error fetching job:", error);
-      } finally {
-        setLoading(false);
-      }
+  if (!job) {
+    return {
+      title: "Job Not Found",
     };
+  }
 
-    fetchJob();
-  }, [id]);
-
-  const customComponents = {
-    h1: ({ ...props }: React.HTMLProps<HTMLHeadingElement>) => (
-      <h3 className="mb-2 text-xl font-semibold" {...props} />
-    ),
-    h2: ({ ...props }: React.HTMLProps<HTMLHeadingElement>) => (
-      <h4 className="mb-2 text-lg font-semibold" {...props} />
-    ),
-    p: ({ ...props }: React.HTMLProps<HTMLParagraphElement>) => (
-      <p className="mb-4" {...props} />
-    ),
-    ul: ({ ...props }: React.HTMLProps<HTMLUListElement>) => (
-      <ul className="mb-4 list-disc pl-5" {...props} />
-    ),
-    li: ({ ...props }: React.HTMLProps<HTMLLIElement>) => (
-      <li className="mb-1" {...props} />
-    ),
+  return {
+    title: `${job.title} at ${job.company}`,
+    description: job.description || "",
+    openGraph: {
+      title: `${job.title} at ${job.company}`,
+      description: job.description || "",
+      images: [{ url: job.image_url || "" }],
+      url: `https://www.rocketjobs.app/job/${job.id}`,
+      type: "website",
+    },
   };
+}
 
-  return (
-    <div className="flex min-h-screen flex-col">
-      <TopNavBar />
-      <div className="flex flex-grow items-center justify-center">
-        <div className="container  px-20 py-8">
-          <JobCard
-            loading={loading}
-            selectedJob={job}
-            customComponents={customComponents}
-            jobDetailsRef={jobDetailsRef}
-            setAppliedJobs={() => {}}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
+async function getJob(id: string): Promise<Job | null> {
+  try {
+    const job = await apiWrapper(`/job/${id}/`, "GET");
+    return job;
+  } catch (error) {
+    console.error("Error fetching job:", error);
+    return null;
+  }
+}
 
-export default JobPage;
+export default async function JobPage({ params }: { params: { id: string } }) {
+  const job = await getJob(params.id);
+
+  if (!job) {
+    return <div>Job not found.</div>;
+  }
+
+  return <JobCardClient />;
+  }

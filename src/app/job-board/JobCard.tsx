@@ -10,7 +10,7 @@ interface JobDetailsProps {
   loading: boolean;
   selectedJob: any | null;
   customComponents: Record<string, React.FC<any>>;
-  jobDetailsRef: React.RefObject<HTMLDivElement>;
+  jobDetailsRef: React.RefObject<HTMLDivElement> | null;
   setAppliedJobs: React.Dispatch<React.SetStateAction<Set<number>>>;
 }
 
@@ -37,10 +37,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({
   };
 
   return (
-    <div
-      ref={jobDetailsRef}
-      className="w-full overflow-y-auto py-4 pl-0 pr-4 lg:w-2/3"
-    >
+    <div ref={jobDetailsRef} className="w-full overflow-y-auto py-4 pl-0 pr-4 ">
       {loading ? (
         <DetailedLoadingCard />
       ) : selectedJob ? (
