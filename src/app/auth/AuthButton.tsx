@@ -58,7 +58,7 @@ export default function SignInModal() {
             </div>
             <div className="mb-6 flex justify-center">
               <Image
-                src="icon_rocket.png"
+                src="https://res.cloudinary.com/dyg4w8l4k/image/upload/v1726535657/tu9cq4t92gxsakfhwxnv.png"
                 alt="Rocket Jobs Logo"
                 width={100}
                 height={100}

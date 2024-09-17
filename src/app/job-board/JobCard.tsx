@@ -3,6 +3,9 @@ import ReactMarkdown from "react-markdown";
 import DetailedLoadingCard from "./loading";
 import Image from "next/image";
 import { DateChip, LocationChip, SalaryChip } from "./Chips";
+import { ShareIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-hot-toast"; // Make sure to install and import react-hot-toast
+
 interface JobDetailsProps {
   loading: boolean;
   selectedJob: any | null;
@@ -18,6 +21,21 @@ const JobDetails: React.FC<JobDetailsProps> = ({
   jobDetailsRef,
   setAppliedJobs,
 }) => {
+  const handleShare = () => {
+    if (selectedJob) {
+      const shareUrl = `${window.location.origin}/job/${selectedJob.id}`;
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => {
+          toast.success("Link copied to clipboard!");
+        })
+        .catch((err) => {
+          console.error("Failed to copy link: ", err);
+          toast.error("Failed to copy link");
+        });
+    }
+  };
+
   return (
     <div
       ref={jobDetailsRef}
@@ -27,7 +45,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({
         <DetailedLoadingCard />
       ) : selectedJob ? (
         <div>
-          <div className="mb-4">
+          <div className="mb-4 flex items-start justify-between">
             <Image
               src={selectedJob.image_url || "/company_na.png"}
               alt={`${selectedJob.company} logo`}
@@ -35,6 +53,13 @@ const JobDetails: React.FC<JobDetailsProps> = ({
               height={50}
               className="h-16 w-16"
             />
+            <button
+              onClick={handleShare}
+              className="rounded bg-gray-200 p-2 text-gray-600 hover:bg-gray-300"
+              title="Copy share link"
+            >
+              <ShareIcon className="h-5 w-5" />
+            </button>
           </div>
           <h2 className="mb-2 text-2xl font-bold text-gray-800 dark:text-white sm:text-3xl">
             {selectedJob.title}

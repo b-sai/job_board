@@ -5,6 +5,8 @@ import { DarkModeProvider } from "job-board/DarkModeContext";
 import { CSPostHogProvider } from "./provider";
 import { FilterProvider } from "FilterDataProvider";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "react-hot-toast";
+
 export default function RootLayout({
   children,
 }: {
@@ -21,6 +23,7 @@ export default function RootLayout({
               </DarkModeProvider>
             </FilterProvider>
           </SessionProvider>
+          <Toaster />
         </body>
       </CSPostHogProvider>
     </html>
