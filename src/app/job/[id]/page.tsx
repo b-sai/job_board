@@ -5,20 +5,8 @@ import { apiWrapper } from "../../../utils/apiWrapper";
 import { TopNavBar } from "components/TopNavBar";
 import { Metadata } from "next";
 import JobCardClient from "./jobCardClient";
+import Job from "../../../app/job-board/jobs";
 
-interface Job {
-  id: number;
-  title: string;
-  company?: string;
-  description?: string;
-  job_url_final?: string;
-  date_posted?: string;
-  location?: string;
-  score?: number;
-  image_url?: string;
-  min_amount?: number;
-  max_amount?: number;
-}
 
 export async function generateMetadata({
   params,

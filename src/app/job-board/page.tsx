@@ -17,20 +17,9 @@ import PulsingLoadingComponent from "./FilterLoading";
 import FilterGroup from "./FilterMain";
 import Image from "next/image";
 import { usePostHog } from "posthog-js/react";
-interface Job {
-  id: number;
-  title: string;
-  company?: string;
-  description?: string;
-  job_url_final?: string;
-  date_posted?: string;
-  location?: string;
-  score?: number;
-  image_url?: string;
-  min_amount?: number;
-  max_amount?: number;
-}
 import { useFilter } from "FilterDataProvider";
+import Job from "./jobs";
+
 import {
   AppliedChip,
   CompleteMatchChip,
@@ -365,7 +354,7 @@ const JobSearchCard: React.FC = () => {
               the number of days.
             </div>
           ) : (
-            jobs.map((job) => (
+            jobs.map((job: Job) => (
               <div
                 key={job.id}
                 className={`cursor-pointer border-l-4 p-4 transition-all duration-300 ${
@@ -389,7 +378,15 @@ const JobSearchCard: React.FC = () => {
                     </h3>
                     <p className="text-black-600 text-sm">{job.company}</p>
                     <p className="text-sm text-gray-600 dark:text-white">
-                      {job.location}
+                      {job.location_arr &&
+                        job.location_arr.length > 0 &&
+                        (job.location_arr.length === 1
+                          ? job.location_arr[0]
+                          : `${job.location_arr[0]} ${
+                              job.location_arr.length > 1
+                                ? `+${job.location_arr.length - 1}`
+                                : ""
+                            }`)}
                       {job.min_amount !== null && job.max_amount !== null && (
                         <>
                           {" • $"}
@@ -399,34 +396,14 @@ const JobSearchCard: React.FC = () => {
                       )}
                     </p>
                     <div className="mt-1 flex items-center gap-2">
-                      {/* {job.score && job.score > 0.35 ? (
-                        <CompleteMatchChip />
-                      ) : job.score && job.score > 0.27 ? (
-                        <StrongFitChip />
-                      ) : job.score && job.score > 0.12 ? (
-                        <PartialMatchChip />
-                      ) : job.score && job.score >= -1 ? (
-                        <WeakMatchChip />
-                      ) : null} */}
-
                       {appliedJobs.has(job.id) ||
                       originalAppliedJobs.has(job.id) ? (
                         <div className="flex items-center gap-2">
-                          {/* {job.score && (
-                            <p className="text-sm text-black dark:text-white">
-                              •
-                            </p>
-                          )} */}
                           <AppliedChip />
                         </div>
                       ) : viewedJobs.has(job.id) ||
                         originalViewedJobs.has(job.id) ? (
                         <div className="flex items-center gap-2">
-                          {/* {job.score && (
-                            <p className="text-sm text-black dark:text-white">
-                              •
-                            </p>
-                          )} */}
                           <ViewedChip />
                         </div>
                       ) : null}

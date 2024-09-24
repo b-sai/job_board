@@ -5,19 +5,7 @@ import { useParams } from "next/navigation";
 import JobCard from "../../job-board/JobCard";
 import { apiWrapper } from "../../../utils/apiWrapper";
 import { TopNavBar } from "components/TopNavBar";
-interface Job {
-  id: number;
-  title: string;
-  company?: string;
-  description?: string;
-  job_url_final?: string;
-  date_posted?: string;
-  location?: string;
-  score?: number;
-  image_url?: string;
-  min_amount?: number;
-  max_amount?: number;
-}
+import Job from "../../../app/job-board/jobs";
 
 const JobPage: React.FC = () => {
   const { id } = useParams();

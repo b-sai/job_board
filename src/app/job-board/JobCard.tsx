@@ -70,7 +70,9 @@ const JobDetails: React.FC<JobDetailsProps> = ({
               maxSalary={selectedJob.max_amount}
             />
             <DateChip date={selectedJob.date_posted} />
-            <LocationChip location={selectedJob.location} />
+            {selectedJob.location_arr && (
+              <LocationChip location={selectedJob.location_arr.join(" • ")} />
+            )}
           </div>
           <button
             onClick={() => {
