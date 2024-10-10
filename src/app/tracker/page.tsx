@@ -17,12 +17,14 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useResume } from "ResumeContext";
 
 const AppliedJobs = () => {
   const { data: session, status } = useSession();
   const { originalAppliedJobs, appliedJobs } = useTracker();
   const [jobsData, setJobsData] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { setUseUserId, setResume } = useResume();
 
   const allJobs = Array.from(originalAppliedJobs).concat(
     Array.from(appliedJobs)
@@ -64,6 +66,8 @@ const AppliedJobs = () => {
     };
 
     fetchJobs();
+    setUseUserId(null);
+    setResume(null);
   }, [status]);
 
   if (status !== "authenticated") {

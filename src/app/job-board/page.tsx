@@ -43,7 +43,7 @@ const JobSearchCard: React.FC = () => {
   const [itemsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [isResumeUpload, setIsResumeUpload] = useState(false);
-
+  const initialMount = useRef(true);
   const posthog = usePostHog();
   const {
     originalViewedJobs,
@@ -109,25 +109,28 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     const handleResumeUpload = async () => {
-      if (resume && resume !== "null" && resume !== null && fileUrl !== "") {
+      if (
+        resume &&
+        resume !== "null" &&
+        resume !== null &&
+        fileUrl !== "" &&
+        !initialMount.current
+      ) {
         setIsResumeUpload(true);
         setIsParsing(true);
         setIsLoading(true);
         setDummyResumeName(resume.name);
         try {
-          console.log("upserting jobs starting");
           const data = await upsertJobs({
             resume,
             userId,
             fileName: resume.name,
           });
 
-          console.log("finished upserting jobs");
           setUseUserId(true);
           if (data && data.filters && data.filters.level) {
             setSelectedLevels(data.filters.level);
           }
-          console.log("incrementing resume upload count");
           setResumeUploadCount(resumeUploadCount + 1);
         } catch (error) {
           console.error("Error upserting jobs:", error);
@@ -138,6 +141,7 @@ const JobSearchCard: React.FC = () => {
     };
 
     handleResumeUpload();
+    initialMount.current = false;
   }, [resume]);
   const fetchLocationData = async () => {
     try {
@@ -186,10 +190,8 @@ const JobSearchCard: React.FC = () => {
       if (showTopCompanies) {
         formData.append("show_top_companies", "true");
       }
-      console.log("fetching jobs");
 
       const data = await apiWrapper(`/jobs/`, "POST", formData);
-      console.log("finished fetching jobs");
 
       setJobs(data.jobs);
       setTotalCount(data.total_count);
@@ -211,13 +213,10 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     const initializeData = async () => {
-      setIsLoading(true);
       if (session.status === "loading") {
-        setIsLoading(true);
         return;
       }
       if (userId && session.status === "authenticated") {
-        setIsLoading(true);
         try {
           const data = await apiWrapper(
             `/user_exists/${session.data.user?.email}`
