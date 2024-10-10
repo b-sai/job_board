@@ -10,30 +10,36 @@ const useTrackExit = (
   const session = useSession();
   useEffect(() => {
     if (session.status !== "authenticated") return;
-    const handleVisibilityChange = () => {
-      if (
-        document.visibilityState === "hidden" &&
-        userId &&
-        session.status === "authenticated"
-      ) {
-        trackExit();
-      }
-    };
-
-    const handleRouteChange = () => {
+    
+    const handleExit = () => {
       if (userId && session.status === "authenticated") {
         trackExit();
       }
     };
 
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        handleExit();
+      }
+    };
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      handleExit();
+      // Uncomment the following lines if you want to show a confirmation dialog
+      // event.preventDefault();
+      // event.returnValue = '';
+    };
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    window.addEventListener("popstate", handleRouteChange);
+    window.addEventListener("popstate", handleExit);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-      window.removeEventListener("popstate", handleRouteChange);
+      window.removeEventListener("popstate", handleExit);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [session]);
+  }, [session, userId]);
 
   const viewedSetRef = useRef(viewedJobs);
   const appliedSetRef = useRef(appliedJobs);
