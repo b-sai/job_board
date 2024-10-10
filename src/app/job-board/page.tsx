@@ -34,6 +34,7 @@ import { useSession } from "next-auth/react";
 import ResumeParser from "resume-parser/page";
 import toggleLevel from "./Filters";
 import { apiWrapper } from "../../utils/apiWrapper";
+import { useTracker } from "TrackerProvider";
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -44,14 +45,16 @@ const JobSearchCard: React.FC = () => {
   const [isResumeUpload, setIsResumeUpload] = useState(false);
 
   const posthog = usePostHog();
-  const [originalViewedJobs, setOriginalViewedJobs] = useState<Set<number>>(
-    new Set()
-  );
-  const [originalAppliedJobs, setOriginalAppliedJobs] = useState<Set<number>>(
-    new Set()
-  );
-  const [viewedJobs, setViewedJobs] = useState<Set<number>>(new Set());
-  const [appliedJobs, setAppliedJobs] = useState<Set<number>>(new Set());
+  const {
+    originalViewedJobs,
+    setOriginalViewedJobs,
+    originalAppliedJobs,
+    setOriginalAppliedJobs,
+    viewedJobs,
+    setViewedJobs,
+    appliedJobs,
+    setAppliedJobs,
+  } = useTracker();
   const userId: string | undefined =
     posthog.get_distinct_id() || process.env.NEXT_PUBLIC_USER_ID;
   const session = useSession();
@@ -184,6 +187,7 @@ const JobSearchCard: React.FC = () => {
         formData.append("show_top_companies", "true");
       }
       console.log("fetching jobs");
+
       const data = await apiWrapper(`/jobs/`, "POST", formData);
       console.log("finished fetching jobs");
 
@@ -207,11 +211,13 @@ const JobSearchCard: React.FC = () => {
 
   useEffect(() => {
     const initializeData = async () => {
+      setIsLoading(true);
       if (session.status === "loading") {
         setIsLoading(true);
         return;
       }
       if (userId && session.status === "authenticated") {
+        setIsLoading(true);
         try {
           const data = await apiWrapper(
             `/user_exists/${session.data.user?.email}`
@@ -256,7 +262,6 @@ const JobSearchCard: React.FC = () => {
       }
       setResumeUploadCount(resumeUploadCount + 1);
     };
-
     initializeData();
   }, [session.status]);
 

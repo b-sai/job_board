@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { cx } from "lib/cx";
-import addPdfSrc from "public/assets/add-pdf.svg";
 import { useMediaQuery } from "react-responsive";
 import { useResume } from "ResumeContext";
 import FakeLoadingBar from "./FakeLoading";
@@ -105,16 +104,6 @@ export const ResumeDropzone: React.FC<ResumeDropzoneProps> = ({
           isMobile ? "space-y-2" : "space-y-3"
         )}
       >
-        {!playgroundView && !isMobile && (
-          <Image
-            src={addPdfSrc}
-            className="mx-auto h-10 w-14"
-            alt="Add pdf"
-            aria-hidden="true"
-            priority
-          />
-        )}
-
         {!hasFile ? (
           <div
             className={cx(

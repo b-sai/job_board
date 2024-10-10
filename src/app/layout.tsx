@@ -5,6 +5,7 @@ import { CSPostHogProvider } from "./provider";
 import { FilterProvider } from "FilterDataProvider";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
+import { TrackerProvider } from "./TrackerProvider";
 
 export const metadata = {
   title: "Rocket Jobs | Find Jobs Personalized to Your Resume",
@@ -28,7 +29,9 @@ export default function RootLayout({
           <SessionProvider>
             <FilterProvider>
               <DarkModeProvider>
-                <ResumeProvider>{children}</ResumeProvider>
+                <TrackerProvider>
+                  <ResumeProvider>{children}</ResumeProvider>
+                </TrackerProvider>
               </DarkModeProvider>
             </FilterProvider>
           </SessionProvider>

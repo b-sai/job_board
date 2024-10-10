@@ -2,7 +2,6 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import logoSrc from "public/icon.png";
 import { cx } from "lib/cx";
 import { useDarkMode } from "job-board/DarkModeContext";
 import { Sun, Moon } from "lucide-react";
@@ -29,8 +28,17 @@ export const TopNavBar = () => {
       <div className="flex h-10 w-full items-center justify-end">
         <Link href="/" className="mr-auto">
           <span className="sr-only">Job Board</span>
-          <Image src={logoSrc} alt="Logo" width={90} height={45} priority />
+          <Image src="/icon.png" alt="Logo" width={90} height={45} priority />
         </Link>
+
+        <div>
+          <Link
+            href="/tracker"
+            className="mr-auto rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+          >
+            View Applied Jobs
+          </Link>
+        </div>
         {session.status === "authenticated" ? (
           <SignOutButton />
         ) : (
