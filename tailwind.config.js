@@ -1,6 +1,6 @@
 module.exports = {
   content: ["./src/app/**/*.{ts,tsx,mdx}"],
-  darkMode: ["class", "class"],
+  darkMode: "class",
   theme: {
     extend: {
       backgroundImage: {
