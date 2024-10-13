@@ -132,6 +132,7 @@ const JobSearchCard: React.FC = () => {
             setSelectedLevels(data.filters.level);
           }
           setResumeUploadCount(resumeUploadCount + 1);
+          console.log("done");
         } catch (error) {
           console.error("Error upserting jobs:", error);
         } finally {

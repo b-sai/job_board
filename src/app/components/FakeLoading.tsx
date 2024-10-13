@@ -12,11 +12,11 @@ const FakeLoadingBar = () => {
   ];
 
   useEffect(() => {
-    const totalDuration = 15000; // 20 seconds total
+    const totalDuration = 5000; // 5 seconds total
     const five_percent = Math.floor(totalDuration * 0.05);
-    const chunkInterval = 300; // Update every 200ms for chunky progress
+    const chunkInterval = 150; // Update every 200ms for chunky progress
     const pauseAt = 95; // Pause at 95%
-    const chunkSize = 4; // Progress increases by 0-3% each chunk
+    const chunkSize = 2; // Progress increases by 0-3% each chunk
     let timer: any;
     let messageTimer: any;
     let startTime = Date.now();
