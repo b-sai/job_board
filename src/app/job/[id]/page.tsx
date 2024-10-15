@@ -32,8 +32,8 @@ export async function generateMetadata({
       images: [
         {
           url: job.image_url || "",
-          width: 300,
-          height: 300,
+          width: 100,
+          height: 100,
           alt: `${job.company} logo`,
         },
       ],
