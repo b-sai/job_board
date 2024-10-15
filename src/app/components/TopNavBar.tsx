@@ -31,7 +31,7 @@ export const TopNavBar = () => {
           <Image src="/icon.png" alt="Logo" width={90} height={45} priority />
         </Link>
 
-        <div>
+        <div className="mx-1">
           <Link
             href="/tracker"
             className="mr-auto rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"

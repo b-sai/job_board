@@ -10,5 +10,6 @@ interface Job {
   image_url?: string;
   min_amount?: number;
   max_amount?: number;
+  internship_latest_year?: string | null;
 }
 export default Job;
