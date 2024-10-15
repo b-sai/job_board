@@ -27,11 +27,24 @@ export async function generateMetadata({
     openGraph: {
       title: `${job.title} at ${job.company}`,
       description: job.description
-        ? job.description.substring(0, 400).replace(/\n/g, " ")
+        ? job.description.substring(0, 300).replace(/\n/g, " ") + "..."
         : "",
-      images: [{ url: job.image_url || "" }],
+      images: [
+        {
+          url: job.image_url || "",
+          width: 300,
+          height: 300,
+          alt: `${job.company} logo`,
+        },
+      ],
       url: `https://www.rocketjobs.app/job/${job.id}`,
       type: "website",
+      siteName: "Rocket Jobs",
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@rocketjobs",
+      creator: "@rocketjobs",
     },
   };
 }
