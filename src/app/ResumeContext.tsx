@@ -34,7 +34,7 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({
   ]);
   const [useUserId, setUseUserId] = useState<boolean | null>(null);
   const [isParsing, setIsParsing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [fileUrl, setFileUrl] = useState<string>("");
   const [dummyResumeName, setDummyResumeName] = useState<string>("");
   const [resumeUploadCount, setResumeUploadCount] = useState(0);

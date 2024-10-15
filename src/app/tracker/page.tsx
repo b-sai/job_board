@@ -23,8 +23,8 @@ const AppliedJobs = () => {
   const { data: session, status } = useSession();
   const { originalAppliedJobs, appliedJobs } = useTracker();
   const [jobsData, setJobsData] = useState<Job[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { setUseUserId, setResume } = useResume();
+  const [currentIsLoading, setCurrentIsLoading] = useState(true);
+  const { setUseUserId, setResume, isLoading, setIsLoading } = useResume();
 
   const allJobs = Array.from(originalAppliedJobs).concat(
     Array.from(appliedJobs)
@@ -36,7 +36,7 @@ const AppliedJobs = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       if (status === "authenticated") {
-        setIsLoading(true);
+        setCurrentIsLoading(true);
         try {
           let jobsToFetch = allJobs;
 
@@ -60,7 +60,7 @@ const AppliedJobs = () => {
         } catch (error) {
           console.error("Error fetching jobs:", error);
         } finally {
-          setIsLoading(false);
+          setCurrentIsLoading(false);
         }
       }
     };
@@ -68,6 +68,7 @@ const AppliedJobs = () => {
     fetchJobs();
     setUseUserId(null);
     setResume(null);
+    setIsLoading(true);
   }, [status]);
 
   if (status !== "authenticated") {
