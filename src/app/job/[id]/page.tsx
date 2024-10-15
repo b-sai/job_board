@@ -29,14 +29,6 @@ export async function generateMetadata({
       description: job.description
         ? job.description.substring(0, 300).replace(/\n/g, " ") + "..."
         : "",
-      images: [
-        {
-          url: job.image_url || "",
-          width: 100,
-          height: 100,
-          alt: `${job.company} logo`,
-        },
-      ],
       url: `https://www.rocketjobs.app/job/${job.id}`,
       type: "article",
       siteName: "Rocket Jobs",
