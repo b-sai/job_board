@@ -32,13 +32,13 @@ export async function generateMetadata({
       images: [
         {
           url: job.image_url || "",
-          width: 50,
-          height: 50,
+          width: 100,
+          height: 100,
           alt: `${job.company} logo`,
         },
       ],
       url: `https://www.rocketjobs.app/job/${job.id}`,
-      type: "website",
+      type: "article",
       siteName: "Rocket Jobs",
     },
     twitter: {
