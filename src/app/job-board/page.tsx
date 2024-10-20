@@ -400,10 +400,10 @@ const JobSearchCard: React.FC = () => {
                         </>
                       )}
                     </p>
-                    {job.internship_latest_year &&
-                      job.internship_latest_year !== "null" && (
+                    {job.expected_graduation_year &&
+                      job.expected_graduation_year !== "null" && (
                         <p className="text-sm text-gray-600 dark:text-white">
-                          Expected Graduation: {job.internship_latest_year}
+                          Expected Graduation: {job.expected_graduation_year}
                         </p>
                       )}
                     <div className="mt-1 flex items-center gap-2">
