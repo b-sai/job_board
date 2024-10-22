@@ -35,6 +35,8 @@ import ResumeParser from "resume-parser/page";
 import toggleLevel from "./Filters";
 import { apiWrapper } from "../../utils/apiWrapper";
 import { useTracker } from "TrackerProvider";
+import ErrorModal from "./ErrorModal";
+
 const JobSearchCard: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -87,6 +89,9 @@ const JobSearchCard: React.FC = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const { filterIsEnabled, setFilterIsEnabled, locationData, setLocationData } =
     useFilter();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+
   useEffect(() => {
     if (resume !== null) {
       if (selectedPositions.length > 0) {
@@ -126,17 +131,20 @@ const JobSearchCard: React.FC = () => {
             userId,
             fileName: resume.name,
           });
-
           setUseUserId(true);
           if (data && data.filters && data.filters.level) {
             setSelectedLevels(data.filters.level);
           }
           setResumeUploadCount(resumeUploadCount + 1);
-          console.log("done");
         } catch (error) {
           console.error("Error upserting jobs:", error);
+          setErrorMessage(
+            "An error occurred while processing your resume. Please try again."
+          );
+          setIsErrorModalOpen(true);
         } finally {
           setIsParsing(false);
+          setIsLoading(false);
         }
       }
     };
@@ -466,9 +474,18 @@ const JobSearchCard: React.FC = () => {
           </div>
         </div>
       )}
+      {errorMessage && (
+        <ErrorModal
+          message={errorMessage}
+          isOpen={isErrorModalOpen}
+          onClose={() => {
+            setIsErrorModalOpen(false);
+            setErrorMessage(null);
+          }}
+        />
+      )}
     </div>
   );
 };
 
 export default JobSearchCard;
-

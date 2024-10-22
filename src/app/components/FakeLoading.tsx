@@ -1,69 +1,47 @@
-import React, { useState, useEffect } from "react";
+import { Progress } from "@/components/ui/progress";
+import { useState, useEffect } from "react";
 
-const FakeLoadingBar = () => {
+// Add duration prop with a default value
+const FakeLoadingBar = ({ duration = 10 }: { duration?: number }) => {
   const [progress, setProgress] = useState(0);
   const [text, setText] = useState("");
 
-  const messages = [
-    "Parsing education",
-    "Parsing experience",
-    "Parsing skills",
-    "Parsing projects",
-  ];
+  const messages = ["Please Wait, It's taking longer than expected"];
 
   useEffect(() => {
-    const totalDuration = 5000; // 5 seconds total
-    const five_percent = Math.floor(totalDuration * 0.05);
-    const chunkInterval = 150; // Update every 200ms for chunky progress
-    const pauseAt = 95; // Pause at 95%
-    const chunkSize = 2; // Progress increases by 0-3% each chunk
-    let timer: any;
-    let messageTimer: any;
-    let startTime = Date.now();
-
-    const updateProgress = () => {
-      const elapsedTime = Date.now() - startTime;
-      const rawProgress = (elapsedTime / totalDuration) * 100;
-
-      if (rawProgress >= pauseAt) {
-        // Pause at 95% for the last 15 seconds
-        if (elapsedTime >= totalDuration - five_percent) {
-          setProgress(100);
-          clearInterval(timer);
-          clearInterval(messageTimer);
-        } else {
-          setProgress(pauseAt);
-        }
-      } else {
-        // Chunky progress
-        setProgress((prev) => {
-          const increment = Math.random() * chunkSize;
-          return Math.min(pauseAt, prev + increment);
-        });
-      }
-    };
-
-    const updateMessage = () => {
-      setText(messages[Math.floor(Math.random() * messages.length)]);
-    };
-
-    timer = setInterval(updateProgress, chunkInterval);
-    messageTimer = setInterval(updateMessage, 4000); // Change message every second
+    const progressTimer = startProgress();
+    const messageTimer = startMessageCycle();
 
     return () => {
-      clearInterval(timer);
+      clearInterval(progressTimer);
       clearInterval(messageTimer);
     };
   }, []);
 
+  const startProgress = () => {
+    const interval = 100; // Update every 100ms
+    const steps = (duration * 500) / interval;
+    const increment = 100 / steps;
+
+    return setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          return 100;
+        }
+        return Math.min(prev + increment, 100);
+      });
+    }, interval);
+  };
+
+  const startMessageCycle = () => {
+    return setInterval(() => {
+      setText(messages[Math.floor(Math.random() * messages.length)]);
+    }, 5000);
+  };
+
   return (
     <div className="mx-auto w-full max-w-md p-4">
-      <div className="mb-2 h-4 overflow-hidden rounded-full bg-gray-200">
-        <div
-          className="h-full rounded-full bg-blue-600 transition-all duration-200 ease-out"
-          style={{ width: `${progress}%` }}
-        ></div>
-      </div>
+      <Progress value={progress} className="mb-2 w-full" />
       <div className="text-center text-sm font-medium">
         {Math.round(progress)}%
       </div>
