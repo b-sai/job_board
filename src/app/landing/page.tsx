@@ -5,14 +5,16 @@ import { MagicCard } from "@/components/ui/magic-card";
 import { TopNavBar } from "components/TopNavBar";
 import ShinyButton from "@/components/ui/shiny-button";
 import WordFadeIn from "@/components/ui/word-fade-in";
+import { useMediaQuery } from "react-responsive";
 
 export default function AnimatedGridPatternDemo() {
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   return (
     <>
       <TopNavBar />
       <div className="bg-white dark:bg-black">
         <RetroGrid angle={45} className="h-full w-full" />
-        <div className="relative w-full p-20">
+        <div className={`relative w-full ${isMobile ? "p-5" : "p-0 lg:p-20"}`}>
           <div className="relative flex flex-col gap-8">
             <div className="relative z-10 flex flex-col">
               <WordFadeIn
@@ -33,9 +35,18 @@ export default function AnimatedGridPatternDemo() {
                 </span>
               </ShinyButton>
             </div>
+
             <div className="flex justify-center">
-              <div className="relative z-10 flex w-[75%] rounded-xl">
-                <div className="absolute inset-x-0 bottom-0 z-20 h-96 bg-gradient-to-t from-white to-transparent dark:from-gray-900" />
+              <div
+                className={`relative z-10 flex ${
+                  isMobile ? "w-full" : "w-[75%]"
+                } rounded-xl`}
+              >
+                <div
+                  className={`absolute inset-x-0 bottom-0 z-20 ${
+                    isMobile ? "h-40" : "h-96"
+                  } bg-gradient-to-t from-white to-transparent dark:from-gray-900`}
+                />
                 <Image
                   src="./image_dock.png"
                   height={1024}
