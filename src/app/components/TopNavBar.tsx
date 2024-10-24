@@ -10,7 +10,15 @@ import { useMediaQuery } from "react-responsive"; // Add this import
 import AuthButton from "auth/AuthButton";
 import SignOutButton from "auth/signOutButton";
 import { useSession } from "next-auth/react";
-export const TopNavBar = () => {
+
+
+export const TopNavBar = ({
+  showTracker = true,
+  showFilter = true,
+}: {
+  showTracker?: boolean;
+  showFilter?: boolean;
+}) => {
   const pathName = usePathname();
   const isHomePage = pathName === "/";
   const { darkMode, toggleDarkMode } = useDarkMode();
@@ -22,7 +30,7 @@ export const TopNavBar = () => {
       className={cx(
         "flex h-[var(--top-nav-bar-height)] items-center border-b-2 border-gray-100 px-3 dark:border-gray-800 lg:px-12",
         isHomePage && "dark:bg-dot-dark bg-dot",
-        "bg-white dark:bg-gray-900"
+        "bg-white dark:bg-black"
       )}
     >
       <div className="flex h-10 w-full items-center justify-end">
@@ -36,12 +44,14 @@ export const TopNavBar = () => {
         </a>
 
         <div className="mx-1">
-          <Link
-            href="/tracker"
-            className="mr-auto rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-          >
-            View Applied Jobs
-          </Link>
+          {showTracker && (
+            <Link
+              href="/tracker"
+              className="mr-auto rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+            >
+              View Applied Jobs
+            </Link>
+          )}
         </div>
         {session.status === "authenticated" ? (
           <SignOutButton />
@@ -49,7 +59,7 @@ export const TopNavBar = () => {
           <AuthButton />
         )}
         <div className="flex items-center space-x-4">
-          {isMobile && <FilterButtonWithModal />}
+          {showFilter && isMobile && <FilterButtonWithModal />}
           <button
             onClick={toggleDarkMode}
             className="rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"

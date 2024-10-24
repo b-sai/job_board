@@ -342,7 +342,7 @@ const JobSearchCard: React.FC = () => {
         !isMobile ? "p-4" : ""
       }`}
     >
-      <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 lg:flex-row lg:gap-6">
+      <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900 lg:flex-row lg:gap-6">
         <div
           ref={jobListRef}
           className="custom-scrollbar w-full overflow-y-auto  lg:w-2/5 "
@@ -373,7 +373,7 @@ const JobSearchCard: React.FC = () => {
                 key={job.id}
                 className={`cursor-pointer border-l-4 p-4 transition-all duration-300 ${
                   selectedJob?.id === job.id
-                    ? "border-blue-500 bg-blue-50 dark:bg-slate-700"
+                    ? "border-blue-500 bg-blue-50 dark:bg-slate-800"
                     : "border-transparent hover:bg-gray-50 dark:hover:bg-gray-700"
                 }`}
                 onClick={() => handleJobSelect(job)}
@@ -458,7 +458,7 @@ const JobSearchCard: React.FC = () => {
       </div>
       {isMobile && isJobCardOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-          <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg bg-white p-6 dark:bg-gray-800">
+          <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg bg-white p-6 ">
             <button
               onClick={closeJobCard}
               className="absolute right-4 top-4 text-2xl text-gray-500"

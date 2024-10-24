@@ -21,10 +21,10 @@ export default function RetroGrid({
           className={cn(
             "animate-grid",
 
-            "[background-repeat:repeat] [background-size:60px_60px] [height:300vh] [inset:0%_0px] [margin-left:-50%] [transform-origin:100%_0_0] [width:600vw]",
+            "[background-repeat:repeat] [background-size:60px_60px] [inset:0%_0px] [transform-origin:100%_0_0] [width:600vw] [margin-left:-90%] [height:1200vh]",
 
             // Light Styles
-            "[background-image:linear-gradient(to_right,rgba(0,0,0,0.3)_1px,transparent_0),linear-gradient(to_bottom,rgba(0,0,0,0.3)_1px,transparent_0)]",
+            "[background-image:linear-gradient(to_right,rgba(0,0,0,0.3)_2px,transparent_0),linear-gradient(to_bottom,rgba(0,0,0,0.3)_2px,transparent_0)]",
 
             // Dark styles
             "dark:[background-image:linear-gradient(to_right,rgba(255,255,255,0.5)_2px,transparent_0),linear-gradient(to_bottom,rgba(255,255,255,0.5)_2px,transparent_0)]"

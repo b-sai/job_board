@@ -15,7 +15,7 @@ const MainApp = () => {
   return (
     <>
       {!isMobile && (
-        <div className="flex flex-grow overflow-hidden">
+        <div className="flex flex-grow overflow-hidden dark:bg-black">
           <div className="flex w-1/5 flex-shrink-0 flex-col">
             <div className="flex-grow overflow-y-auto">
               <div className="flex flex-col">
