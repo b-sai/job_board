@@ -71,15 +71,17 @@ export default function AnimatedGridPatternDemo() {
               >
                 <span className="text-xl font-bold">Get Relevant Jobs</span>
                 <p className="mt-2 break-words text-sm">
-                  AI that looks at not just keywords but the content of your
-                  resume to suggest jobs with similar work requirements
+                  AI that looks at not just keywords but also the content of
+                  your resume to suggest jobs with similar work requirements
                 </p>
               </MagicCard>
               <MagicCard
                 className="w-full cursor-pointer flex-col items-start justify-start rounded-lg bg-white p-6 text-black shadow-lg dark:bg-gray-800 dark:text-white"
                 gradientColor={"#D9D9D955"}
               >
-                <span className="text-xl font-bold">2k+ US SWE & ML Jobs</span>
+                <span className="text-xl font-bold">
+                  2k+ SWE & ML Jobs in US Added Daily
+                </span>
                 <p className="mt-2 break-words text-sm">
                   Jobs are sourced directly from career pages of top tech
                   companies and startups
@@ -90,7 +92,7 @@ export default function AnimatedGridPatternDemo() {
                 gradientColor={"#D9D9D955"}
               >
                 <span className="text-xl font-bold">
-                  Job Tracker that just works
+                  Job Tracker That Just Works
                 </span>
                 <p className="mt-2 break-words text-sm">
                   Job Tracker automatically tracks all applied jobs without a
