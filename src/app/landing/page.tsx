@@ -6,15 +6,22 @@ import { TopNavBar } from "components/TopNavBar";
 import ShinyButton from "@/components/ui/shiny-button";
 import WordFadeIn from "@/components/ui/word-fade-in";
 import { useMediaQuery } from "react-responsive";
+import { useEffect, useState } from "react";
 
 export default function AnimatedGridPatternDemo() {
-  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 767);
+  }, []);
+
+  console.log(isMobile);
   return (
     <>
       <TopNavBar />
       <div className="bg-white dark:bg-black">
         <RetroGrid angle={45} className="h-full w-full" />
-        <div className={`relative w-full ${isMobile ? "p-5" : "p-0 lg:p-20"}`}>
+        <div className={`relative w-full ${isMobile ? "p-5" : "p-5 lg:p-20"}`}>
           <div className="relative flex flex-col gap-8">
             <div className="relative z-10 flex flex-col">
               <WordFadeIn
@@ -53,6 +60,7 @@ export default function AnimatedGridPatternDemo() {
                   width={1024}
                   alt="Background"
                   className="blur-50 w-full overflow-hidden filter"
+                  style={{ width: "auto" }} // Maintain aspect ratio
                 />
               </div>
             </div>
