@@ -125,6 +125,7 @@ const JobSearchCard: React.FC = () => {
         setIsParsing(true);
         setIsLoading(true);
         setDummyResumeName(resume.name);
+        setSelectedPositions([0]); // Reset position to 0 when new resume is uploaded
         try {
           const data = await upsertJobs({
             resume,
