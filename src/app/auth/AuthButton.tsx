@@ -50,7 +50,7 @@ export default function SignInModal() {
   return (
     <>
       <button onClick={openModal} className="authButton">
-        {isClient && isMobile ? <LogIn size={20} /> : "Sign In"}
+      {isClient && isMobile ? <LogIn size={20} /> : "Sign In"}
       </button>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">

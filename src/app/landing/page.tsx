@@ -20,7 +20,7 @@ export default function AnimatedGridPatternDemo() {
     <>
       <TopNavBar showTracker={false} showFilter={false} />
       <div className="bg-white dark:bg-black">
-        <RetroGrid angle={19} className="h-full w-full" />
+        <RetroGrid angle={16} className="h-full w-full" />
         <div className={`relative w-full ${isMobile ? "p-5" : "p-5 lg:p-20"}`}>
           <div className="relative flex flex-col gap-8">
             <div className="relative z-10 flex flex-col">
