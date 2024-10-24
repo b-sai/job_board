@@ -26,10 +26,14 @@ export const TopNavBar = () => {
       )}
     >
       <div className="flex h-10 w-full items-center justify-end">
-        <Link href="/" className="mr-auto">
+        <a
+          href="/"
+          onClick={() => window.location.reload()}
+          className="mr-auto"
+        >
           <span className="sr-only">Job Board</span>
           <Image src="/icon.png" alt="Logo" width={90} height={45} priority />
-        </Link>
+        </a>
 
         <div className="mx-1">
           <Link
