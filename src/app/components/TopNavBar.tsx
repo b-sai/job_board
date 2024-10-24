@@ -47,9 +47,9 @@ export const TopNavBar = ({
           {showTracker && (
             <Link
               href="/tracker"
-              className="mr-auto rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+              className="mr-auto rounded-full  bg-gray-100 text-center text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2  dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
             >
-              View Applied Jobs
+              <div>Application Tracker</div>
             </Link>
           )}
         </div>
@@ -62,7 +62,7 @@ export const TopNavBar = ({
           {showFilter && isMobile && <FilterButtonWithModal />}
           <button
             onClick={toggleDarkMode}
-            className="rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+            className="rounded-full p-2 text-gray-800 hover:bg-gray-200    dark:text-gray-200 dark:hover:bg-gray-700"
             aria-label="Toggle dark mode"
           >
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}

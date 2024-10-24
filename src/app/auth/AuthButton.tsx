@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { LogOut, X } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
-
+import { LogIn } from "lucide-react";
 import React from "react";
-
 const GoogleSignInButton = ({ handleSignIn }: { handleSignIn: () => void }) => {
   return (
     <div className="flex justify-center">
@@ -36,14 +35,22 @@ const GoogleSignInButton = ({ handleSignIn }: { handleSignIn: () => void }) => {
   );
 };
 import Image from "next/image";
+import { useMediaQuery } from "react-responsive";
 export default function SignInModal() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false); // New state to track client-side rendering
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
+  useEffect(() => {
+    setIsClient(true); // Set to true when the component is mounted on the client
+  }, []);
+
   return (
     <>
       <button onClick={openModal} className="authButton">
-        Sign in
+        {isClient && isMobile ? <LogIn size={20} /> : "Sign In"}
       </button>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
